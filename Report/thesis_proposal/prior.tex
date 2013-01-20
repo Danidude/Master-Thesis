@@ -1,0 +1,154 @@
+\chapter{Prior research:}
+\label{ch:prior}
+% 3-8 pages
+% What research existed before you started.
+% What research have you based your work on.
+% What are the limitations of other peoples work.
+% Doing exactly what others have done is not by itself research.
+% You must do it dierent/better/...
+% Your supervisor knows state of the art very well. S/he will judge you by it.
+
+\section{Human Behavor Models}
+There exists several behavioral models that predict movement. However the most successfully ones predict 
+animal movement as animals are rather simple compared to humans. The environment for animals tends to 
+be simpler, for instance ocean compared to urban, and animals are simpler creatures and will always rely only 
+on instinct, whether in an emergency or not. There are several different computational tools used to simulate  
+human movement during emergencies, for instance fluid and particle systems, matrix-based systems and  
+emergent systems. Nevertheless they all either have limitations or they are somewhat inaccurate. 
+ 
+It has been found that fluid and particle systems do not adequately describe human movement as humans  
+panic and make choices, both good and bad, and they all have individual quirks. For instance, in a room with  
+multiple exits a crowd tend to form a herd mentality and the majority will gather around a single exit, which  
+will slow down their speed, and other exits will see little use. However had this been simulated with a fluid  
+and particle system it would likely predict that all exits would be used equally for maximum effect. 
+ 
+In a matrix-based system the room(s) and divided into cells. The cells can represent a table, it can be full of  
+people or it can be empty. People can move from cell to cell at a rate described in the model and by the  
+rules of the model. It is important that these cells and rules are properly adjusted to fit each model as to  
+make it as realistic and precise as possible. 
+ 
+In emergent systems simple parts can interact to simulate complex systems. The existing emergent systems  
+are often criticized for being too simple. The system are often given only a few parameters (for example the  
+average speed of the humans and the location of the exits) and then attempt to model the situation by  
+assuming all humans move towards the most logical exit. 
+ 
+In general the computational tools rely too much on assumptions and too little on the sociological and psychological  
+factors. When a human is put into a crisis-situation that person can either rely on instinct, experience or making  
+choices based on the alternatives. Relying on instinct typically means that the person is panicking and make immediate  
+decisions that may or may not be good ones. People have been trampled to death by crowds that desperately is trying  
+to get away from danger. 
+ 
+A person will often follow the path it knows the best. If a worker walks up the same flight of stairs to his office  
+every day for 5 years it is expected that he will also escape down the same flight of stairs during a crisis. This  
+is why there are fire drills, so that during a crisis everyone have walked the quickest paths out. 
+ 
+In a crisis that is time-sensitive, for instance a fire, it is very difficulty for a person to weigh his options and  
+choose carefully. Some people will not stand around to observe which path might be the best or whether the  
+door is hot before opening it. And standing around and choosing carefully might be even worse as  
+over time there might be fewer safe paths as the fire spread. Therefore most people will make quick choices 
+and move as fast as they can if danger is imminent. 
+ 
+An individual will likely behave different when he is alone, as opposed to when he is in a group. For example  
+a family will likely stick together and follow the leader, which is more often than not the father. Thus putting  
+his or hers experience and instincts aside and becoming a part of the group. Emotions also have a tendency  
+to spread quickly in a group, when some people panic it is likely that more will panic shortly thereafter. If  
+there is widespread panic within the group the chance of people pushing down and trample others increase  
+significantly. 
+ 
+Xiaoshan Pan et al.\cite{Pan:2007} created a framework to simulate human behavior. This framework implemented some 
+basic human sociological and psychological factors. Though in this model the humans were not given a path 
+to safety, they were merely left to their own devices. We will create a model where we give the people the 
+safest path to the exit. We aim to have the people act as realistic as possible and be placed in a dynamic 
+and complex environment.
+
+In Ocean Engineering volume 53, there is an article named "Cell-based evacuation simulation considering human behaviour in a passenger ship"\cite{celleva}. 
+The ship was modelled by placing cells representing one space enough to fill one passenger, so each room consists of several cells. 
+Each cell had 3 different states it could be in: Occupied, Empty or Object. When considering human behaviour, the humans needed some set of rules, so 3 rules was created: separation, cohesion, and alignment. 
+Separation or collision avoidance is that passengers tend to avoid to clash into each other. Cohesion is that the passengers wants to be as close to the center of a group of passengers, as this is more comforting. The last rule, alignment is that the passengers tend to head in the same direction and speed as the other passengers when evacuating.
+ 
+ 
+\section{ACO}
+The Ant Colony Organization(ACO) algorithm is a probabilistic algorithm that have been used in routing, scheduling, 
+subset and machine learning. It was created by Marco Dorigo in 1992 to find an optimal path in a graph, mimicking the
+behavior of ant which are searching for food \cite{aco}. In nature, when searching for food, ants walk randomly until
+they locate a food source. When an ant stumble upon food it returns to the ant colony, taking the shortest path possible.
+While returning to its colony it leaves a trail of pheromones which will attract other ants. These other ants will, by walking
+the same path as the initial ant, strengthen the pheromone trail and further increase the possibility that more ants will
+take this path to the food source.
+
+While the pheromone trail increases the probability that an ant chooses to follow the trail, it does not ensure it.
+If several ants reaches the same food source by walking different paths the shortest path will be made the more attractive
+one over time. This is a result of pheromone deposits. The shortest path will have the highest pheromone density as more
+pheromones can be deposited on the shorter route, the resulting higher pheromone density will increase the possibility that 
+other ants will follow the shorter path. 
+
+Over time pheromones evaporates, this prevents the system from ending up with local optimal solutions. 
+If the pheromones did not evaporate the path followed by a certain amount of initial ants
+would quickly become the only path any ant followed as the pheromone density would increase to the point that no other paths
+could ever become more attractive, even if they were the more optimal paths. 
+
+Additionally, pheromone evaporation makes ACO able to adapt to changes. A path can be the optimal path for a while, until a change
+occurs that makes the path unusable. If the pheromones did not evaporate the ants would continue to follow this path indefinitely,
+never reaching the food source again. However, when the ants are not able to reach the food source they will not deposit any
+pheromones and as the pheromones deposited by previous ants evaporates the ants will will be less attracted to the old path
+and start exploring new ones.
+ 
+
+\begin{figure}[h]
+\centering
+\begin{math}
+P^s_{ab} = {(T^\alpha_{ab})(\Lambda^\beta_{ab}) \over \sum (T^\alpha_{ab})(\Lambda^\beta_{ab})}
+\end{math}
+\caption{\textit{The mathematical formula for edge selection}}
+\label{fig:edge}
+\end{figure}
+
+For the algorithm itself there are two parts, edge selection, as seen in figure \ref{fig:edge}, and pheromone update, as seen in figure \ref{fig:update}. 
+Edge selection, simply stated, is the process of choosing which way to go. Every ant $s$ has a probability $P^s_{ab}$ of moving from location $a$ to location $b$. The probability
+is calculated based on the attractiveness $\Lambda_{ab}$  of moving from $a$ to $b$ and the pheromone trail level $T_{ab}$. The trail level,
+as discussed above, signifies how rewarding that path has been in the past. The attractiveness of a move indicates the cost of the move and 
+will in the beginning of the simmulation have a large impact on the choices made by the ants. However over time the pheromone trail level will take over as the
+dominating factor.
+
+\begin{figure}[h]
+\centering
+\begin{math}
+T_{ab} \leftarrow (1 - \rho)T_{ab} + \sum \limits_{s} \Delta T^s_{ab}
+\end{math}
+\caption{\textit{The mathematical formula for pheromone update}}
+\label{fig:update}
+\end{figure}
+
+When the ants have returned, the pheromone trail is updated. The pheromone trail level $T_{ab}$ is reduced by a pheromone evaporation
+coefficient $\rho$. A higher coefficient results in higher evaporation and fast adaptation and visa versa. Nevertheless this does not mean
+that the factor should always be high as ACO is probabilistic and fast adaptation could result in the optimal path being found and then lost
+again before other ants had time to travel it. Finally, $\sum \limits_{s} \Delta T^s_{ab}$ is the amount of pheromones ant number $s$ will deposit on
+the trail. The amount deposited is typically decided by taking a constant $I$ divided by the length of ant $s$ path $J_s$
+
+\begin{figure}[h]
+\centering
+\begin{math}
+\Delta \tau^{s}_{ab} =
+\begin{cases}
+I/J_s & \mbox{if ant }s\mbox{ uses edge }ab\mbox{ in its path} \\
+0 & \mbox{otherwise}
+\end{cases}
+\end{math}
+\caption{\textit{The mathematical formula used to calculate the amount of pheromones that should be deposited}}
+\label{fig:update}
+\end{figure}
+
+
+In the article Ant Colony Organization for Best Path Planning\cite{acobpp:2004}, they used ACO to find the optimal path in a network, and update pheromones based on how long the path is and how heavily the traffic is on that route. By multiplying the amount of traffic in the node with the amount of pheromones, ACO may adapt to the traffic inside the network.
+
+\section{Ship Evacuation}
+
+During an evacuation speed is off the essence. The International Maritime Organization (IMO) is an United Nation's agency responsible for
+the safety and security of shipping. They require, under SOLAS Chapter III Regulation 21.1.4 \cite{imo}, that: 
+\begin{quotation}
+\textit{All survival craft required to provide for abandonment by the total number of persons on board shall be capable of being launched with their full complement of persons and equipment within a period of 30 min from the time the abandon ship signal is given after all persons have been assembled, with lifejackets donned.}
+\end{quotation}
+Additionally, they recommend that the total evacuation time is a maximum of 60 minutes for ships with up to three vertical fire zones and
+80 minutes for ships with more than three vertical fire zones \cite{total}. This leaves either 30 or 50 minutes, depending on ship size, to detect the crisis and get the passengers to the embarkation stations and equip them with lifejackets.
+
+The time it takes for each passenger to reach the embarkation stations is calculated by $T = (\gamma + \delta) t$ where $\gamma$ is a factor that determines how safe the path is, $\delta$ is the counterflow factor and $t$ is the travel time in ideal conditions. Factors that can hinder the flow of passengers includes: high occupant density, closed doors, debris, ship motion, etc. Thus the travel time is the amount of time it would take for each passenger to evacuate given perfect conditions multiplied by all factors that restricts their movements. 

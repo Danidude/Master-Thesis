@@ -1,0 +1,13 @@
+\chapter{Summary}
+\label{ch:summary}
+
+%1-2 pages
+%Write it as if you are to explain your thesis to your grandmother.
+%Or to a journalist.
+%Often omitted when there is a need to save space.
+
+Every year people die from accidents on board ships, and as good as the evacuation plans may be now, they will need improvement to ensure that as many passengers as possible survives. This project will work on modifying existing algorithms that will find the safest path from A to B during a crisis, and which could one day be used to help save lives during a crisis that otherwise may have been lost. 
+
+Our main focus will be on the Ant Colony Optimization, a pathfinding algorithm which finds a path through the environment to the desired destination by mimicking the behavior of an ant colony. It does so by sending out ants that run randomly around until they find the destination and report back on the path they took. This path will be marked with pheromones and any other ant is more likely to walk the same path as the successful ant. 
+
+In this thesis we will compare Dijkstra's pathfinding algorithm to ACO, as Dijkstra's is one of the most commonly used pathfinding algorithms today. We will model the ship as a dynamic graph with nodes and vertices where the nodes can be rooms, hallways or other sections of the ships and the vertices indicate that it is possible to transition from one node to another. Additionally, we will simulate human behavior during a crisis and observe how this affects the algorithms. Finally we will look into how high occupant density around exits slow down the evacuation process and how to redirect passengers if needed.

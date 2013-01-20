@@ -1,0 +1,44 @@
+\chapter{Research approach}
+\label{ch:approach}
+
+%3-8 pages
+%What type of research.
+%What experiments will be carried out.
+%Which procedures will be followed.
+%What data do you plan to collect.
+%How will you get the data.
+%What major practical questions need to be answered.
+
+
+
+We will be doing design research by extending algorithms and doing empirical simulations. These simulations will be graphs we have created randomly and fixed ones. Each graph will represent a ship that may be in crisis, and each ship will have a set of passengers that needs to evacuate.
+
+
+
+Each graph will consists of nodes and vertex, where the node represents the different areas inside a ship(Hallways, deck, ect) and the vertices represents the doors/paths between the areas. In the randomized graph, exit nodes will put in random places, however in the fixed graph, they will be in fixed places. 
+
+All the nodes will have a captivity as there may only be a set number of passengers inside that area. Also the area may be an exit as the passengers may get to safety from it, or it can be lethal and have a hazard inside, for example a fire.
+
+The vertices will contain a flow value that represents how many passengers may move trough at each time step. Also vertices will contain the amount of attractiveness and pheromones for ACO.
+
+These experiments will be done with and without lethal hazards, to measure what impact it has on the different algorithms we will have running. As the algorithm have limited time to find the solution to the problem.
+
+The hazards on board the ship may change over time, as fire and smoke spread or water level rises. Each hazards behaves different and therefore needs a different set of rules. As there can not be any smoke without a fire, and there can not be a fire in a flooded room. The smoke travels faster then the fire does on board the ship.
+
+We will have simulation with and without human behaviour as this might effect the performance of the algorithms. Human behaviour is that passengers are more likely to take the same path as a group of other passengers, or if they stumble upon the ship crew to guide them to an exit. However this is not set as passengers may panic or just ignore/not understand what's happening.
+
+We will get the data by running several simulation of a crisis on board a ship with passengers following human behaviour and/or algorithms to tell them where to go. Then record on how many survived the incident, also how long time it took for the passengers to get to safety. Two of these algorithms will be djikstra's and ant colony organization(ACO).
+
+The algorithm is going to find the safest path from where the passenger is standing to an exit, by avoiding hazards that are lethal and get the shortest possible path, if there are several that are equally good, then choose randomly one of them. The performance of an algorithm is measured in how many survivors and how fast it was to get the survivors to safety.
+
+The most important question will be if the algorithms will be fast enough for them to solve the problem within time for the passengers to follow the instructions and get to safety.
+
+
+ 
+%We will collect statistical data on how many people survive the simulations
+%using different algorithms and different modifications of the algorithms and
+%running the simulations a sufficient amount of times until the data converges.
+%Additionally we will test the complexity of the algorithms.
+%The algorithms will be run against random graphs and fixed graphs, also the 
+%algorithms needs to solve the problem within a resemble amount of time.
+

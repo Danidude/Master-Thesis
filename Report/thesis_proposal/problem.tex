@@ -1,0 +1,34 @@
+\chapter{Problem Statement and Hypothesis}
+\label{ch:problem}
+
+%1-3 pages
+% Precisely define your problem.
+% What exactly will you try to solve.
+% Try to make it measurable.
+% The examiner will ask "Did the student answer the problem definition?"
+% Problem definition should never be vague.
+
+Our goal is to evaluate several algorithms and determine which algorithm will provide us with the
+best route between two points in dynamic graphs with nodes and vertices. Our hypothesis
+is that Ant Colony Optimization (ACO) will perform better than conventional pathfinding
+algorithms. Performance is measured by how many passengers survive the crisis situation
+and how efficient the algorithms are. 
+
+Secondly, we hypothesize that ACO will outperform djikstra's pathfinding algorithm
+given a continuously changing graph. In a real crisis situation the environment is subject
+to change. For instance a corridor that previously was safe can be filled with smoke
+or a room that was empty can become filled with people and be undesirable as a path
+to the exit.
+
+Thirdly, we hypothesize that ACO will achieve a better outcome than djikstra's pathfinding algorithm
+given high occupant density around exits. High occupant density is dangerous not only
+because it will slow the evacuation speed it also creates potentially harmful situations. Thus the algorithm
+should predict possible future bottlenecks and redirect passengers as needed.
+
+Finally, we hypothesize that ACO will produce better results than djikstra's pathfinding algorithm
+by adding human behavior. To produce accurate results the algorithms needs to be subjected
+to a model that is as close to reality as possible and it then becomes necessary to include
+human behavior to the model. Passengers can ignore directions, misunderstand directions, panic
+and so forth. Behavior is different if the passenger is alone, with his or her family, or in a large group;
+and thus it becomes important to account for individuals that may not follow the directions perfectly.
+
