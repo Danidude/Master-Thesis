@@ -3,9 +3,9 @@
 
 \section{Introduction}
 
-Every year people die from accidents on board ships, and as good as the evacuation plans may be now, 
-they will need improvement to ensure that as many passengers as possible survives. This project will work
- on modifying existing algorithms that will find the safest path from A to B during a crisis, and which could
+Every year people die from accidents on board ships, and as good as the evacuation plans may be now,
+they will need improvement to ensure that as many passengers as possible survives. This project will work                            %"This project"
+ on modifying existing algorithms that will find the optimal path of evacuation during a simulated crisis, and which could         % Do we need to further emphasise the simulation?
  one day be used to help save lives during a crisis that otherwise may have been lost. 
 
 Our main focus will be on the Ant Colony Optimization, a pathfinding algorithm which finds a path through
@@ -22,7 +22,7 @@ evacuation process and how to redirect passengers if needed.
 
 \section{Motivation}
 
-Every year people die in boating accidents, we hope that our work can be
+Every year people die in boating accidents, we hope that our work can be                                                                         % Too similar to first line in introduction
 used to save future lives. Jim Hall, the Chairman of the National Transportation 
 Safety Board testified in front of the Subcommittee on Coast Guard and Maritime 
 Transportation, making several safety recomendations after the Scandinavian Star
@@ -37,15 +37,13 @@ receives proper guidance. For instance any message played over a sound system co
 difficult to hear during a panic and passengers could be in rooms or corridors
 where they would be unrachable for the employees.
 
+%\section{Goal}
 
-\section{Goal}
-Goal of the thesis.
-
-\subsection{Field of research}
+%\subsection{Field of research}
 
 \section{Problem Statement}
 
-Our goal is to evaluate several algorithms and determine which algorithm will provide us with the
+We aim to evaluate several algorithms and determine which algorithm will provide us with the         %We aim to
 best route between two points in dynamic graphs with nodes and vertices. Our hypothesis
 is that Ant Colony Optimization (ACO) will perform better than conventional pathfinding
 algorithms. Performance is measured by how many passengers survive the crisis situation
@@ -62,7 +60,7 @@ given high occupant density around exits. High occupant density is dangerous not
 because it will slow the evacuation speed it also creates potentially harmful situations. Thus the algorithm
 should predict possible future bottlenecks and redirect passengers as needed.
 
-Finally, we hypothesize that ACO will produce better results than djikstra's pathfinding algorithm
+Finally, we hypothesize that ACO will produce better results than djikstra's pathfinding algorithm                 % How to structure these points....
 by adding human behavior. To produce accurate results the algorithms needs to be subjected
 to a model that is as close to reality as possible and it then becomes necessary to include
 human behavior to the model. Passengers can ignore directions, misunderstand directions, panic
@@ -93,7 +91,7 @@ We assume a ship with hazards can be sufficiently modeled as a graph with nodes 
 environment it is possible that by reducing a complex structure into a simpler model some details would be lost in the
 translation. For instance a table could be knocked over or a spill could cause someone to slip. However, as there are a large number of 
 passengers on large ships we expect that by simply adding some regulatory factors to each area in the ship and running
-several iterations the results will be fairly realistic.
+several iterations the results will be fairly realistic.                                                                                                                               %Is this a good place to mention our nodes inside nodes plan?
 
 \section{Contributions}
 
@@ -108,10 +106,9 @@ It is easy to imagine how a panic around an evacuation bottleneck will become da
 down the rate of egress even further than it normaly would. We will attempt to find ways to redirect
 evacuees before the issue occurs or, failing that, we will calculate the optimal way to solve the problem.
 
-\section{Target audience}
+%\section{Target audience}
 
-
-\section{Report outline / Thesis Organization}
+\section{Report outline}
 
 The master thesis will contain 4 chapters: Introduction, Methods, Results and Conclusion.
 The introduction will start by broadly describing the thesis in simple terms, then explain the motivation behind the project,
