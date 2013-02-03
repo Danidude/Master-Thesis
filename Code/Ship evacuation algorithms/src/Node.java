@@ -3,7 +3,7 @@ import java.util.Random;
 
 
 public class Node {
-	private enum NodeType { STAIRS, GUESTROOM, HALLWAY, DININGROOM, GAMEROOM, SHOP }
+	public enum NodeType { STAIRS, GUESTROOM, HALLWAY, DININGROOM, GAMEROOM, SHOP }
 	private static final RandomEnum<NodeType> randomEnum =
 			new RandomEnum<NodeType>(NodeType.class);
 	private float chanceOfDeath;
@@ -15,9 +15,11 @@ public class Node {
 	private int amountOfPheromones;
 	public boolean hasWayToExit = false;
 	
-	public Node()
+	public Node(int NodeID, NodeType nt, int cap)
 	{
-		
+		this.nodeType = nt;
+		this.capacity = cap;
+		this.NodeID = NodeID;
 	}
 	
 	
