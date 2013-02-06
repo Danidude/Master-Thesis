@@ -22,10 +22,10 @@ public class Shipbuilder {
 		 * Number of total nodes: 41
 		 */
 		
-		ArrayList<Node> tempGUESTROOMList = createRoom(Node.NodeType.GUESTROOM, 18);
-		ArrayList<Node> tempDININGROOMList = createRoom(Node.NodeType.DININGROOM, 10);
-		ArrayList<Node> tempHALLWAYList = createRoom(Node.NodeType.HALLWAY, 10);
-		ArrayList<Node> tempSTAIRSList = createRoom(Node.NodeType.STAIRS, 3);
+		ArrayList<Node> tempGUESTROOMList = createRoom(Node.NodeType.GUESTROOM, 18, 5);
+		ArrayList<Node> tempDININGROOMList = createRoom(Node.NodeType.DININGROOM, 10, 5);
+		ArrayList<Node> tempHALLWAYList = createRoom(Node.NodeType.HALLWAY, 10, 5);
+		ArrayList<Node> tempSTAIRSList = createRoom(Node.NodeType.STAIRS, 3, 5);
 		
 		addList(tempGUESTROOMList, s.fifthFlor);
 		addList(tempDININGROOMList, s.fifthFlor);
@@ -36,7 +36,7 @@ public class Shipbuilder {
 		return s;
 	}
 	
-	private ArrayList<Node> createRoom(Node.NodeType nt, int numberOfRooms)
+	private ArrayList<Node> createRoom(Node.NodeType nt, int numberOfRooms, int florNumber)
 	{
 		int capacity = 0;
 		ArrayList<Node> tempList = new ArrayList<Node>();
@@ -51,7 +51,7 @@ public class Shipbuilder {
         }
         for(int room = 0; room<numberOfRooms; room++)
         {
-        	Node n = new Node(nodeID++, nt, capacity);
+        	Node n = new Node(nodeID++, nt, capacity, florNumber);
         	tempList.add(n);
         }
         
