@@ -3,26 +3,28 @@
 
 \section{Introduction}
 
-Every year people die from accidents on board ships, and as good as the evacuation plans may be now,                           % Write in the present time
-they will need improvement to ensure that as many passengers as possible survives. This project will work                            %"This project"
- on modifying existing algorithms that will find the optimal path of evacuation during a simulated crisis, and which could         % Do we need to further emphasise the simulation?
+A fire onboard a ship can have disastrous consequences, and as good as the evacuation plans may be now,                           
+they will need improvement to ensure that as many passengers as possible survives. This project will work                           
+ on modifying existing algorithms that will find the optimal path of evacuation during a simulated crisis, and which could         
  one day be used to help save lives during a crisis that otherwise may have been lost. 
 
-Our main focus will be on the Ant Colony Optimization, a pathfinding algorithm which finds a path through
- the environment to the desired destination by mimicking the behavior of an ant colony. It does so by sending    % -> virtually sending out
-out ants that run randomly around until they find the destination and report back on the path they took.             % -> not completely random, biased towards pheromones. Be clearer
- This path will be marked with pheromones and any other ant is more likely to walk the same path as the successful ant. 
+Our main focus is the Ant Colony Optimization, a pathfinding algorithm which finds a path through
+ the environment to the desired destination by mimicking the behavior of an ant colony. The algorithm sends    
+out virtual ants that search for a valid path then report back the path they took.            
+These paths are marked with pheromones and any consecutive ants are more likely to walk on the previously successful paths.
 
 In this thesis we will compare Dijkstra's pathfinding algorithm to ACO, as Dijkstra's is one of the most commonly
  used pathfinding algorithms today. We will model the ship as a dynamic graph with nodes and vertices where
  the nodes can be rooms, hallways or other sections of the ships and the vertices indicate that it is possible to
- transition from one node to another. Additionally, we will simulate human behavior during a crisis and observe
+ transition from one node to another. 
+
+Additionally, we will simulate human behavior during a crisis and observe
  how this affects the algorithms. Finally we will look into how high occupant density around exits slow down the 
 evacuation process and explore how to redirect passengers.
 
 \section{Motivation}
 
-Every year people die in boating accidents, we hope that our work can be                                                                         % Too similar to first line in introduction
+Every year people die in boating accidents, we hope that our work can be                                                                         
 used to save future lives. Jim Hall, the Chairman of the National Transportation 
 Safety Board testified in front of the Subcommittee on Coast Guard and Maritime 
 Transportation, making several safety recomendations after the Scandinavian Star
@@ -43,24 +45,23 @@ where they would be unrachable for the employees.
 
 \section{Problem Statement}
 
-We aim to evaluate several algorithms and determine which algorithm will provide us with the         % evaluate AND approach
-best route between two points in dynamic graphs with nodes and vertices. Our hypothesis
-is that Ant Colony Optimization (ACO) will perform better than conventional pathfinding % the most commonly used
-algorithms. Performance is measured by how many passengers survive the crisis situation
-and how efficient the algorithms are. 
+We aim to develop and approach several algorithms and determine which algorithm will provide us with the         
+best evacuation route. Our hypothesis is that Ant Colony Optimization (ACO) will perform better than the 
+most commonly used pathfinding algorithms. Performance is measured by how many passengers 
+survive the crisis situation and how efficient the algorithms are. 
 
-Secondly, we hypothesize that ACO will outperform djikstra's pathfinding algorithm       % Djikstra's
+Secondly, we hypothesize that ACO will outperform Dijkstra's pathfinding algorithm       
 given a continuously changing graph. In a real crisis situation the environment is subject
 to change. For instance a corridor that previously was safe can be filled with smoke
 or a room that was empty can become filled with people and be undesirable as a path
 to the exit.
 
-Thirdly, we hypothesize that ACO will achieve a better outcome than djikstra's pathfinding algorithm
+Thirdly, we hypothesize that ACO will achieve a better outcome than Dijkstra's pathfinding algorithm
 given high occupant density around exits. High occupant density is dangerous not only
 because it will slow the evacuation speed it also creates potentially harmful situations. Thus the algorithm
 should predict possible future bottlenecks and redirect passengers as needed.
 
-Finally, we hypothesize that ACO will produce better results than djikstra's pathfinding algorithm                 % How to structure these points.... -> its fine
+Finally, we hypothesize that ACO will produce better results than Dijkstra's pathfinding algorithm                 
 by adding human behavior. To produce accurate results the algorithms needs to be subjected
 to a model that is as close to reality as possible and it then becomes necessary to include
 human behavior to the model. Passengers can ignore directions, misunderstand directions, panic
@@ -69,10 +70,10 @@ and thus it becomes important to account for individuals that may not follow the
 
 \section{Limitations and key assumptions}
 
-To properly define the scope of our master thesis we have outlined
-some limitations and assumptions. We will limit ourselves to testing and modifying algorithms;
-we will not create completely new algorithms, a fully fleshed out system that would distribute the % base ourselves on well known algorithms
-safest paths to the passenger nor will we be creating the application that would run on the passenger's smartphones.
+To properly define the scope of our master thesis we have outlined                                                                               %Rewrite this section
+some limitations and assumptions. We will limit ourselves to testing and modifying algorithms;                                  
+we will base ourselves on well known algorithms, not create a fully fleshed out system that would distribute the 
+safest paths to the passenger nor create the application that will run on the passenger's smartphones.
 The focus in our master thesis will be on the algorithms themselves and not the final system as that have a large set
 of challenges itself. For instance the complete system would need to find ways to distribute directions to each phone,
 discover which phones are within the crisis area, receive information about the location of the fire onboard the ship etc.
@@ -104,25 +105,26 @@ where finding a path is subject to change.
 We will determine how human behaviour and occupant density around exits affects path finding algorithms.
 It is easy to imagine how a panic around an evacuation bottleneck will become dangerous and slow
 down the rate of egress even further than it normaly would. We will attempt to find ways to redirect
-evacuees before the issue occurs or, failing that, we will calculate the optimal way to solve the problem.   %optimal is not a good word here
+evacuees before the issue occurs. If there are a large amount of people around a bottleneck at the
+start of the evacuation we will redistribute the passengers to quickly solve the problem.
 
 %\section{Target audience}
 
 \section{Report outline}
 
-The master thesis will contain 4 chapters: Introduction, Methods, Results and Conclusion.                %Write in the active form, will contain -> contains
-The introduction will start by broadly describing the thesis in simple terms, then explain the motivation behind the project,
+The master thesis contains 4 chapters: Introduction, Methods, Results and Conclusion.               
+The introduction starts by broadly describing the thesis in simple terms, then explains the motivation behind the project,
 the goal of the thesis, the current state of the art and finally the problem statement. 
 
-The Methods chapter will describe the methods we have used in our research, why we used them and what makes
-our research different from the current state of the art. It will describe the implementation of the human behavior,
+The Methods describes the methods we have used in our research, why we used them and what makes
+our research different from the current state of the art. It describes the implementation of the human behavior,
 the calculations regarding the evacuation speed and egress restricting factors as well as the implementation of the 
-ship model. Furthermore, the methods chapter will contain the hypothesis.
+ship model. Furthermore, the methods chapter contains the hypothesis.
 
-The Results chapter will present the results and the evidence that either supports or oppose our hypothesis. The
-statistical data gathered using the methods in the previous chapter will be displayed and any issues we will have had
-will be explained.
+The Results presents the results and the evidence that either supports or oppose our hypothesis. The
+statistical data gathered using the methods in the previous chapter is displayed and any issues we have experienced
+is explained.
 
-The Discussion will look at what the data means, whether it matters or not and how it compares to other research in the field.
-Additionally it will discuss how successful the project has been and if ACO is better than conventional algorithms, as we hypothesized.
-Finally it will contain proposed future steps that can be made to continue developing the project.
+The Discussion looks at what the data means, whether it matters or not and how it compares to other research in the field.
+Additionally it discusses how successful the project has been and if ACO is better than conventional algorithms, as we hypothesized.
+Finally it contains proposed future steps that can be made to continue developing the project.
