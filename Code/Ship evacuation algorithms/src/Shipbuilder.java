@@ -1,9 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
 public class Shipbuilder {
 	int nodeID = 0;
+	int edgeID = 0;
 	public Ship createCelebrityXpedition()
 	{
 		Ship celebX = new Ship(4);
@@ -63,7 +65,18 @@ public class Shipbuilder {
 	{
 		for(Node n:list)
 		{
-			map.put(n.NodeID, n);
+			map.put(n.getID(), n);
 		}
+	}
+	
+	private void putFloorTogehter(HashMap<Integer, Node> floor)
+	{
+		
+	}
+	
+	private Edge createEdge(int flow, int nodeID)
+	{
+		Edge edge = new Edge(flow, edgeID++, nodeID);
+		return edge;
 	}
 }

@@ -1,16 +1,13 @@
-import java.util.List;
-import java.util.Random;
+import java.util.ArrayList;
 
 
 public class Node {
 	public enum NodeType { STAIRS, GUESTROOM, HALLWAY, DININGROOM, GAMEROOM, SHOP }
-	private static final RandomEnum<NodeType> randomEnum =
-			new RandomEnum<NodeType>(NodeType.class);
 	private float chanceOfDeath;
 	private int capacity;
 	private NodeType nodeType;
-	private List<Vertex> listOfPaths;
-	public int NodeID;	
+	private ArrayList<Edge> listOfPaths;
+	private int nodeID;	
 	private int florNumber;
 	private boolean isExit;
 	private int amountOfPheromones;
@@ -22,21 +19,21 @@ public class Node {
 	{
 		this.nodeType = nt;
 		this.capacity = cap;
-		this.NodeID = NodeID;
+		this.nodeID = NodeID;
 		this.florNumber = fNumber;
 	}
 	
+	public int getID()
+	{
+		return nodeID;
+	}
 	
-	private static class RandomEnum<E extends Enum<NodeType>> {
-		private static final Random randomGenerator = new Random();
-		private final E[] values;
-
-		public RandomEnum(Class<E> token){
-			values = token.getEnumConstants();
-		}
-
-		public E random() {
-			return values[randomGenerator.nextInt(values.length)];
-		}
+	public void addEdge(Edge e)
+	{
+		listOfPaths.add(e);
+	}
+	public ArrayList<Edge> getPaths()
+	{
+		return listOfPaths;
 	}
 }
