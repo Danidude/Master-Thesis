@@ -6,13 +6,15 @@ private int edgeID;
 private float pheremones;
 private int nodeID;
 private Ship s;
+private int weight;
 
-	public Edge(int flow, int edgeID, int nodeID, Ship s)
+	public Edge(int flow, int edgeID, int nodeID, Ship s, int weight)
 	{
 		this.edgeID = edgeID;
 		this.flow = flow;
 		this.nodeID = nodeID;
 		this.s = s;
+		this.weight = weight;
 	}
 	
 	public int getNodeID()
