@@ -26,4 +26,9 @@ private int weight;
 	{
 		return s.fifthFlor.get(nodeID);
 	}
+	
+	public int getWeight()
+	{
+		return weight;
+	}
 }
