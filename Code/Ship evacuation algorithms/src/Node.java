@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 
-public class Node {
+public class Node implements Comparable<Node> {
 	public enum NodeType { STAIRS, GUESTROOM, HALLWAY, DININGROOM, GAMEROOM, SHOP }
 	private float chanceOfDeath;
 	private int capacity;
@@ -36,5 +36,10 @@ public class Node {
 	public ArrayList<Edge> getPaths()
 	{
 		return listOfPaths;
+	}
+
+	@Override
+	public int compareTo(Node o) {
+		return Double.compare(minDistance, o.minDistance);
 	}
 }

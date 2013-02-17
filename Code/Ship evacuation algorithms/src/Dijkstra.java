@@ -15,20 +15,20 @@ public class Dijkstra {
 		nodeQueue.add(source);
 		
 		while (!nodeQueue.isEmpty()){
-			Node n = nodeQueue.poll();
+			Node current = nodeQueue.poll();
 			
 			// Visit each edge connected to the current node 
-			for (Edge e : n.getPaths()){
-				Node node = e.getNode();
+			for (Edge e : current.getPaths()){
+				Node destination = e.getNode();
 				int weight = e.getWeight();
 				
 				// 
-				double distance = node.minDistance + weight;
-				if(distance < n.minDistance){
-					nodeQueue.remove(node);
-					node.minDistance = distance;
-					node.previous = n;
-					nodeQueue.add(node);
+				double distance = current.minDistance + weight;
+				if(distance < destination.minDistance){
+					nodeQueue.remove(destination);
+					destination.minDistance = distance;
+					destination.previous = current;
+					nodeQueue.add(destination);
 				}
 			}
 		}

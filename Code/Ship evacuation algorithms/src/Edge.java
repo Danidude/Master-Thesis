@@ -4,28 +4,23 @@ public class Edge {
 private int flow;
 private int edgeID;
 private float pheremones;
-private int nodeID;
+private Node node;
 private Ship s;
 private int weight;
 
-	public Edge(int flow, int edgeID, int nodeID, Ship s, int weight)
+	public Edge(int flow, int edgeID, Node node, Ship s, int weight)
 	{
 		this.edgeID = edgeID;
 		this.flow = flow;
-		this.nodeID = nodeID;
+		this.node = node;
 		this.s = s;
 		this.weight = weight;
 	}
 	
-	public int getNodeID()
-	{
-		return nodeID;
-	}
-	
 	public Node getNode()
 	{
-		return s.fifthFlor.get(nodeID);
-	}
+		return node;
+	}	
 	
 	public int getWeight()
 	{
