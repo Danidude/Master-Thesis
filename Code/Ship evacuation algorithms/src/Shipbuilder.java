@@ -11,9 +11,12 @@ public class Shipbuilder {
 	int diningFlow = 7;
 	int stairFlow = 7;
 	int doorFlow = 3;
+	Ship currentShip = null;
+	
 	public Ship createCelebrityXpedition()
 	{
 		Ship celebX = new Ship(4);
+		currentShip = celebX;
 		celebX = createPanormaFlor(celebX);
 		return celebX;
 	}
@@ -41,7 +44,7 @@ public class Shipbuilder {
 		tempList.addAll(tempDININGROOMList);
 		tempList.addAll(tempSTAIRSList);
 		
-		addFifthFloorEdges(tempList);
+		addFifthFloorEdges(tempList, s);
 		
 		addList(tempList, s.fifthFlor);
 
@@ -88,14 +91,14 @@ public class Shipbuilder {
 	
 	private Edge createEdge(int flow, int nodeID)
 	{
-		Edge edge = new Edge(flow, edgeID++, nodeID);
+		Edge edge = new Edge(flow, edgeID++, nodeID, currentShip);
 		return edge;
 	}
 	/*
 	 * Lang liste med koblinger til hver node. Går igjenom listen og legger edges
 	 * til hver node i listen manuelt.
 	 */
-	private void addFifthFloorEdges(ArrayList<Node> tempList)
+	private void addFifthFloorEdges(ArrayList<Node> tempList, Ship s)
 	{
 		/*
 		 * Each guest room consists of two nodes, one inne and one outer node.
