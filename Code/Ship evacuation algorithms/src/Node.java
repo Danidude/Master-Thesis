@@ -12,8 +12,8 @@ public class Node {
 	private boolean isExit;
 	private int amountOfPheromones;
 	public boolean hasWayToExit = false;
-	
-	
+	public double minDistance = Double.POSITIVE_INFINITY;	
+	public Node previous;
 	
 	public Node(int NodeID, NodeType nt, int cap, int fNumber)
 	{
