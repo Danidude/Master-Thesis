@@ -21,6 +21,7 @@ public class Node {
 		this.capacity = cap;
 		this.nodeID = NodeID;
 		this.florNumber = fNumber;
+		listOfPaths = new ArrayList<Edge>();
 	}
 	
 	public int getID()
