@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 
 
 public class Dijkstra {
-	Node currentNode = null;
+Node currentNode = null;
 	public void findPath(Node source){
 
 		currentNode = source;
@@ -19,7 +19,6 @@ public class Dijkstra {
 
 		while (!nodeQueue.isEmpty()){
 			Node current = nodeQueue.poll();
-			
 			// Visit each edge connected to the current node 
 			for (Edge e : current.getPaths()){
 				Node destination = e.getNode();
@@ -56,7 +55,13 @@ public class Dijkstra {
 			for(Node v : path){
 				System.out.print(v.getID() + " ");
 			}
-			System.out.println();
+			System.out.println();			
+		}
+		
+		// Clears the nodes from data from the previous iteration
+		for(Node e : exits){
+			e.previous = null;
+			e.minDistance = Double.POSITIVE_INFINITY;
 		}
 	}
 	

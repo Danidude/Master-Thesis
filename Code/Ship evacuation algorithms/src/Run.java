@@ -18,10 +18,10 @@ public class Run {
 		
 		// int flow, int edgeID, Node node, Ship s, int weight
 		n1.addEdge(new Edge(1, 1, n2, null, 1));
-		n1.addEdge(new Edge(1, 1, n3, null, 2));
+		n1.addEdge(new Edge(1, 1, n3, null, 1));
 		n2.addEdge(new Edge(1, 1, n1, null, 1));
 		n2.addEdge(new Edge(1, 1, n4, null, 1));
-		n3.addEdge(new Edge(1, 1, n1, null, 2));
+		n3.addEdge(new Edge(1, 1, n1, null, 1));
 		n3.addEdge(new Edge(1, 1, n4, null, 1));
 		n4.addEdge(new Edge(1, 1, n2, null, 1));
 		n4.addEdge(new Edge(1, 1, n3, null, 1));
@@ -35,6 +35,6 @@ public class Run {
 		Dijkstra d = new Dijkstra();
 		d.getAllPaths(nodes, nodes);
 		//d.findPath(n1);
-		//d.getShortestPaths(nodes);
+	    //d.getShortestPaths(nodes);
 	}
 }
