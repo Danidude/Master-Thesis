@@ -5,26 +5,29 @@ import java.util.PriorityQueue;
 
 
 public class Dijkstra {
-Node currentNode = null;
+	
+	// Sets the current node globally to allow other functions to print the results. For testing purposes only.
+	Node currentNode = null;
+	
+	// Finds the shortest path from the source node to all nodes in the graph
 	public void findPath(Node source){
 
 		currentNode = source;
-		
-		// The shortest distance from the source node to this node.
 		source.minDistance = 0;
 
-		// Visit each node starting with the smallest minDistance
+		// Visit each node, starting with the smallest minDistance
 		PriorityQueue<Node> nodeQueue = new PriorityQueue<Node>();
 		nodeQueue.add(source);
 
 		while (!nodeQueue.isEmpty()){
 			Node current = nodeQueue.poll();
+			
 			// Visit each edge connected to the current node 
 			for (Edge e : current.getPaths()){
 				Node destination = e.getNode();
 				int weight = e.getWeight();
 
-				// 
+				// Finds the shortest distance to the destination
 				double distance = current.minDistance + weight;
 				if(distance < destination.minDistance){
 					nodeQueue.remove(destination);
