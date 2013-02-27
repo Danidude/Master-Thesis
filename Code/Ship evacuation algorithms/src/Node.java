@@ -22,6 +22,7 @@ public class Node implements Comparable<Node> {
 		this.nodeID = NodeID;
 		this.florNumber = fNumber;
 		listOfPaths = new ArrayList<Edge>();
+		isExit = false;
 	}
 	
 	public int getID()
@@ -41,5 +42,13 @@ public class Node implements Comparable<Node> {
 	@Override
 	public int compareTo(Node o) {
 		return Double.compare(minDistance, o.minDistance);
+	}
+	
+	public boolean isExit() {
+		return isExit;
+	}
+
+	public void setExit(boolean isExit) {
+		this.isExit = isExit;
 	}
 }
