@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Node implements Comparable<Node> {
 	public enum NodeType { STAIRS, GUESTROOM, HALLWAY, DININGROOM, GAMEROOM, SHOP }
-	private float chanceOfDeath;
+	private double chanceOfDeath;
 	private int capacity;
 	private NodeType nodeType;
 	private ArrayList<Edge> listOfPaths;
@@ -23,6 +23,7 @@ public class Node implements Comparable<Node> {
 		this.florNumber = fNumber;
 		listOfPaths = new ArrayList<Edge>();
 		isExit = false;
+		chanceOfDeath = 0.0;
 	}
 	
 	public int getID()
@@ -50,5 +51,13 @@ public class Node implements Comparable<Node> {
 
 	public void setExit(boolean isExit) {
 		this.isExit = isExit;
+	}
+	
+	public double getChanceOfDeath() {
+		return chanceOfDeath;
+	}
+
+	public void setChanceOfDeath(double chanceOfDeath) {
+		this.chanceOfDeath = chanceOfDeath;
 	}
 }

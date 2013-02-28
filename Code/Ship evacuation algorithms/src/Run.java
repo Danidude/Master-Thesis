@@ -11,14 +11,16 @@ public class Run {
 
 		List<Node> nodes = createTestGraph();
 
-		Dijkstra d = new Dijkstra();
-		d.getAllPaths(nodes, nodes);
+		//Dijkstra d = new Dijkstra();
+		//d.getAllPaths(nodes, nodes);
 		
 		RandomWalk rw = new RandomWalk();
 		List<Node> test = rw.randomWalk(nodes.get(0));
 		for(Node n : test){
 			System.out.println(n.getID());
 		}
+		ResultsHandler results = new ResultsHandler();
+		System.out.println(results.calculateDanger(test));
 	}
 
 	public static List<Node> createTestGraph(){
@@ -27,7 +29,9 @@ public class Run {
 		Node n2 = new Node(2, null, 1, 1);
 		Node n3 = new Node(3, null, 1, 1);
 		Node n4 = new Node(4, null, 1, 1);
-		n4.setExit(true);
+		n4.setExit(true);		
+		n3.setChanceOfDeath(0.1);
+		n2.setChanceOfDeath(0.1);
 		
 		n1.addEdge(new Edge(1, 1, n2, null, 1));
 		n1.addEdge(new Edge(1, 1, n3, null, 1));
