@@ -20,7 +20,7 @@ public class Run {
 			System.out.println(n.getID());
 		}
 		ResultsHandler results = new ResultsHandler();
-		System.out.println(results.calculateDanger(test));
+		System.out.println(results.calculateSurvival(test));
 	}
 
 	public static List<Node> createTestGraph(){
