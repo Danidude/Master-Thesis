@@ -147,7 +147,14 @@ Additionally, they recommend that the total evacuation time is a maximum of 60 m
 The time it takes for each passenger to reach the embarkation stations is calculated by $T = (\gamma + \delta) t$ where $\gamma$ is a factor that determines how safe the path is, $\delta$ is the counterflow factor and $t$ is the travel time in ideal conditions. Factors that can hinder the flow of passengers includes: high occupant density, closed doors, debris, ship motion, etc. Thus the travel time is the amount of time it would take for each passenger to evacuate given perfect conditions multiplied by all factors that restricts their movements. 
 
 \section{Dijkstra's algorithm}
-Dijkstra's Algorithm is a graph search algorithm created by Edsger Dijkstra in 1959 \cite{Misa} that finds the shortest path through a graph from a source node to a goal node. The algorithm is commonly used in network routing protocols to find the least costly path through a network.
+Dijkstra's Algorithm is a graph search algorithm, created by Edsger Dijkstra in 1959 \cite{Misa}, that finds the shortest path through a graph from a source node to a goal node. The algorithm is commonly used in network routing protocols to find the least costly path through a network. 
+
+The flow of the algorithm is as follows:
+\begin{itemize}
+\item Assign a distance to every node, where the distance of node X is the distance from the source node to node X. The initial node is assigned a 0 value distance and the rest are set to infinity.
+\item The source node is set as the current node and the remaining nodes are put into a list containing all unvisited nodes.
+\item Follow each edge leading out of the current node and calculate the distance. 
+\end{itemize}
 
 
 
