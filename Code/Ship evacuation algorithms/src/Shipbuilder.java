@@ -89,9 +89,9 @@ public class Shipbuilder {
 		
 	}
 	
-	private Edge createEdge(int flow, int nodeID)
+	private Edge createEdge(int flow, int node)
 	{
-		Edge edge = new Edge(flow, edgeID++, nodeID, currentShip);
+		Edge edge = new Edge(flow, edgeID++, currentShip.fifthFlor.get(node), 1);
 		return edge;
 	}
 	/*
