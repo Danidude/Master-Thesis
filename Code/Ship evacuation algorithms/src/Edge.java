@@ -8,12 +8,11 @@ private Node node;
 private Ship s;
 private int weight;
 
-	public Edge(int flow, int edgeID, Node node, Ship s, int weight)
+	public Edge(int flow, int edgeID, Node node, int weight)
 	{
 		this.edgeID = edgeID;
 		this.flow = flow;
 		this.node = node;
-		this.s = s;
 		this.weight = weight;
 	}
 	

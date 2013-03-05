@@ -33,14 +33,14 @@ public class Run {
 		n3.setChanceOfDeath(0.1);
 		n2.setChanceOfDeath(0.1);
 		
-		n1.addEdge(new Edge(1, 1, n2, null, 1));
-		n1.addEdge(new Edge(1, 1, n3, null, 1));
-		n2.addEdge(new Edge(1, 1, n1, null, 1));
-		n2.addEdge(new Edge(1, 1, n4, null, 1));
-		n3.addEdge(new Edge(1, 1, n1, null, 1));
-		n3.addEdge(new Edge(1, 1, n4, null, 1));
-		n4.addEdge(new Edge(1, 1, n2, null, 1));
-		n4.addEdge(new Edge(1, 1, n3, null, 1));
+		n1.addEdge(new Edge(1, 1, n2, 1));
+		n1.addEdge(new Edge(1, 1, n3, 1));
+		n2.addEdge(new Edge(1, 1, n1, 1));
+		n2.addEdge(new Edge(1, 1, n4, 1));
+		n3.addEdge(new Edge(1, 1, n1, 1));
+		n3.addEdge(new Edge(1, 1, n4, 1));
+		n4.addEdge(new Edge(1, 1, n2, 1));
+		n4.addEdge(new Edge(1, 1, n3, 1));
 
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(n1);
