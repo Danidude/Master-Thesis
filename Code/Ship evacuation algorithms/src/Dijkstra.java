@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 
@@ -13,7 +15,8 @@ public class Dijkstra {
 	public void findPath(Node source){
 
 		currentNode = source;
-		source.minDistance = 0;
+		source.minDistance = 0.0;
+		double minDistance = 0.0;
 
 		// Visit each node, starting with the smallest minDistance
 		PriorityQueue<Node> nodeQueue = new PriorityQueue<Node>();
@@ -34,6 +37,7 @@ public class Dijkstra {
 					destination.minDistance = distance;
 					destination.previous = current;
 					nodeQueue.add(destination);
+					minDistance = distance;
 				}
 			}
 		}
@@ -49,8 +53,8 @@ public class Dijkstra {
 		return path;
 	}
 	
-	// Finds the shortest path from the source node to a list of exit nodes
-	public void getShortestPaths(List<Node> exits){
+	// Prints the shortest path from the source node to a list of exit nodes
+	public void printShortestPaths(List<Node> exits){
 		for(Node n : exits){
 			System.out.print("The distance to node " + n.getID() + " from source node " + currentNode.getID() + " is " + n.minDistance);
 			List<Node> path = getShortestPath(n);
@@ -59,20 +63,30 @@ public class Dijkstra {
 				System.out.print(v.getID() + " ");
 			}
 			System.out.println();			
-		}
-		
-		// Clears the nodes from data from the previous iteration
-		for(Node e : exits){
-			e.previous = null;
-			e.minDistance = Double.POSITIVE_INFINITY;
-		}
+		}		
 	}
 	
-	// Finds the shortest path from a list of source nodes to a list of exit nodes
-	public void getAllPaths(List<Node> sources, List<Node> exits){
+	// Finds the shortest paths from the source node to a list of exit nodes
+	public Map<Node, List<Node>> getShortestPaths(List<Node> exits){
+		Map<Node, List<Node>> map = new HashMap<Node, List<Node>>();
+		for(Node n : exits){
+			List<Node> path = getShortestPath(n);
+			map.put(n, path);
+		}
+		return map;
+	}
+	
+	// Finds the shortest path from a list of source nodes to a list of exit nodes	
+	public void getAllPaths(List<Node> sources, List<Node> exits, List<Node> graph){
 		for(Node s : sources){
 			findPath(s);
-			getShortestPaths(exits);
+			printShortestPaths(exits);
+			
+			// Clears the nodes from data from the previous iteration
+			for(Node e : graph){
+				e.previous = null;
+				e.minDistance = Double.POSITIVE_INFINITY;
+			}
 		}
 	}
 }
