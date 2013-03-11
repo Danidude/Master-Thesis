@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.PriorityQueue;
 
 
@@ -58,26 +60,27 @@ public class Dijkstra {
 		for(Node n : exits){
 			System.out.print("The distance to node " + n.getID() + " from source node " + currentNode.getID() + " is " + n.minDistance);
 			List<Node> path = getShortestPath(n);
-			System.out.print(" and goes via Path: ");
+			System.out.print(" and goes via path: ");
 			for(Node v : path){
 				System.out.print(v.getID() + " ");
 			}
 			System.out.println();			
 		}		
 	}
-	
-	// Finds the shortest paths from the source node to a list of exit nodes
+		
+	// Returns the shortest paths from the source node to a list of exit nodes
 	public Map<Node, List<Node>> getShortestPaths(List<Node> exits){
 		Map<Node, List<Node>> map = new HashMap<Node, List<Node>>();
 		for(Node n : exits){
 			List<Node> path = getShortestPath(n);
-			map.put(n, path);
-		}
+			map.put(currentNode, path);
+		}		
 		return map;
 	}
 	
 	// Finds the shortest path from a list of source nodes to a list of exit nodes	
-	public void getAllPaths(List<Node> sources, List<Node> exits, List<Node> graph){
+	public Map<Node, List<Node>> getAllPaths(List<Node> sources, List<Node> exits, List<Node> graph){
+		Map<Node, List<Node>> map = new HashMap<Node, List<Node>>();
 		for(Node s : sources){
 			findPath(s);
 			printShortestPaths(exits);
@@ -88,5 +91,6 @@ public class Dijkstra {
 				e.minDistance = Double.POSITIVE_INFINITY;
 			}
 		}
+		return map;
 	}
 }
