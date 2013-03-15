@@ -13,6 +13,8 @@ public class Run {
 		List<Node> exits = new ArrayList<Node>(sources);
 		List<Node> graph = new ArrayList<Node>(sources);
 		
+		List<Human> humans = new ArrayList<Human>(createHumans(5));
+		
 		exits.remove(exits.size()-1);
 		sources.remove(sources.size()-1);
 		
@@ -30,7 +32,7 @@ public class Run {
 		*/
 	}
 
-	public static List<Node> createTestGraph(){
+	private static List<Node> createTestGraph(){
 		
 		Node n1 = new Node(1, null, 1, 1);
 		Node n2 = new Node(2, null, 1, 1);
@@ -60,5 +62,14 @@ public class Run {
 		nodes.add(n4);
 		
 		return nodes;
+	}
+	
+	private static List<Human> createHumans(int number){
+		List<Human> humans = new ArrayList<Human>();
+		for(int i = 0; i < number; i++){
+			Human human = new Human(null, false, 0, i);
+			humans.add(human);
+		}
+		return humans;
 	}
 }

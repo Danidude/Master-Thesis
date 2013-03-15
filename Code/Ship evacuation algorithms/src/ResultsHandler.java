@@ -21,7 +21,7 @@ public class ResultsHandler {
 	}
 	
 	// The main function which controls the flow of the simulation
-	public void runSimulation(List<Node> graph){
+	public void runSimulation(List<Node> graph, List<Human> humans){
 		
 		// Get the location of all humans in the graph
 		
