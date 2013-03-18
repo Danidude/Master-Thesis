@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,7 +49,25 @@ public class Human {
 		return familiarTies;
 	}
 	
-	public void setFamiliarTies(List<Integer> familiarTies){
+	public void setIDFamiliarTies(List<Integer> familiarTies){
 		this.familiarTies = familiarTies;
-	}		
+	}
+	
+	public void addFamilyMember(Integer h){
+		familiarTies.add(h);
+	}
+	
+	public void setHumanFamiliarTies(List<Human> familiarTies){
+		for(Human h : familiarTies){
+			if(this.humanID == h.getHumanID()){
+				
+			}
+			else if(this.familiarTies.contains(h.getHumanID())){
+				
+			}
+			else{
+				this.addFamilyMember(h.getHumanID());
+			}
+		}
+	}
 }
