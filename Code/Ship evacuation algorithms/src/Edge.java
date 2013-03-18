@@ -1,7 +1,7 @@
 
 public class Edge {
 	
-private int flow;
+private int attractiveness;
 private int edgeID;
 private float pheremones;
 private Node node;
@@ -10,8 +10,10 @@ private int weight;
 
 	public Edge(int flow, int edgeID, Node node, int weight)
 	{
+		pheremones = 0;
+		attractiveness = 100;
 		this.edgeID = edgeID;
-		this.flow = flow;
+		this.attractiveness = flow;
 		this.node = node;
 		this.weight = weight;
 	}
@@ -24,5 +26,20 @@ private int weight;
 	public int getWeight()
 	{
 		return weight;
+	}
+	
+	public float getPheremones()
+	{
+		return pheremones;
+	}
+	
+	public void addPheremones(float pheremones)
+	{
+		this.pheremones += pheremones;
+	}
+	
+	public float getPheremonesAndAttractiveness()
+	{
+		return pheremones + attractiveness;
 	}
 }
