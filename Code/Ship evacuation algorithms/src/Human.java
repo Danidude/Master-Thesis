@@ -56,18 +56,4 @@ public class Human {
 	public void addFamilyMember(Integer h){
 		familiarTies.add(h);
 	}
-	
-	public void setHumanFamiliarTies(List<Human> familiarTies){
-		for(Human h : familiarTies){
-			if(this.humanID == h.getHumanID()){
-				
-			}
-			else if(this.familiarTies.contains(h.getHumanID())){
-				
-			}
-			else{
-				this.addFamilyMember(h.getHumanID());
-			}
-		}
-	}
 }

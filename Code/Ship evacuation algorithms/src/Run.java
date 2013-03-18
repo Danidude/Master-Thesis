@@ -12,7 +12,11 @@ public class Run {
 		//System.out.println(s.fifthFlor.size());
 		
 		// The probability the humans have family members on board the ship
-		double chanceOfFamily = 1.0;
+		double chanceOfFamily = 0.7;
+		
+		// The minimum and maximum size of the families
+		int minFamilySize = 2;
+		int maxFamilySize = 5;
 
 		// The list of source nodes
 		List<Node> sources = new ArrayList<Node>(createTestGraph());
@@ -125,11 +129,17 @@ public class Run {
 		}		
 		return humans;
 	}
-	// Just create a list of human IDs and add those excluding the humans own id
+	
+	// All humans are now related to themselves. Lets call it a feature bug
 	private static List<Human> isRelated(List<Human> humans){
+		List<Integer> id = new ArrayList<Integer>();
 		Iterator<Human> iter = humans.iterator();
 		while(iter.hasNext()){
-			iter.next().setHumanFamiliarTies(humans);
+			id.add(iter.next().getHumanID());
+		}
+		Iterator<Human> it = humans.iterator();
+		while(it.hasNext()){
+			it.next().setIDFamiliarTies(id);
 		}
 		return humans;
 	}
