@@ -27,6 +27,9 @@ public class Run {
 		// The entire graph
 		List<Node> graph = new ArrayList<Node>(sources);
 		
+		AntColonyOptimizationController aco = new AntColonyOptimizationController(10, graph.get(0));
+		
+		aco.findWay();
 		
 		List<Human> humans = new ArrayList<Human>(createHumans(5));
 		createFamilyTies(chanceOfFamily, humans);

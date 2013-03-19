@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -5,10 +6,14 @@ import java.util.Random;
 
 public class Ant {
 	private List<Node> nodePath;
+	private List<Edge> edgesTaken;
 	private Node currentNode;
+	private int pheromones = 20;
 	public Ant(Node startNode)
 	{
 		currentNode  = startNode;
+		nodePath = new ArrayList<Node>();
+		edgesTaken = new ArrayList<Edge>();
 		nodePath.add(currentNode);
 	}
 	
@@ -38,6 +43,7 @@ public class Ant {
 			sum += e.getPheremonesAndAttractiveness();
 			if(chosenPath < sum)
 			{
+				edgesTaken.add(e);
 				setNewCurrentNode(e.getNode());
 				return e.getNode();
 			}
@@ -53,6 +59,20 @@ public class Ant {
 	public boolean isAtExit()
 	{
 		return currentNode.isExit();
+	}
+	
+	public void changePheromonesLevel(int newPhermones)
+	{
+		pheromones = newPhermones;
+	}
+	
+	public void despencePheromones()
+	{
+		int pher = pheromones/edgesTaken.size();
+		for(Edge e : edgesTaken)
+		{
+			e.addPheremones(pher);
+		}
 	}
 	
 	private void setNewCurrentNode(Node newNode)

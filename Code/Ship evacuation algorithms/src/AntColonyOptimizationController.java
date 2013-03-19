@@ -32,10 +32,11 @@ public class AntColonyOptimizationController {
 		for(int i = 0; i<numberOfAnts; i++)
 		{
 			createAnt(currentNode);
-			while(ant.isAtExit())
+			while(!ant.isAtExit())
 			{
 				ant.chooseNextPath();
 			}
+			ant.despencePheromones();
 			checkSolution(ant.getPath());
 		}
 		return bestPath;
