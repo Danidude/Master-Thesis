@@ -14,7 +14,7 @@ public class HumanHandler {
 		List<Human> humans = new ArrayList<Human>();
 		List<Integer> familyTies = new ArrayList<Integer>();
 		for(int i = 0; i < number; i++){
-			Human human = new Human(familyTies, false, null, i, true);
+			Human human = new Human(familyTies, false, null, i, false);
 			humans.add(human);
 		}
 		return humans;

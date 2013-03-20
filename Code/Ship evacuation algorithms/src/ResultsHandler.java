@@ -45,12 +45,13 @@ public class ResultsHandler {
 		Dijkstra dijkstra = new Dijkstra();
 
 		// Calculate the path off the ship for each passenger
-		while(testIfFinished(humans)==true){
+		while(testIfFinished(humans)==false){
 			for(Human h : humans){
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped
 				if(exits.contains(h.getNode())){
 					h.setEscaped(true);
+					System.out.println("Human " + h.getHumanID() + " escaped");
 				}
 				
 				else{
@@ -63,11 +64,11 @@ public class ResultsHandler {
 					SortedSet<Double> keys = new TreeSet<Double>(path.keySet());
 					List<Node> shortestPath = path.get(keys.first());
 
-
-
 					// Do one step
+					h.setNode(shortestPath.get(1));
 
 					// Check for changes to the graph
+					System.out.println("Human " + h.getHumanID() + " is trying to escape");
 				}
 			}			
 		}
