@@ -78,6 +78,15 @@ public class Dijkstra {
 		return map;
 	}
 	
+	public Map<Double, List<Node>> getDistancePaths(List<Node> exits){
+		Map<Double, List<Node>> map = new HashMap<Double, List<Node>>();
+		for(Node n : exits){
+			List<Node> path = getShortestPath(n);
+			map.put(n.minDistance, path);
+		}
+		return map;
+	}
+	
 	// Finds the shortest path from a list of source nodes to a list of exit nodes	
 	public Map<Node, List<Node>> getAllPaths(List<Node> sources, List<Node> exits, List<Node> graph){
 		Map<Node, List<Node>> map = new HashMap<Node, List<Node>>();

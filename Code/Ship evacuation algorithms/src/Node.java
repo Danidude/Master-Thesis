@@ -26,6 +26,10 @@ public class Node implements Comparable<Node> {
 		chanceOfDeath = 0.0;
 	}
 	
+	public Node(){
+		
+	}
+	
 	public int getID()
 	{
 		return nodeID;

@@ -7,14 +7,24 @@ public class Human {
 	private List<Integer> familiarTies;
 	private double chanceOfPanic;
 	private boolean panicState;
-	private int nodeID;
+	private Node node;
 	private int humanID;
+	private boolean escaped;
 	
-	public Human (List<Integer> familiarTies, boolean panicState, int nodeID, int humanID){
+	public Human (List<Integer> familiarTies, boolean panicState, Node node, int humanID, boolean escaped){
 		this.familiarTies = familiarTies;
 		this.panicState = panicState;
-		this.nodeID = nodeID;
+		this.node = node;
 		this.humanID = humanID;
+		this.escaped = escaped;
+	}
+	
+	public boolean isEscaped() {
+		return escaped;
+	}
+
+	public void setEscaped(boolean escaped) {
+		this.escaped = escaped;
 	}
 	
 	public int getHumanID() {
@@ -29,12 +39,12 @@ public class Human {
 		this.panicState = panicState;
 	}
 	
-	public int getNodeID() {
-		return nodeID;
+	public Node getNode() {
+		return node;
 	}
 
-	public void setNodeID(int nodeID) {
-		this.nodeID = nodeID;
+	public void setNode(Node node) {
+		this.node = node;
 	}	
 	
 	public double getChanceOfPanic() {
@@ -50,7 +60,11 @@ public class Human {
 	}
 	
 	public void setIDFamiliarTies(List<Integer> familiarTies){
-		this.familiarTies = familiarTies;
+		if(familiarTies.contains(this.humanID)){ 
+			this.familiarTies = familiarTies;
+			this.familiarTies.remove(new Integer(this.humanID)); 
+			}
+		else this.familiarTies = familiarTies;
 	}
 	
 	public void addFamilyMember(Integer h){
