@@ -39,6 +39,7 @@ public class AntColonyOptimizationController {
 			ant.despencePheromones();
 			checkSolution(ant.getPath());
 		}
+		printPath(bestPath);
 		return bestPath;
 	}
 	
@@ -56,24 +57,65 @@ public class AntColonyOptimizationController {
 	 */
 	private void checkSolution(List<Node> newPath)
 	{
-		if(newPath.get(newPath.size()-1).isExit())
-		if(bestPath == null)
+		checkHowLeathal(newPath);
+	}
+	
+	private void checkHowLeathal(List<Node> newPath)
+	{
+		float bestPathSurv = howLethalIsList(bestPath);
+		float newPathSurv = howLethalIsList(newPath);
+		if(bestPathSurv < newPathSurv)
 		{
 			bestPath = newPath;
 		}
-		else if(bestPath.size() > newPath.size())
+		else if(bestPathSurv == newPathSurv)
 		{
-			bestPath = newPath;
-		}
-		else if (bestPath.size() == newPath.size()) 
-		{
-			
+			checkShortestPath(newPath);
 		}
 	}
 	
-	private void checkHowLeathal()
+	private float howLethalIsList(List<Node> list)
 	{
+		if(list == null)
+		{
+			return 0;
+		}
+		float howHighSurv = 1;
+		for(Node n : list)
+		{
+			howHighSurv *= (1 - n.getChanceOfDeath());
+		}
 		
+		return howHighSurv;
+	}
+	
+	private void checkShortestPath(List<Node> newPath)
+	{
+		if(newPath.get(newPath.size()-1).isExit())
+			if(bestPath == null)
+			{
+				bestPath = newPath;
+			}
+			else if(bestPath.size() > newPath.size())
+			{
+				bestPath = newPath;
+			}
+			else if (bestPath.size() == newPath.size()) 
+			{
+				
+			}
+	}
+	
+	private void printPath(List<Node> path)
+	{
+		float pathSurv = howLethalIsList(path);
+		
+		System.out.print("Final path is: ");
+		for(Node n : path)
+		{
+			System.out.print(n.getID()+" ");
+		}
+		System.out.println("with chances of surivel: "+pathSurv);
 	}
 	
 }
