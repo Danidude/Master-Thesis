@@ -24,7 +24,7 @@ public class HumanHandler {
 	public List<Human> placeHumans(List<Human> humans, List<Node> graph){
 		Random randomPlace = new Random();
 		for(Human h : humans){
-			h.setNode(graph.get(randomPlace.nextInt(graph.size())));
+			h.setNode(graph.get(randomPlace.nextInt(graph.size()-1)));
 		}
 		return humans;
 	}

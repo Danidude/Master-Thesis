@@ -16,17 +16,17 @@ public class Run {
 		List<Node> sources = new ArrayList<Node>(graph);
 
 		// The list of exit nodes
-		List<Node> exits = new ArrayList<Node>(graph);
-		exits.remove(1);
-		exits.remove(1);
+		List<Node> exits = new ArrayList<Node>();
+		exits.add(graph.get(3));
 
 		 
-		AntColonyOptimizationController aco = new AntColonyOptimizationController(20, graph.get(0));
+		//AntColonyOptimizationController aco = new AntColonyOptimizationController(20);
+		//aco.findWay();
 
-		aco.findWay();
-
-		ResultsHandler results = new ResultsHandler();
-		results.runSimulation(graph, exits);
+		ResultsHandler results = new ResultsHandler(graph);
+		results.runSimulation(exits);
+		
+		//results.runSimulationWithACO(graph, exits);
 
 		/**exits.remove(exits.size()-1);
 		 *sources.remove(sources.size()-1);

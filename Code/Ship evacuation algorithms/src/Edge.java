@@ -33,9 +33,9 @@ private int weight;
 		return pheremones;
 	}
 	
-	public void addPheremones(float pheremones)
+	public void addPheremones(double d)
 	{
-		this.pheremones += pheremones;
+		this.pheremones += d;
 	}
 	
 	public float getPheremonesAndAttractiveness()

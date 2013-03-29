@@ -3,19 +3,17 @@ import java.util.List;
 
 public class AntColonyOptimizationController {
 	int numberOfAnts;
+	List<Edge> edges;
+	List<Node> nodes;
 	Node currentNode;
 	List<Node> bestPath;
 	Ant ant;
+	double evaporationRate = 0.8;
 	
-	public AntColonyOptimizationController(int howManyAnts, Node currentNode)
+	public AntColonyOptimizationController(int howManyAnts, List<Node> nodes)
 	{
+		this.nodes = nodes;
 		numberOfAnts = howManyAnts;
-		this.currentNode = currentNode;
-		
-		if(currentNode.isExit())
-		{
-			//Tell the system the passanger is safe
-		}
 	}
 	
 	public void changeCurrentNode(Node newNode)
@@ -38,6 +36,11 @@ public class AntColonyOptimizationController {
 			}
 			ant.despencePheromones();
 			checkSolution(ant.getPath());
+			
+			if(i%10 == 0)
+			{
+				Evaporate();
+			}
 		}
 		printPath(bestPath);
 		return bestPath;
@@ -48,6 +51,9 @@ public class AntColonyOptimizationController {
 		ant = new Ant(startNode);
 	}
 	
+	/*
+	 * Unused
+	 */
 	private Node runAnt()
 	{
 		return ant.chooseNextPath();
@@ -116,6 +122,17 @@ public class AntColonyOptimizationController {
 			System.out.print(n.getID()+" ");
 		}
 		System.out.println("with chances of surivel: "+pathSurv);
+	}
+	
+	public void Evaporate()
+	{
+		for(Node n : nodes)
+		{
+			for(Edge e : n.getPaths())
+			{
+				e.addPheremones(e.getPheremones()*evaporationRate*e.getNode().getChanceOfDeath());
+			}
+		}
 	}
 	
 }
