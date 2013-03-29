@@ -70,11 +70,11 @@ public class HumanHandler {
 		humans.addAll(hasFamily);	
 
 		// Printing results for testing
-		for(Human hu: humans){
+		/*for(Human hu: humans){
 			for(int i : hu.getFamiliarTies()){
 				System.out.println("Human " + hu.getHumanID() + " is related to " + i);
 			}
-		}		
+		}*/	
 		return humans;
 	}
 	

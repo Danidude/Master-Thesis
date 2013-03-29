@@ -71,14 +71,12 @@ List<Human> startHumans = new ArrayList<Human>();
 					SortedSet<Double> keys = new TreeSet<Double>(path.keySet());
 					List<Node> shortestPath = path.get(keys.first());
 
-					//Saves the nodeID from the current node the human is in.
-					int prevNode = h.getNode().getID();
+					int index = shortestPath.indexOf(h.getNode());					
 					
 					// Do one step
-					h.setNode(shortestPath.get(1));
+					h.setNode(shortestPath.get(index + 1));
+					System.out.println("Human " + h.getHumanID() + " is at node " + h.getNode().getID());
 
-					//Prints what node the passanger was in and what node it is in now
-					System.out.println("Human " + h.getHumanID() + " is trying to escape from node "+prevNode+" to node "+h.getNode().getID());
 				}
 			}			
 		}
@@ -95,7 +93,7 @@ List<Human> startHumans = new ArrayList<Human>();
 
 	}
 	
-	//Runs the simulation and finding the exits using ACO insted of djikstra.
+	//Runs the simulation and finding the exits using ACO instead of dijkstra's.
 	public void runSimulationWithACO(List<Node> graph, List<Node> exits)
 	{
 		List<Human> humans = new ArrayList<Human>(startHumans);
@@ -122,7 +120,7 @@ List<Human> startHumans = new ArrayList<Human>();
 					//Do one step
 					h.setNode(aco.bestPath.get(1));
 					
-					//Prints what node the passanger was in and what node it is in now
+					//Prints what node the passenger was in and what node it is in now
 					System.out.println("Human " + h.getHumanID() + " is trying to escape from node "+prevNode+" to node "+h.getNode().getID());
 				}
 			}

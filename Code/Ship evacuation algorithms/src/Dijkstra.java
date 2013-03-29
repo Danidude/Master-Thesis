@@ -1,10 +1,8 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.PriorityQueue;
 
 
@@ -18,7 +16,6 @@ public class Dijkstra {
 
 		currentNode = source;
 		source.minDistance = 0.0;
-		double minDistance = 0.0;
 
 		// Visit each node, starting with the smallest minDistance
 		PriorityQueue<Node> nodeQueue = new PriorityQueue<Node>();
@@ -39,7 +36,6 @@ public class Dijkstra {
 					destination.minDistance = distance;
 					destination.previous = current;
 					nodeQueue.add(destination);
-					minDistance = distance;
 				}
 			}
 		}
