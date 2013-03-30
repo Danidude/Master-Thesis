@@ -85,10 +85,9 @@ List<Human> startHumans = new ArrayList<Human>();
 						System.out.print(n.getID() + " ");						
 					}
 					System.out.println();
-					int index = shortestPath.indexOf(h.getNode());					
 					
 					// Do one step
-					h.setNode(shortestPath.get(index + 1));
+					h.setNode(shortestPath.get(1));
 					System.out.println("Human " + h.getHumanID() + " moves to node " + h.getNode().getID());
 
 				}
