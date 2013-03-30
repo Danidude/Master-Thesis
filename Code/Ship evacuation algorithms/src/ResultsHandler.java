@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -8,7 +9,10 @@ import java.util.TreeSet;
 public class ResultsHandler {
 List<Human> startHumans = new ArrayList<Human>();
 
+	List<Node> graph;
+
 	public ResultsHandler(List<Node> graph){
+		this.graph = graph;
 		
 		// The probability the humans have family members on board the ship
 		double chanceOfFamily = 1.0;
@@ -53,10 +57,15 @@ List<Human> startHumans = new ArrayList<Human>();
 
 		// Calculate the path off the ship for each passenger
 		while(testIfFinished(humans)==false){
-			for(Human h : humans){
+			for(Iterator<Human> it = humans.iterator(); it.hasNext(); ){
+				Human h = it.next();
+				
+				if(h.isEscaped()){
+					
+				}
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped
-				if(exits.contains(h.getNode())){
+				else if(exits.contains(h.getNode())){
 					h.setEscaped(true);
 					System.out.println("Human " + h.getHumanID() + " escaped");
 				}
@@ -65,17 +74,22 @@ List<Human> startHumans = new ArrayList<Human>();
 					dijkstra.findPath(h.getNode());
 
 					// Get the distance and path to all exits
-					Map<Double, List<Node>> path = dijkstra.getDistancePaths(exits);
+					Map<Double, List<Node>> path = dijkstra.getDistancePaths(exits, graph);
 
 					// Sort the paths based on the shortest distance
 					SortedSet<Double> keys = new TreeSet<Double>(path.keySet());
 					List<Node> shortestPath = path.get(keys.first());
-
+					
+					System.out.print("The shortest path for human " + h.getHumanID() + " off the ship is via path: ");
+					for(Node n : shortestPath){
+						System.out.print(n.getID() + " ");						
+					}
+					System.out.println();
 					int index = shortestPath.indexOf(h.getNode());					
 					
 					// Do one step
 					h.setNode(shortestPath.get(index + 1));
-					System.out.println("Human " + h.getHumanID() + " is at node " + h.getNode().getID());
+					System.out.println("Human " + h.getHumanID() + " moves to node " + h.getNode().getID());
 
 				}
 			}			
