@@ -19,7 +19,7 @@ List<Human> startHumans = new ArrayList<Human>();
 		// Get the location of all humans in the graph
 		HumanHandler humanHandler = new HumanHandler();
 
-		List<Human> humans = new ArrayList<Human>(humanHandler.createHumans(2));
+		List<Human> humans = new ArrayList<Human>(humanHandler.createHumans(7));
 		humanHandler.createFamilyTies(chanceOfFamily, humans);
 		// Bug : this somehow kills a few people in the process
 		humans = humanHandler.placeHumans(humans, graph);
@@ -56,18 +56,14 @@ List<Human> startHumans = new ArrayList<Human>();
 		Dijkstra dijkstra = new Dijkstra();
 
 		// Calculate the path off the ship for each passenger
-		while(testIfFinished(humans)==false){
+		while(!humans.isEmpty()){
 			for(Iterator<Human> it = humans.iterator(); it.hasNext(); ){
 				Human h = it.next();
 				
-				if(h.isEscaped()){
-					
-				}
-				
-				// If the passenger is currently in a node that counts as an exit the passenger has escaped
-				else if(exits.contains(h.getNode())){
-					h.setEscaped(true);
+				// If the passenger is currently in a node that counts as an exit the passenger has escaped and is removed from the list of humans
+				if(exits.contains(h.getNode())){
 					System.out.println("Human " + h.getHumanID() + " escaped");
+					it.remove();
 				}
 				
 				else{
@@ -92,18 +88,7 @@ List<Human> startHumans = new ArrayList<Human>();
 
 				}
 			}			
-		}
-		
-	
-		// For each time frame or step do until all passengers are either off the ship or dead
-
-		/* Check the capacity of each room in the graph, if the capacity in a 
-		 *room exceeds the capacity of the path to the exit split the humans into
-		 *groups and recalculate the paths
-		 */
-
-		// Move the passengers
-
+		}		
 	}
 	
 	//Runs the simulation and finding the exits using ACO instead of dijkstra's.
