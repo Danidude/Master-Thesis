@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -10,17 +11,20 @@ public class ResultsHandler {
 List<Human> startHumans = new ArrayList<Human>();
 
 	List<Node> graph;
-
+	
 	public ResultsHandler(List<Node> graph){
-		this.graph = graph;
 		
+		this.graph = graph;
+						
 		// The probability the humans have family members on board the ship
 		double chanceOfFamily = 1.0;
+		
 		// Get the location of all humans in the graph
 		HumanHandler humanHandler = new HumanHandler();
 
 		List<Human> humans = new ArrayList<Human>(humanHandler.createHumans(7));
 		humanHandler.createFamilyTies(chanceOfFamily, humans);
+		
 		// Bug : this somehow kills a few people in the process
 		humans = humanHandler.placeHumans(humans, graph);
 		startHumans = humans;
@@ -54,9 +58,20 @@ List<Human> startHumans = new ArrayList<Human>();
 		List<Human> humans = new ArrayList<Human>(startHumans);
 
 		Dijkstra dijkstra = new Dijkstra();
+		
+		Random deathByFire = new Random();
+		
+		double chanceOfSpread = 0.5;
+		
+		double chanceOfDeath = 0.5;
 
 		// Calculate the path off the ship for each passenger
 		while(!humans.isEmpty()){
+			
+			// Spreads fire randomly, but should random spread at a fixed speed and between floors
+			// randomSpreadFire(graph, chanceOfSpread, chanceOfDeath);
+			
+			// Every human does one move
 			for(Iterator<Human> it = humans.iterator(); it.hasNext(); ){
 				Human h = it.next();
 				
@@ -76,6 +91,7 @@ List<Human> startHumans = new ArrayList<Human>();
 					SortedSet<Double> keys = new TreeSet<Double>(path.keySet());
 					List<Node> shortestPath = path.get(keys.first());
 					
+					// Prints the path to the exit for testing purposes
 					System.out.print("The shortest path for human " + h.getHumanID() + " off the ship is via path: ");
 					for(Node n : shortestPath){
 						System.out.print(n.getID() + " ");						
@@ -85,7 +101,13 @@ List<Human> startHumans = new ArrayList<Human>();
 					// Do one step
 					h.setNode(shortestPath.get(1));
 					System.out.println("Human " + h.getHumanID() + " moves to node " + h.getNode().getID());
-
+					
+					// Kills humans off, dead humans should add to the room capacity
+					if(h.getNode().getChanceOfDeath() > deathByFire.nextDouble()){
+						System.out.println("Shit son, human: " + h.getHumanID() + " just burned to death");
+						it.remove();
+					}
+					
 				}
 			}			
 		}		
@@ -125,6 +147,7 @@ List<Human> startHumans = new ArrayList<Human>();
 			
 		}
 	}
+	
 	private boolean testIfFinished(List<Human> humans){
 		for(Human h : humans){
 			if(h.isEscaped()){
@@ -135,5 +158,17 @@ List<Human> startHumans = new ArrayList<Human>();
 			}
 		}
 		return true;
+	}
+	
+	private void randomSpreadFire(List<Node> graph, double chanceOfSpread, double chanceOfDeath){
+		Random spread = new Random();
+		for(Node n : graph){
+			if(n.getChanceOfDeath() != 0.0 && chanceOfSpread > spread.nextDouble()){
+				for(Edge e : n.getPaths()){
+					e.getNode().setChanceOfDeath(chanceOfDeath);
+					System.out.println("The fire just spread from node " + n.getID() + " to node " + e.getNode().getID());
+				}
+			}
+		}
 	}
 }

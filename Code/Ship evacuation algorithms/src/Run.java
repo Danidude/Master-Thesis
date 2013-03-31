@@ -53,8 +53,7 @@ public class Run {
 		Node n4 = new Node(3, null, 1, 1);
 		Node n5 = new Node(4, null, 1, 1);
 		n4.setExit(true);	
-		n3.setChanceOfDeath(0.1);
-		n2.setChanceOfDeath(0.1);
+		n3.setChanceOfDeath(0.5);
 
 		n1.addEdge(new Edge(1, 1, n2, 1));
 		n1.addEdge(new Edge(1, 1, n5, 1));
