@@ -35,7 +35,7 @@ public class AntColonyOptimizationController {
 				ant.chooseNextPath();
 			}
 			ant.despencePheromones();
-			checkSolution(ant.getPath());
+			checkSolutionLethalFirst(ant.getPath());
 			
 			if(i%10 == 0)
 			{
@@ -61,23 +61,48 @@ public class AntColonyOptimizationController {
 	/*
 	 * Might have to change it so leathal is checked before the size of the list
 	 */
-	private void checkSolution(List<Node> newPath)
+	private void checkSolutionLethalFirst(List<Node> newPath)
 	{
-		checkHowLeathal(newPath);
+		checkHowLeathal(newPath, true);
 	}
 	
-	private void checkHowLeathal(List<Node> newPath)
+	private void checkSolutionShortestFirst(List<Node> newPath)
 	{
-		float bestPathSurv = howLethalIsList(bestPath);
-		float newPathSurv = howLethalIsList(newPath);
-		if(bestPathSurv < newPathSurv)
+		checkShortestPath(newPath, true);
+	}
+	
+	private void checkHowLeathal(List<Node> newPath, boolean first)
+	{
+		if(bestPath == null && newPath.get(newPath.size()-1).isExit())
 		{
 			bestPath = newPath;
+			return;
 		}
-		else if(bestPathSurv == newPathSurv)
+		float bestPathSurv = howLethalIsList(bestPath);
+		float newPathSurv = howLethalIsList(newPath);
+		if(first)
 		{
-			checkShortestPath(newPath);
+			if(bestPathSurv < newPathSurv)
+			{
+				bestPath = newPath;
+			}
+			else if(bestPathSurv == newPathSurv)
+			{
+				checkShortestPath(newPath, false);
+			}
 		}
+		else if(!first)
+		{
+			if(bestPathSurv < newPathSurv)
+			{
+				bestPath = newPath;
+			}
+			else if(bestPathSurv == newPathSurv)
+			{
+				
+			}
+		}
+		
 	}
 	
 	private float howLethalIsList(List<Node> list)
@@ -95,9 +120,11 @@ public class AntColonyOptimizationController {
 		return howHighSurv;
 	}
 	
-	private void checkShortestPath(List<Node> newPath)
+	private void checkShortestPath(List<Node> newPath, boolean first)
 	{
 		if(newPath.get(newPath.size()-1).isExit())
+		if(!first)
+		{
 			if(bestPath == null)
 			{
 				bestPath = newPath;
@@ -110,6 +137,23 @@ public class AntColonyOptimizationController {
 			{
 				
 			}
+		}
+		else if(first)
+		{
+			if(bestPath == null)
+			{
+				bestPath = newPath;
+			}
+			else if(bestPath.size() > newPath.size())
+			{
+				bestPath = newPath;
+			}
+			else if (bestPath.size() == newPath.size()) 
+			{
+				checkHowLeathal(newPath, false);
+			}
+		}
+		
 	}
 	
 	private void printPath(List<Node> path)

@@ -10,13 +10,17 @@ public class Human {
 	private Node node;
 	private int humanID;
 	private boolean escaped;
+	private int movementAllowence;
+	private boolean finishedMoving;
 	
-	public Human (List<Integer> familiarTies, boolean panicState, Node node, int humanID, boolean escaped){
+	public Human (List<Integer> familiarTies, boolean panicState, Node node, int humanID, boolean escaped, int movementAllowence){
 		this.familiarTies = familiarTies;
 		this.panicState = panicState;
 		this.node = node;
 		this.humanID = humanID;
 		this.escaped = escaped;
+		this.movementAllowence = movementAllowence;
+		finishedMoving = false;
 	}
 	
 	public boolean isEscaped() {
@@ -69,5 +73,36 @@ public class Human {
 	
 	public void addFamilyMember(Integer h){
 		familiarTies.add(h);
+	}
+	
+	public void setMovementAllowence(int i)
+	{
+		movementAllowence = i;
+	}
+	
+	public int getMovementAllowence()
+	{
+		return movementAllowence;
+	}
+	
+	public void decreeseMovementAllowence()
+	{
+		movementAllowence -= 1;
+	}
+	/*
+	 * Moves the passanger to the next node and checks for famely members
+	 */
+	public int moveHuman(Node n)
+	{
+		if (movementAllowence > 0)
+		{
+			node = n;
+			movementAllowence -= 1;
+			
+			return movementAllowence;
+		}
+		else
+			return -1;
+		
 	}
 }

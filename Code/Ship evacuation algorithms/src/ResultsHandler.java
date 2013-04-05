@@ -9,8 +9,10 @@ import java.util.TreeSet;
 
 public class ResultsHandler {
 List<Human> startHumans = new ArrayList<Human>();
+List<Human> listOfHumans = new ArrayList<Human>();
 
 	List<Node> graph;
+	int humansMovementAllaowence = 0;
 	
 	public ResultsHandler(List<Node> graph){
 		
@@ -28,6 +30,11 @@ List<Human> startHumans = new ArrayList<Human>();
 		// Bug : this somehow kills a few people in the process
 		humans = humanHandler.placeHumans(humans, graph);
 		startHumans = humans;
+		
+		
+		//Sets the max human movement allowence so it may be reset after each movement.
+		humansMovementAllaowence = humanHandler.getMovementAllowence();
+		
 		
 		for(Human h : humans){
 			System.out.println("Human: " + h.getHumanID() + " is at node: " + h.getNode().getID());
@@ -169,6 +176,72 @@ List<Human> startHumans = new ArrayList<Human>();
 					System.out.println("The fire just spread from node " + n.getID() + " to node " + e.getNode().getID());
 				}
 			}
+		}
+	}
+	
+	/*
+	 * Flytt passasjerne, men først sjekk nabo nodene om det er familie meldmer der som skal først flyttes til samme node.
+	 * Så flytte begge to sammen.
+	 */
+	
+	private void moveHuman(Human currentHuman, List<Node> path, List<Human> humans)
+	{
+		if(currentHuman.getMovementAllowence() == 0)
+		{
+			return;
+		}
+		else if(currentHuman.getMovementAllowence() < 0)
+		{
+			System.out.println("Error: Human movement allowence less then 0.");
+			return;
+		}
+		
+		List<Node> neighbourNodes = new ArrayList<Node>();
+		Node startNode = currentHuman.getNode();
+		int lowestMovemtnOnFamaly = currentHuman.getMovementAllowence();
+		
+		//Gathers all the neighbour nodes to the start node of the current passanger
+		for(Edge e : startNode.getPaths())
+		{
+			neighbourNodes.add(e.getNode());
+		}
+		
+		//Moves the passangers with famaly ties to the same node of the current passanger.
+		for(Human h : humans)
+		{
+			if(h.getFamiliarTies().contains(currentHuman.getHumanID()) && neighbourNodes.contains(h.getNode()) && !path.contains(h.getNode()) && h.getMovementAllowence() > 0)
+			{
+				//Flytt til currentHuman node
+				int i = h.moveHuman(startNode);
+				
+				if(i == 0)
+				{
+					lowestMovemtnOnFamaly = i;
+				}
+			}
+		}
+		
+		//flytt currentHuman
+		if(lowestMovemtnOnFamaly != 0)
+		{
+			currentHuman.moveHuman(path.get(1));
+		}
+		else if (lowestMovemtnOnFamaly == 0)
+		{
+			currentHuman.setMovementAllowence(lowestMovemtnOnFamaly);
+		}
+		
+		
+		//Sjekk om de dær i den nye noden deres.
+	
+		
+	}
+	
+	public void resetHumanMovementAllowence(List<Human> humans)
+	{
+		for(Human h : humans)
+		{
+			h.setMovementAllowence(humansMovementAllaowence);
 		}
 	}
 }

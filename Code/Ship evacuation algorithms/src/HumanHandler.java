@@ -8,13 +8,14 @@ public class HumanHandler {
 
 	// The only family size there can be
 	int familySize = 2;
+	int movementAllowenceOnHumans = 2;
 	
 	// Creates a random number of humans with a "default setting" of non-panic, no relatives on board and unknown position on the ship
 	public List<Human> createHumans(int number){
 		List<Human> humans = new ArrayList<Human>();
 		List<Integer> familyTies = new ArrayList<Integer>();
 		for(int i = 0; i < number; i++){
-			Human human = new Human(familyTies, false, null, i, false);
+			Human human = new Human(familyTies, false, null, i, false, movementAllowenceOnHumans);
 			humans.add(human);
 		}
 		return humans;
@@ -98,5 +99,10 @@ public class HumanHandler {
 			it.next().setIDFamiliarTies(ids);
 		}
 		return humans;
+	}
+	
+	public int getMovementAllowence()
+	{
+		return movementAllowenceOnHumans;
 	}
 }
