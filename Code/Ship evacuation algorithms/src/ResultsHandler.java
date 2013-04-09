@@ -180,8 +180,8 @@ List<Human> listOfHumans = new ArrayList<Human>();
 	}
 	
 	/*
-	 * Flytt passasjerne, men først sjekk nabo nodene om det er familie meldmer der som skal først flyttes til samme node.
-	 * Så flytte begge to sammen.
+	 * Flytt passasjerne, men fï¿½rst sjekk nabo nodene om det er familie meldmer der som skal fï¿½rst flyttes til samme node.
+	 * Sï¿½ flytte begge to sammen.
 	 */
 	
 	private void moveHuman(Human currentHuman, List<Node> path, List<Human> humans)
@@ -197,8 +197,8 @@ List<Human> listOfHumans = new ArrayList<Human>();
 		}
 		
 		List<Node> neighbourNodes = new ArrayList<Node>();
+		List<Human> fameleyMembers = new ArrayList<Human>();
 		Node startNode = currentHuman.getNode();
-		int lowestMovemtnOnFamaly = currentHuman.getMovementAllowence();
 		
 		//Gathers all the neighbour nodes to the start node of the current passanger
 		for(Edge e : startNode.getPaths())
@@ -209,30 +209,27 @@ List<Human> listOfHumans = new ArrayList<Human>();
 		//Moves the passangers with famaly ties to the same node of the current passanger.
 		for(Human h : humans)
 		{
-			if(h.getFamiliarTies().contains(currentHuman.getHumanID()) && neighbourNodes.contains(h.getNode()) && !path.contains(h.getNode()) && h.getMovementAllowence() > 0)
+			if(h.getFamiliarTies().contains(currentHuman.getHumanID()) && h.getMovementAllowence() == 0 && h.getNode() == startNode)
 			{
-				//Flytt til currentHuman node
-				int i = h.moveHuman(startNode);
-				
-				if(i == 0)
-				{
-					lowestMovemtnOnFamaly = i;
-				}
+				return;
+			}
+			else if(h.getFamiliarTies().contains(currentHuman.getHumanID()) && h.getNode() == startNode && h != currentHuman)
+			{
+				fameleyMembers.add(h);
 			}
 		}
 		
 		//flytt currentHuman
-		if(lowestMovemtnOnFamaly != 0)
-		{
-			currentHuman.moveHuman(path.get(1));
-		}
-		else if (lowestMovemtnOnFamaly == 0)
-		{
-			currentHuman.setMovementAllowence(lowestMovemtnOnFamaly);
-		}
+		currentHuman.moveHuman(path.get(1));
 		
-		
-		//Sjekk om de dær i den nye noden deres.
+		for(Human h2 : fameleyMembers)
+		{
+			h2.moveHuman(path.get(1));
+			if(currentHuman.getMovementAllowence() == 0)
+			{
+				h2.setMovementAllowence(0);
+			}
+		}
 	
 		
 	}
