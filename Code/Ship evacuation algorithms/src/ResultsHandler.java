@@ -1,3 +1,6 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -8,8 +11,8 @@ import java.util.TreeSet;
 
 
 public class ResultsHandler {
-List<Human> startHumans = new ArrayList<Human>();
-List<Human> listOfHumans = new ArrayList<Human>();
+List<Human> startHumansDjixstra;
+List<Human> startHumansACO;
 
 	List<Node> graph;
 	int humansMovementAllaowence = 0;
@@ -29,8 +32,12 @@ List<Human> listOfHumans = new ArrayList<Human>();
 		
 		// Bug : this somehow kills a few people in the process
 		humans = humanHandler.placeHumans(humans, graph);
-		startHumans = humans;
 		
+		
+		
+		startHumansDjixstra = new ArrayList<Human>(humans);
+		startHumansACO = cloneList(startHumansDjixstra);
+		//Collections.copy(startHumansACO, startHumansDjixstra);
 		
 		//Sets the max human movement allowence so it may be reset after each movement.
 		humansMovementAllaowence = humanHandler.getMovementAllowence();
@@ -60,10 +67,10 @@ List<Human> listOfHumans = new ArrayList<Human>();
 	}
 
 	// The main function which controls the flow of the simulation
-	public void runSimulation(List<Node> exits){
+	public int runSimulation(List<Node> exits) throws FileNotFoundException, UnsupportedEncodingException{
 		
-		List<Human> humans = new ArrayList<Human>(startHumans);
-
+		List<Human> humans = new ArrayList<Human>(startHumansDjixstra);
+		
 		Dijkstra dijkstra = new Dijkstra();
 		
 		Random deathByFire = new Random();
@@ -72,19 +79,36 @@ List<Human> listOfHumans = new ArrayList<Human>();
 		
 		double chanceOfDeath = 0.5;
 
+		
+		int resetNumber = 0;
+		
+		int numberOfSurvivers = 0;
+		int deadCounter = 0;
+		int turnCounter = 0;
+		int totalPassanger = humans.size();
+		int totalLivingPassangers = 0;
+		
+		PrintWriter writer = new PrintWriter("Djixstra\\Dixstra data test one.txt", "UTF-8");
+		writer.println("Djixstra data:");
+		writer.println("Turn number		Number of passangers in total		Passangers still living		Dead Passangers		Passangers that have survived");
+		writer.println(turnCounter+"			"+totalPassanger+"					"+totalPassanger+"				"+deadCounter+"			"+numberOfSurvivers);
+		
 		// Calculate the path off the ship for each passenger
 		while(!humans.isEmpty()){
 			
 			// Spreads fire randomly, but should random spread at a fixed speed and between floors
 			// randomSpreadFire(graph, chanceOfSpread, chanceOfDeath);
-			
+			turnCounter ++;
+			resetNumber++;
 			// Every human does one move
 			for(Iterator<Human> it = humans.iterator(); it.hasNext(); ){
 				Human h = it.next();
 				
+				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped and is removed from the list of humans
 				if(exits.contains(h.getNode())){
-					System.out.println("Human " + h.getHumanID() + " escaped");
+					System.out.println("Human " + h.getHumanID() + " escaped(Djixsta)");
+					numberOfSurvivers++;
 					it.remove();
 				}
 				
@@ -106,8 +130,9 @@ List<Human> listOfHumans = new ArrayList<Human>();
 					System.out.println();
 					
 					// Do one step
-					h.setNode(shortestPath.get(1));
-					System.out.println("Human " + h.getHumanID() + " moves to node " + h.getNode().getID());
+					//h.setNode(shortestPath.get(1));
+					moveHuman(h, shortestPath, humans);
+					//System.out.println("Human " + h.getHumanID() + " moves to node " + h.getNode().getID());
 					
 					// Kills humans off, dead humans should add to the room capacity
 					if(h.getNode().getChanceOfDeath() > deathByFire.nextDouble()){
@@ -116,26 +141,69 @@ List<Human> listOfHumans = new ArrayList<Human>();
 					}
 					
 				}
-			}			
-		}		
+			}
+			
+			/*
+			 * Save the amount of surivers at this point
+			 * The amount that have yet to reach the exit
+			 * the ones that have reached the exit
+			 * and the amount of passangers that have diead
+			 * the time step of all this.
+			 */
+			totalLivingPassangers = totalPassanger - deadCounter;
+			writer.println(turnCounter+"			"+totalPassanger+"					"+totalLivingPassangers+"				"+deadCounter+"			"+numberOfSurvivers);
+			
+			
+			if(resetNumber >= humansMovementAllaowence)
+			{
+				resetHumanMovementAllowence(humans);
+				resetNumber = 0;
+			}
+		}
+		
+		writer.close();
+		return numberOfSurvivers;
 	}
 	
+	
 	//Runs the simulation and finding the exits using ACO instead of dijkstra's.
-	public void runSimulationWithACO(List<Node> graph, List<Node> exits)
+	public int runSimulationWithACO(List<Node> graph, List<Node> exits) throws FileNotFoundException, UnsupportedEncodingException
 	{
-		List<Human> humans = new ArrayList<Human>(startHumans);
+		List<Human> humans = new ArrayList<Human>(startHumansACO);
 		AntColonyOptimizationController aco = new AntColonyOptimizationController(20, graph);
+		int resetNumber = 0;
 		
+		for(Human h : humans){
+			System.out.println("Human: " + h.getHumanID() + " is at node: " + h.getNode().getID());
+		}
+		
+		Random deathByFire = new Random();
+		
+		int numberOfSurvivers = 0;
+		int deadCounter = 0;
+		int turnCounter = 0;
+		int totalPassanger = humans.size();
+		int totalLivingPassangers = 0;
+		
+		PrintWriter writer = new PrintWriter("ACO\\ACO data test one.txt", "UTF-8");
+		writer.println("ACO data:");
+		writer.println("Turn number		Number of passangers in total		Passangers still living		Dead Passangers		Passangers that have survived");
+		
+		writer.println(turnCounter+"			"+totalPassanger+"					"+totalPassanger+"				"+deadCounter+"			"+numberOfSurvivers);
 		// Calculate the path off the ship for each passenger
 		while(!testIfFinished(humans))
 		{
+			resetNumber++;
+			turnCounter++;
 			
-			for(Human h : humans)
-			{
+			for(Iterator<Human> it = humans.iterator(); it.hasNext(); ){
+				Human h = it.next();
+				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped
 				if(exits.contains(h.getNode())){
-					h.setEscaped(true);
 					System.out.println("Human " + h.getHumanID() + " escaped");
+					numberOfSurvivers++;
+					it.remove();
 				}
 				else
 				{
@@ -144,15 +212,42 @@ List<Human> listOfHumans = new ArrayList<Human>();
 					aco.findWay();
 					
 					int prevNode = h.getNode().getID();
+					
 					//Do one step
-					h.setNode(aco.bestPath.get(1));
+					//h.setNode(aco.bestPath.get(1));
+					moveHuman(h, aco.bestPath, humans);
 					
 					//Prints what node the passenger was in and what node it is in now
-					System.out.println("Human " + h.getHumanID() + " is trying to escape from node "+prevNode+" to node "+h.getNode().getID());
+					//System.out.println("Human " + h.getHumanID() + " is trying to escape from node "+prevNode+" to node "+h.getNode().getID());
+					
+					// Kills humans off, dead humans should add to the room capacity
+					if(h.getNode().getChanceOfDeath() > deathByFire.nextDouble()){
+						System.out.println("Shit son, human: " + h.getHumanID() + " just burned to death");
+						deadCounter++;
+						it.remove();
+					}
 				}
+				
+			}
+			/*
+			 * Save the amount of surivers at this point
+			 * The amount that have yet to reach the exit
+			 * the ones that have reached the exit
+			 * and the amount of passangers that have diead
+			 * the time step of all this.
+			 */
+			totalLivingPassangers = totalPassanger - deadCounter;
+			writer.println(turnCounter+"			"+totalPassanger+"					"+totalLivingPassangers+"				"+deadCounter+"			"+numberOfSurvivers);
+			
+			if(resetNumber >= humansMovementAllaowence)
+			{
+				resetHumanMovementAllowence(humans);
+				resetNumber = 0;
 			}
 			
 		}
+		writer.close();
+		return numberOfSurvivers;
 	}
 	
 	private boolean testIfFinished(List<Human> humans){
@@ -209,6 +304,7 @@ List<Human> listOfHumans = new ArrayList<Human>();
 		//Moves the passangers with famaly ties to the same node of the current passanger.
 		for(Human h : humans)
 		{
+			//Famely member with 0 in movement allowence.
 			if(h.getFamiliarTies().contains(currentHuman.getHumanID()) && h.getMovementAllowence() == 0 && h.getNode() == startNode)
 			{
 				return;
@@ -219,12 +315,19 @@ List<Human> listOfHumans = new ArrayList<Human>();
 			}
 		}
 		
+		int prevNode = currentHuman.getNode().getID();
 		//flytt currentHuman
 		currentHuman.moveHuman(path.get(1));
 		
+		System.out.println("Human " + currentHuman.getHumanID() + " is trying to escape from node "+prevNode+" to node "+currentHuman.getNode().getID());
+		
 		for(Human h2 : fameleyMembers)
 		{
+			prevNode = h2.getNode().getID();
+			
 			h2.moveHuman(path.get(1));
+			
+			System.out.println("Human " + h2.getHumanID() + " is trying to escape from node "+prevNode+" to node "+h2.getNode().getID());
 			if(currentHuman.getMovementAllowence() == 0)
 			{
 				h2.setMovementAllowence(0);
@@ -240,5 +343,16 @@ List<Human> listOfHumans = new ArrayList<Human>();
 		{
 			h.setMovementAllowence(humansMovementAllaowence);
 		}
+	}
+	
+	private List<Human> cloneList(List<Human> list)
+	{
+		List<Human> clone = new ArrayList<Human>();
+		for(Human h : list)
+		{
+			Human h2 = new Human(h.getFamiliarTies(), false, h.getNode(), h.getHumanID(), h.isEscaped(), h.getMovementAllowence());
+			clone.add(h2);
+		}
+		return clone;
 	}
 }

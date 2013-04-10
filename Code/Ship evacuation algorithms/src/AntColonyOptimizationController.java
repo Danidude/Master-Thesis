@@ -165,7 +165,7 @@ public class AntColonyOptimizationController {
 		{
 			System.out.print(n.getID()+" ");
 		}
-		System.out.println("with chances of surivel: "+pathSurv);
+		System.out.println("with chances of survival: "+pathSurv);
 	}
 	
 	public void Evaporate()
