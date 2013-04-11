@@ -1,25 +1,25 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 
 public class dataPresenter {
-	HashMap<Float, Float> suriversDjixstra;
-	HashMap<Float, Float> deadDjixstra;
-	HashMap<Float, Float> stillRunningDjixstra;
+	HashMap<Double, Double> suriversDjixstra;
+	HashMap<Double, Double> deadDjixstra;
+	HashMap<Double, Double> stillRunningDjixstra;
 	
-	HashMap<Float, Float> suriversACO;
-	HashMap<Float, Float> deadACO;
-	HashMap<Float, Float> stillRunningACO;
+	HashMap<Double, Double> suriversACO;
+	HashMap<Double, Double> deadACO;
+	HashMap<Double, Double> stillRunningACO;
 	
 	
 	public dataPresenter()
@@ -29,9 +29,9 @@ public class dataPresenter {
 	
 	public void readACOFile() throws IOException
 	{
-		suriversACO = new HashMap<Float, Float>();
-		deadACO = new HashMap<Float, Float>();
-		stillRunningACO = new HashMap<Float, Float>();
+		suriversACO = new HashMap<Double, Double>();
+		deadACO = new HashMap<Double, Double>();
+		stillRunningACO = new HashMap<Double, Double>();
 		
 		BufferedReader br = new BufferedReader(new FileReader("ACO\\ACO data test one.txt"));
 		String line;
@@ -41,11 +41,13 @@ public class dataPresenter {
 		
 			String nextString = line.replace("	", "");
 			
+			
 			String[] numbers = nextString.split(",");
 			
-			suriversACO.put(Float.parseFloat(numbers[0]), Float.parseFloat(numbers[4]));
-			deadACO.put(Float.parseFloat(numbers[0]), Float.parseFloat(numbers[3]));
-			stillRunningACO.put(Float.parseFloat(numbers[0]), Float.parseFloat(numbers[2]));
+			
+			suriversACO.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[4]));
+			deadACO.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[3]));
+			stillRunningACO.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[2]));
 			
 			
 			//List<String> list = ;
@@ -58,9 +60,9 @@ public class dataPresenter {
 	
 	public void readDjixstraFile() throws IOException
 	{
-		suriversDjixstra = new HashMap<Float, Float>();
-		deadDjixstra = new HashMap<Float, Float>();
-		stillRunningDjixstra = new HashMap<Float, Float>();
+		suriversDjixstra = new HashMap<Double, Double>();
+		deadDjixstra = new HashMap<Double, Double>();
+		stillRunningDjixstra = new HashMap<Double, Double>();
 		
 		BufferedReader br = new BufferedReader(new FileReader("Djixstra\\Dixstra data test one.txt"));
 		String line;
@@ -72,9 +74,10 @@ public class dataPresenter {
 			
 			String[] numbers = nextString.split(",");
 			
-			suriversDjixstra.put(Float.parseFloat(numbers[0]), Float.parseFloat(numbers[4]));
-			deadDjixstra.put(Float.parseFloat(numbers[0]), Float.parseFloat(numbers[3]));
-			stillRunningDjixstra.put(Float.parseFloat(numbers[0]), Float.parseFloat(numbers[2]));
+			
+			suriversDjixstra.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[4]));
+			deadDjixstra.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[3]));
+			stillRunningDjixstra.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[2]));
 		}
 		System.out.println();
 		br.close();
@@ -94,25 +97,46 @@ public class dataPresenter {
 		
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		
+		
+		
 		dataset.addSeries(survivedACO);
 		dataset.addSeries(survivedDjix);
 		//dataset.addSeries(antSystem);
 		
-		JFreeChart chart = ChartFactory.createXYLineChart("Survivors", "Ants", "Survivors", dataset, PlotOrientation.VERTICAL, true, true, false);
+		JFreeChart chart = ChartFactory.createXYLineChart("Survivors", "Time step", "Survivors", dataset, PlotOrientation.VERTICAL, true, true, false);
 		
 		
 		ChartFrame frame = new ChartFrame("Data", chart);
 		frame.pack();
 		frame.setVisible(true);
+		
+		
 	}
 	
-	private XYSeries addNumbersToSeries(XYSeries theSelectedOne, HashMap<Float, Float> theNumbers)
+	private XYSeries addNumbersToSeries(XYSeries theSelectedOne, HashMap<Double, Double> theNumbers)
 	{
-		for(int i = 1; i<theNumbers.size(); i++)
+		for(double i = 0; i<theNumbers.size(); i++)
 		{
-			theSelectedOne.add(i, theNumbers.get(i));
+			Double f = theNumbers.get(i);
+			theSelectedOne.add(i, f);
 		}
 		return theSelectedOne;
+	}
+	
+	public void test()
+	{
+		XYSeries series = new XYSeries("Average Weight");
+		  series.add(20.0, 20.0);
+		  series.add(40.0, 25.0);
+		  series.add(55.0, 50.0);
+		  series.add(70.0, 65.0);
+		  XYDataset xyDataset = new XYSeriesCollection(series);
+		  JFreeChart chart = ChartFactory.createXYLineChart
+		  ("XYLine Chart using JFreeChart", "Age", "Weight",
+		 xyDataset, PlotOrientation.VERTICAL, true, true, false);
+		  ChartFrame frame1=new ChartFrame("XYLine Chart",chart);
+		  frame1.setVisible(true);
+		  frame1.setSize(300,300);
 	}
 
 }
