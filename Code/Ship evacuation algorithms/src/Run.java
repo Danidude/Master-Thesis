@@ -1,11 +1,12 @@
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Run {
-	public static void main(String [ ] args) throws FileNotFoundException, UnsupportedEncodingException
+	public static void main(String [ ] args) throws IOException
 	{
 		//Shipbuilder sb = new Shipbuilder();		
 		//Ship s = sb.createCelebrityXpedition();
@@ -35,6 +36,10 @@ public class Run {
 		acoSurv = results.runSimulationWithACO(graph, exits);
 		System.out.println();
 		System.out.println("Dijistra survivers: "+djixSurv+" ACO survivers: "+acoSurv);
+		
+		dataPresenter dp = new dataPresenter();
+		
+		dp.crateGraph();
 
 		/**exits.remove(exits.size()-1);
 		 *sources.remove(sources.size()-1);

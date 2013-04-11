@@ -82,16 +82,16 @@ List<Human> startHumansACO;
 		
 		int resetNumber = 0;
 		
-		int numberOfSurvivers = 0;
-		int deadCounter = 0;
-		int turnCounter = 0;
-		int totalPassanger = humans.size();
-		int totalLivingPassangers = 0;
+		double numberOfSurvivers = 0;
+		double deadCounter = 0;
+		double turnCounter = 0;
+		double totalPassanger = humans.size();
+		double totalLivingPassangers = 0;
 		
 		PrintWriter writer = new PrintWriter("Djixstra\\Dixstra data test one.txt", "UTF-8");
 		writer.println("Djixstra data:");
 		writer.println("Turn number		Number of passangers in total		Passangers still living		Dead Passangers		Passangers that have survived");
-		writer.println(turnCounter+"			"+totalPassanger+"					"+totalPassanger+"				"+deadCounter+"			"+numberOfSurvivers);
+		writer.println(turnCounter+",			"+totalPassanger+",					"+totalPassanger+",				"+deadCounter+",			"+numberOfSurvivers);
 		
 		// Calculate the path off the ship for each passenger
 		while(!humans.isEmpty()){
@@ -151,7 +151,7 @@ List<Human> startHumansACO;
 			 * the time step of all this.
 			 */
 			totalLivingPassangers = totalPassanger - deadCounter;
-			writer.println(turnCounter+"			"+totalPassanger+"					"+totalLivingPassangers+"				"+deadCounter+"			"+numberOfSurvivers);
+			writer.println(turnCounter+",			"+totalPassanger+",					"+totalPassanger+",				"+deadCounter+",			"+numberOfSurvivers);
 			
 			
 			if(resetNumber >= humansMovementAllaowence)
@@ -162,7 +162,7 @@ List<Human> startHumansACO;
 		}
 		
 		writer.close();
-		return numberOfSurvivers;
+		return (int)numberOfSurvivers;
 	}
 	
 	
@@ -179,17 +179,17 @@ List<Human> startHumansACO;
 		
 		Random deathByFire = new Random();
 		
-		int numberOfSurvivers = 0;
-		int deadCounter = 0;
-		int turnCounter = 0;
-		int totalPassanger = humans.size();
-		int totalLivingPassangers = 0;
+		double numberOfSurvivers = 0;
+		double deadCounter = 0;
+		double turnCounter = 0;
+		double totalPassanger = humans.size();
+		double totalLivingPassangers = 0;
 		
 		PrintWriter writer = new PrintWriter("ACO\\ACO data test one.txt", "UTF-8");
 		writer.println("ACO data:");
 		writer.println("Turn number		Number of passangers in total		Passangers still living		Dead Passangers		Passangers that have survived");
 		
-		writer.println(turnCounter+"			"+totalPassanger+"					"+totalPassanger+"				"+deadCounter+"			"+numberOfSurvivers);
+		writer.println(turnCounter+",			"+totalPassanger+",					"+totalPassanger+",				"+deadCounter+",			"+numberOfSurvivers);
 		// Calculate the path off the ship for each passenger
 		while(!testIfFinished(humans))
 		{
@@ -237,8 +237,8 @@ List<Human> startHumansACO;
 			 * the time step of all this.
 			 */
 			totalLivingPassangers = totalPassanger - deadCounter;
-			writer.println(turnCounter+"			"+totalPassanger+"					"+totalLivingPassangers+"				"+deadCounter+"			"+numberOfSurvivers);
-			
+			writer.println(turnCounter+",			"+totalPassanger+",					"+totalPassanger+",				"+deadCounter+",			"+numberOfSurvivers);
+
 			if(resetNumber >= humansMovementAllaowence)
 			{
 				resetHumanMovementAllowence(humans);
@@ -247,7 +247,7 @@ List<Human> startHumansACO;
 			
 		}
 		writer.close();
-		return numberOfSurvivers;
+		return (int)numberOfSurvivers;
 	}
 	
 	private boolean testIfFinished(List<Human> humans){
