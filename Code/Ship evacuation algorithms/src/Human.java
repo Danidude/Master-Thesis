@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Human {
+public class Human implements Cloneable {
 	
 	private List<Integer> familiarTies;
 	private double chanceOfPanic;

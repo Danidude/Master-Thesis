@@ -1,9 +1,12 @@
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Run {
-	public static void main(String [ ] args)
+	public static void main(String [ ] args) throws IOException
 	{
 		//Shipbuilder sb = new Shipbuilder();		
 		//Ship s = sb.createCelebrityXpedition();
@@ -22,11 +25,21 @@ public class Run {
 		 
 		//AntColonyOptimizationController aco = new AntColonyOptimizationController(20);
 		//aco.findWay();
+		
+		int djixSurv = 0;
+		
+		int acoSurv = 0;
 
 		ResultsHandler results = new ResultsHandler(graph);
-		results.runSimulation(exits);
+		djixSurv = results.runSimulation(exits);
 		
-		//results.runSimulationWithACO(graph, exits);
+		acoSurv = results.runSimulationWithACO(graph, exits);
+		System.out.println();
+		System.out.println("Dijistra survivers: "+djixSurv+" ACO survivers: "+acoSurv);
+		
+		dataPresenter dp = new dataPresenter();
+		
+		dp.crateGraph();
 
 		/**exits.remove(exits.size()-1);
 		 *sources.remove(sources.size()-1);
