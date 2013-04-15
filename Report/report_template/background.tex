@@ -1,6 +1,12 @@
 \chapter{Background}
 \label{ch:background}
 
+The purpose of this chapter is to describe relevant prior work. It will explain the basics of the algorithms
+used as well as recent research that expands upon them. Dijkstra's algorithm has been widely used to solve
+graph search problems, and as such is a suitable algorithm to compare to the Ant Colony Optimization algorithms.
+Human behavior in a crisis is hard to predict because of the complex nature of humans and the lack of data from 
+crisis situations. Nevertheless, given a large amount of people, some statistical behavior can be assumed.
+
 \section{Human Behavor Models}
 There exists several behavioral models that predict movement. However the most successfully ones predict 
 animal movement as animals are rather simple compared to humans. The environment for animals tends to 
@@ -147,14 +153,11 @@ Additionally, they recommend that the total evacuation time is a maximum of 60 m
 The time it takes for each passenger to reach the embarkation stations is calculated by $T = (\gamma + \delta) t$ where $\gamma$ is a factor that determines how safe the path is, $\delta$ is the counterflow factor and $t$ is the travel time in ideal conditions. Factors that can hinder the flow of passengers includes: high occupant density, closed doors, debris, ship motion, etc. Thus the travel time is the amount of time it would take for each passenger to evacuate given perfect conditions multiplied by all factors that restricts their movements. 
 
 \section{Dijkstra's algorithm}
-Dijkstra's Algorithm is a graph search algorithm, created by Edsger Dijkstra in 1959 \cite{Misa}, that finds the shortest path through a graph from a source node to a goal node. The algorithm is commonly used in network routing protocols to find the least costly path through a network. 
+Dijkstra's Algorithm is a graph search algorithm, created by Edsger Dijkstra in 1959 \cite{Misa}, that finds the shortest path through a graph from a source node to a goal node. The algorithm is commonly used in network routing protocols to find the least costly path through a network. The algorithm can be used to find the shortest path from the source node to a single goal node or from the source node to every other node in the graph.
 
-The flow of the algorithm is as follows:
-\begin{itemize}
-\item Assign a distance to every node, where the distance of node X is the distance from the source node to node X. The initial node is assigned a 0 value distance and the rest are set to infinity.
-\item The source node is set as the current node and the remaining nodes are put into a list containing all unvisited nodes.
-\item Follow each edge leading out of the current node and calculate the distance. 
-\end{itemize}
+
+
+
 
 
 
