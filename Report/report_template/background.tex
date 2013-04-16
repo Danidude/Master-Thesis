@@ -153,9 +153,13 @@ Additionally, they recommend that the total evacuation time is a maximum of 60 m
 The time it takes for each passenger to reach the embarkation stations is calculated by $T = (\gamma + \delta) t$ where $\gamma$ is a factor that determines how safe the path is, $\delta$ is the counterflow factor and $t$ is the travel time in ideal conditions. Factors that can hinder the flow of passengers includes: high occupant density, closed doors, debris, ship motion, etc. Thus the travel time is the amount of time it would take for each passenger to evacuate given perfect conditions multiplied by all factors that restricts their movements. 
 
 \section{Dijkstra's algorithm}
-Dijkstra's Algorithm is a graph search algorithm, created by Edsger Dijkstra in 1959 \cite{Misa}, that finds the shortest path through a graph from a source node to a goal node. The algorithm is commonly used in network routing protocols to find the least costly path through a network. The algorithm can be used to find the shortest path from the source node to a single goal node or from the source node to every other node in the graph.
+Dijkstra's Algorithm is a graph search algorithm, created by Edsger Dijkstra in 1959 \cite{Misa}, that finds the shortest path through a graph from a source node to a goal node. The algorithm is commonly used in network routing protocols to find the least costly path through a network. The algorithm can be used to find the shortest path from the source node to a single goal node or from the source node to every other node in the graph. Dijkstra's algorithm runs in quadratic time complexity.
 
+The first step in the algorithm is to set the initial distance to every node to infinity, this is done to signify that the node has yet to been visited. During the first iteration of the algorithm the
+source node is the current node and the distance between them is 0, seeing as they are in fact the same node. During the following iterations the closest unvisited node is selected as the
+current node.
 
+From the current node, follow the edges leading out of the node and calculate the distance to every unvisited node. 
 
 
 
