@@ -159,7 +159,16 @@ The first step in the algorithm is to set the initial distance to every node to 
 source node is the current node and the distance between them is 0, seeing as they are in fact the same node. During the following iterations the closest unvisited node is selected as the
 current node.
 
-From the current node, follow the edges leading out of the node and calculate the distance to every unvisited node. 
+\begin{figure}[h]
+\centering
+\begin{math}
+d(v) = d(u) + d(u,v)
+\end{math}
+\caption{\textit{The shortest distance to node v via node u}}
+\label{fig:relax}
+\end{figure}
+
+From the current node, follow the edges leading out of the node and calculate the distance to every unvisited node and update the minimum distance in these nodes. Minimum distance meaning the shortest distance from the source node to this node. If a shorter path via another node is discovered in later iterations the minimum distance is updated.
 
 
 
