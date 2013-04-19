@@ -8,12 +8,12 @@ private Node node;
 private Ship s;
 private int weight;
 
-	public Edge(int flow, int edgeID, Node node, int weight)
+	public Edge(int attractiveness, int edgeID, Node node, int weight)
 	{
 		pheremones = 0;
-		attractiveness = 100;
+		//attractiveness = 100;
 		this.edgeID = edgeID;
-		this.attractiveness = flow;
+		this.attractiveness = attractiveness;
 		this.node = node;
 		this.weight = weight;
 	}
@@ -41,5 +41,10 @@ private int weight;
 	public float getPheremonesAndAttractiveness()
 	{
 		return pheremones + attractiveness;
+	}
+	
+	public void setPheremones(int pheremones)
+	{
+		this.pheremones = pheremones;
 	}
 }

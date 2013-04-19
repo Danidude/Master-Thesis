@@ -1,4 +1,7 @@
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -11,23 +14,28 @@ import java.util.TreeSet;
 
 
 public class ResultsHandler {
-List<Human> startHumansDjixstra;
-List<Human> startHumansACO;
+	List<Human> startHumansDjixstra;
+	List<Human> startHumansACO;
 
 	List<Node> graph;
+	List<Node> listOfLethalNodes;
+	
 	int humansMovementAllaowence = 0;
 	
-	public ResultsHandler(List<Node> graph){
+	HumanHandler humanHandler;
+	
+	public ResultsHandler(List<Node> graph, String fileName) throws FileNotFoundException, UnsupportedEncodingException{
 		
 		this.graph = graph;
+		listOfLethalNodes = new ArrayList<Node>();
 						
 		// The probability the humans have family members on board the ship
 		double chanceOfFamily = 1.0;
 		
 		// Get the location of all humans in the graph
-		HumanHandler humanHandler = new HumanHandler();
+		humanHandler = new HumanHandler();
 
-		List<Human> humans = new ArrayList<Human>(humanHandler.createHumans(7));
+		List<Human> humans = new ArrayList<Human>(humanHandler.createHumans(6));
 		humanHandler.createFamilyTies(chanceOfFamily, humans);
 		
 		// Bug : this somehow kills a few people in the process
@@ -42,10 +50,21 @@ List<Human> startHumansACO;
 		//Sets the max human movement allowence so it may be reset after each movement.
 		humansMovementAllaowence = humanHandler.getMovementAllowence();
 		
+		PrintWriter writer = new PrintWriter("Djixstra\\Dixstra "+fileName+".txt", "UTF-8");
+		writer.println("Djixstra data:");
+		writer.println("Turn number		Number of passangers in total		Passangers still living		Dead Passangers		Passangers that have survived");
+		writer.close();
+		
+		writer = new PrintWriter("ACO\\ACO "+fileName+".txt", "UTF-8");
+		writer.println("ACO data:");
+		writer.println("Turn number		Number of passangers in total		Passangers still living		Dead Passangers		Passangers that have survived");
+		writer.close();
 		
 		for(Human h : humans){
 			System.out.println("Human: " + h.getHumanID() + " is at node: " + h.getNode().getID());
+			
 		}
+		System.out.println("----------------------");
 
 	}
 	
@@ -67,9 +86,14 @@ List<Human> startHumansACO;
 	}
 
 	// The main function which controls the flow of the simulation
-	public int runSimulation(List<Node> exits) throws FileNotFoundException, UnsupportedEncodingException{
+	public int runSimulation(List<Node> exits, String fileName, int lethalStartNode) throws IOException{
 		
 		List<Human> humans = new ArrayList<Human>(startHumansDjixstra);
+		
+		resetLethalNodes();
+		graph.get(lethalStartNode).setChanceOfDeath(0.5);
+		
+		addLethalNodesToList();
 		
 		Dijkstra dijkstra = new Dijkstra();
 		
@@ -88,9 +112,8 @@ List<Human> startHumansACO;
 		double totalPassanger = humans.size();
 		double totalLivingPassangers = 0;
 		
-		PrintWriter writer = new PrintWriter("Djixstra\\Dixstra data test one.txt", "UTF-8");
-		writer.println("Djixstra data:");
-		writer.println("Turn number		Number of passangers in total		Passangers still living		Dead Passangers		Passangers that have survived");
+		
+		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("Djixstra\\Dixstra "+fileName+".txt", true)));
 		writer.println(turnCounter+",			"+totalPassanger+",					"+totalPassanger+",				"+deadCounter+",			"+numberOfSurvivers);
 		
 		// Calculate the path off the ship for each passenger
@@ -107,7 +130,7 @@ List<Human> startHumansACO;
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped and is removed from the list of humans
 				if(exits.contains(h.getNode())){
-					System.out.println("Human " + h.getHumanID() + " escaped(Djixsta)");
+					//System.out.println("Human " + h.getHumanID() + " escaped(Djixsta)");
 					numberOfSurvivers++;
 					it.remove();
 				}
@@ -123,11 +146,11 @@ List<Human> startHumansACO;
 					List<Node> shortestPath = path.get(keys.first());
 					
 					// Prints the path to the exit for testing purposes
-					System.out.print("The shortest path for human " + h.getHumanID() + " off the ship is via path: ");
+					/*System.out.print("The shortest path for human " + h.getHumanID() + " off the ship is via path: ");
 					for(Node n : shortestPath){
 						System.out.print(n.getID() + " ");						
 					}
-					System.out.println();
+					System.out.println();*/
 					
 					// Do one step
 					//h.setNode(shortestPath.get(1));
@@ -136,7 +159,8 @@ List<Human> startHumansACO;
 					
 					// Kills humans off, dead humans should add to the room capacity
 					if(h.getNode().getChanceOfDeath() > deathByFire.nextDouble()){
-						System.out.println("Shit son, human: " + h.getHumanID() + " just burned to death");
+						//System.out.println("Shit son, human: " + h.getHumanID() + " just burned to death");
+						deadCounter++;
 						it.remove();
 					}
 					
@@ -151,7 +175,7 @@ List<Human> startHumansACO;
 			 * the time step of all this.
 			 */
 			totalLivingPassangers = totalPassanger - deadCounter;
-			writer.println(turnCounter+",			"+totalPassanger+",					"+totalPassanger+",				"+deadCounter+",			"+numberOfSurvivers);
+			writer.println(turnCounter+",			"+totalPassanger+",					"+totalLivingPassangers+",				"+deadCounter+",			"+numberOfSurvivers);
 			
 			
 			if(resetNumber >= humansMovementAllaowence)
@@ -162,20 +186,21 @@ List<Human> startHumansACO;
 		}
 		
 		writer.close();
-		return (int)numberOfSurvivers;
+		return (int)turnCounter;
 	}
 	
 	
 	//Runs the simulation and finding the exits using ACO instead of dijkstra's.
-	public int runSimulationWithACO(List<Node> graph, List<Node> exits) throws FileNotFoundException, UnsupportedEncodingException
+	public int runSimulationWithACO(List<Node> graph, List<Node> exits, String fileName, int lethalStartNode) throws IOException
 	{
 		List<Human> humans = new ArrayList<Human>(startHumansACO);
 		AntColonyOptimizationController aco = new AntColonyOptimizationController(20, graph);
 		int resetNumber = 0;
 		
-		for(Human h : humans){
-			System.out.println("Human: " + h.getHumanID() + " is at node: " + h.getNode().getID());
-		}
+		resetLethalNodes();
+		graph.get(lethalStartNode).setChanceOfDeath(0.5);
+		
+		addLethalNodesToList();
 		
 		Random deathByFire = new Random();
 		
@@ -185,9 +210,7 @@ List<Human> startHumansACO;
 		double totalPassanger = humans.size();
 		double totalLivingPassangers = 0;
 		
-		PrintWriter writer = new PrintWriter("ACO\\ACO data test one.txt", "UTF-8");
-		writer.println("ACO data:");
-		writer.println("Turn number		Number of passangers in total		Passangers still living		Dead Passangers		Passangers that have survived");
+		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("ACO\\ACO "+fileName+".txt", true)));
 		
 		writer.println(turnCounter+",			"+totalPassanger+",					"+totalPassanger+",				"+deadCounter+",			"+numberOfSurvivers);
 		// Calculate the path off the ship for each passenger
@@ -201,7 +224,7 @@ List<Human> startHumansACO;
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped
 				if(exits.contains(h.getNode())){
-					System.out.println("Human " + h.getHumanID() + " escaped");
+					//System.out.println("Human " + h.getHumanID() + " escaped");
 					numberOfSurvivers++;
 					it.remove();
 				}
@@ -222,7 +245,7 @@ List<Human> startHumansACO;
 					
 					// Kills humans off, dead humans should add to the room capacity
 					if(h.getNode().getChanceOfDeath() > deathByFire.nextDouble()){
-						System.out.println("Shit son, human: " + h.getHumanID() + " just burned to death");
+						//System.out.println("Shit son, human: " + h.getHumanID() + " just burned to death");
 						deadCounter++;
 						it.remove();
 					}
@@ -243,11 +266,12 @@ List<Human> startHumansACO;
 			{
 				resetHumanMovementAllowence(humans);
 				resetNumber = 0;
+				lehtalnessSpreading();
 			}
 			
 		}
 		writer.close();
-		return (int)numberOfSurvivers;
+		return (int)turnCounter;
 	}
 	
 	private boolean testIfFinished(List<Human> humans){
@@ -272,6 +296,48 @@ List<Human> startHumansACO;
 				}
 			}
 		}
+	}
+	
+	private void lehtalnessSpreading()
+	{
+		for(Node n : listOfLethalNodes)
+		{
+			if(n.getChanceOfDeath() >= 1)
+			{
+				n.setChanceOfDeath(1);
+			}
+			else if(n.getChanceOfDeath() >= 0.6)
+			{
+				n.setChanceOfDeath(n.getChanceOfDeath()+0.20);
+			}
+			else if(n.getChanceOfDeath() >= 0.2)
+			{
+				n.setChanceOfDeath(n.getChanceOfDeath() + 0.10);
+			}
+			else
+			{
+				n.setChanceOfDeath(n.getChanceOfDeath()+0.05);
+			}
+			
+		}
+		
+		List<Node> tempList = new ArrayList<Node>();
+		for(Node n : listOfLethalNodes)
+		{
+			if(n.getChanceOfDeath() >= 0.4)
+			{
+				for(Edge e : n.getPaths())
+				{
+					if(!listOfLethalNodes.contains(e.getNode()))
+					{
+						e.getNode().setChanceOfDeath(e.getNode().getChanceOfDeath()+0.05);
+						tempList.add(e.getNode());
+					}
+					
+				}
+			}
+		}
+		listOfLethalNodes.addAll(tempList);
 	}
 	
 	/*
@@ -319,7 +385,7 @@ List<Human> startHumansACO;
 		//flytt currentHuman
 		currentHuman.moveHuman(path.get(1));
 		
-		System.out.println("Human " + currentHuman.getHumanID() + " is trying to escape from node "+prevNode+" to node "+currentHuman.getNode().getID());
+		//System.out.println("Human " + currentHuman.getHumanID() + " is trying to escape from node "+prevNode+" to node "+currentHuman.getNode().getID());
 		
 		for(Human h2 : fameleyMembers)
 		{
@@ -327,7 +393,7 @@ List<Human> startHumansACO;
 			
 			h2.moveHuman(path.get(1));
 			
-			System.out.println("Human " + h2.getHumanID() + " is trying to escape from node "+prevNode+" to node "+h2.getNode().getID());
+			//System.out.println("Human " + h2.getHumanID() + " is trying to escape from node "+prevNode+" to node "+h2.getNode().getID());
 			if(currentHuman.getMovementAllowence() == 0)
 			{
 				h2.setMovementAllowence(0);
@@ -354,5 +420,46 @@ List<Human> startHumansACO;
 			clone.add(h2);
 		}
 		return clone;
+	}
+	
+	public void replaceHumans()
+	{
+		humanHandler.placeHumans(startHumansACO, graph);
+		humanHandler.placeHumans(startHumansDjixstra, graph);
+		
+		for(int i = 0; i<startHumansACO.size(); i++)
+		{
+			startHumansACO.get(i).setEscaped(false);
+			startHumansDjixstra.get(i).setEscaped(false);
+		}
+	}
+	
+	private void resetLethalNodes()
+	{
+		for(Node n : listOfLethalNodes)
+		{
+			n.setChanceOfDeath(0);
+		}
+		
+		listOfLethalNodes.removeAll(listOfLethalNodes);
+	}
+	
+	private void addLethalNodesToList()
+	{
+		for(Node n : graph)
+		{
+			if(n.getChanceOfDeath() > 0)
+			{
+				listOfLethalNodes.add(n);
+			}
+		}
+	}
+	
+	public void resetPheremones(List<Edge> list)
+	{
+		for(Edge e : list)
+		{
+			e.setPheremones(0);
+		}
 	}
 }
