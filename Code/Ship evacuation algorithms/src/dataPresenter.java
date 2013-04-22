@@ -21,10 +21,16 @@ public class dataPresenter {
 	HashMap<Double, Double> deadACO;
 	HashMap<Double, Double> stillRunningACO;
 	
+	int howManyRepetitions;
+	String fileName;
+	int maxTurns;
 	
-	public dataPresenter()
+	
+	public dataPresenter(int howManyRepetisions, String fileName, int maxTurns)
 	{
-		
+		this.howManyRepetitions = howManyRepetisions;
+		this.fileName = fileName;
+		this.maxTurns = maxTurns;
 	}
 	
 	public void readACOFile() throws IOException
@@ -33,10 +39,11 @@ public class dataPresenter {
 		deadACO = new HashMap<Double, Double>();
 		stillRunningACO = new HashMap<Double, Double>();
 		
-		BufferedReader br = new BufferedReader(new FileReader("ACO\\ACO data test one.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("ACO\\ACO "+fileName+".txt"));
 		String line;
 		br.readLine();
 		br.readLine();
+		String[] prevNumbers = null;
 		while ((line = br.readLine()) != null) {
 		
 			String nextString = line.replace("	", "");
@@ -44,17 +51,32 @@ public class dataPresenter {
 			
 			String[] numbers = nextString.split(",");
 			
+			if(prevNumbers != null && Double.parseDouble(numbers[0]) == 0 && Double.parseDouble(prevNumbers[0]) < (double)maxTurns)
+			{
+				double a;
+				for(a = Double.parseDouble(prevNumbers[0])+1; a <= (double)maxTurns; a++)
+				{
+					prevNumbers[0] = Double.toString(a);
+					
+					addACOLists(prevNumbers);
+				}
+			}
 			
-			suriversACO.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[4]));
-			deadACO.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[3]));
-			stillRunningACO.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[2]));
 			
+			prevNumbers = numbers;
 			
-			//List<String> list = ;
-			
+			addACOLists(numbers);
 			
 		}
-		System.out.println(suriversACO);
+		
+		
+		for(double i = 0; i<suriversACO.size(); i++)
+		{
+			suriversACO.put(i, suriversACO.get(i)/howManyRepetitions);
+			deadACO.put(i, deadACO.get(i)/howManyRepetitions);
+			stillRunningACO.put(i, stillRunningACO.get(i)/howManyRepetitions);
+		}
+		//System.out.println(suriversACO);
 		br.close();
 	}
 	
@@ -64,29 +86,57 @@ public class dataPresenter {
 		deadDjixstra = new HashMap<Double, Double>();
 		stillRunningDjixstra = new HashMap<Double, Double>();
 		
-		BufferedReader br = new BufferedReader(new FileReader("Djixstra\\Dixstra data test one.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("Djixstra\\Dixstra "+fileName+".txt"));
 		String line;
 		br.readLine();
 		br.readLine();
+		String[] prevNumbers = null;
 		while ((line = br.readLine()) != null) {
+			
+			
 			
 			String nextString = line.replace("	", "");
 			
 			String[] numbers = nextString.split(",");
 			
 			
-			suriversDjixstra.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[4]));
-			deadDjixstra.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[3]));
-			stillRunningDjixstra.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[2]));
+			if(prevNumbers != null && Double.parseDouble(numbers[0]) == 0 && Double.parseDouble(prevNumbers[0]) < (double)maxTurns)
+			{
+				double a;
+				for(a = Double.parseDouble(prevNumbers[0])+1; a <= (double)maxTurns; a++)
+				{
+					prevNumbers[0] = Double.toString(a);
+					
+					addDjixstraLists(prevNumbers);
+				}
+			}
+			
+			
+			prevNumbers = numbers;
+			
+			addDjixstraLists(numbers);
+			
+			
+			
 		}
-		System.out.println();
+		
+		for(double i = 0; i<suriversDjixstra.size(); i++)
+		{
+			suriversDjixstra.put(i, suriversDjixstra.get(i)/howManyRepetitions);
+			deadDjixstra.put(i, deadDjixstra.get(i)/howManyRepetitions);
+			stillRunningDjixstra.put(i, stillRunningDjixstra.get(i)/howManyRepetitions);
+		}
+		
+		
 		br.close();
 	}
 	
 	public void crateGraph() throws IOException
 	{
-		XYSeries survivedACO = new XYSeries("ACO");
-		XYSeries survivedDjix = new XYSeries("Djixstra");
+		XYSeries survivedACO = new XYSeries("ACO Survivers");
+		XYSeries survivedDjix = new XYSeries("Djixstra Survivers");
+		XYSeries deadACO = new XYSeries("ACO dead");
+		XYSeries deaddDjix = new XYSeries("Djixstra dead");
 		//XYSeries bruteForce = new XYSeries("Brute force");
 		
 		readACOFile();
@@ -94,6 +144,8 @@ public class dataPresenter {
 		
 		addNumbersToSeries(survivedACO, suriversACO);
 		addNumbersToSeries(survivedDjix, suriversDjixstra);
+		addNumbersToSeries(deadACO, this.deadACO);
+		addNumbersToSeries(deaddDjix, deadDjixstra);
 		
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		
@@ -101,6 +153,8 @@ public class dataPresenter {
 		
 		dataset.addSeries(survivedACO);
 		dataset.addSeries(survivedDjix);
+		dataset.addSeries(deadACO);
+		dataset.addSeries(deaddDjix);
 		//dataset.addSeries(antSystem);
 		
 		JFreeChart chart = ChartFactory.createXYLineChart("Survivors", "Time step", "Survivors", dataset, PlotOrientation.VERTICAL, true, true, false);
@@ -137,6 +191,72 @@ public class dataPresenter {
 		  ChartFrame frame1=new ChartFrame("XYLine Chart",chart);
 		  frame1.setVisible(true);
 		  frame1.setSize(300,300);
+	}
+	
+	private void addDjixstraLists(String[] numbers)
+	{
+		//Survivrs
+		if(suriversDjixstra.containsKey(Double.parseDouble(numbers[0])))
+		{
+			suriversDjixstra.put(Double.parseDouble(numbers[0]), suriversDjixstra.get(Double.parseDouble(numbers[0]))+Double.parseDouble(numbers[4])); 
+		}
+		else
+		{
+			suriversDjixstra.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[4]));
+		}
+		
+		//Dead
+		if(deadDjixstra.containsKey(Double.parseDouble(numbers[0])))
+		{
+			deadDjixstra.put(Double.parseDouble(numbers[0]), deadDjixstra.get(Double.parseDouble(numbers[0]))+Double.parseDouble(numbers[3])); 
+		}
+		else
+		{
+			deadDjixstra.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[3]));
+		}
+		
+		//Stillrunning
+		if(stillRunningDjixstra.containsKey(Double.parseDouble(numbers[0])))
+		{
+			stillRunningDjixstra.put(Double.parseDouble(numbers[0]), stillRunningDjixstra.get(Double.parseDouble(numbers[0]))+Double.parseDouble(numbers[2])); 
+		}
+		else
+		{
+			stillRunningDjixstra.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[2]));
+		}
+	}
+	
+	private void addACOLists(String[] numbers)
+	{
+		//Survivrs
+		if(suriversACO.containsKey(Double.parseDouble(numbers[0])))
+		{
+			suriversACO.put(Double.parseDouble(numbers[0]), suriversACO.get(Double.parseDouble(numbers[0]))+Double.parseDouble(numbers[4])); 
+		}
+		else
+		{
+			suriversACO.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[4]));
+		}
+		
+		//Dead
+		if(deadACO.containsKey(Double.parseDouble(numbers[0])))
+		{
+			deadACO.put(Double.parseDouble(numbers[0]), deadACO.get(Double.parseDouble(numbers[0]))+Double.parseDouble(numbers[3])); 
+		}
+		else
+		{
+			deadACO.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[3]));
+		}
+		
+		//Stillrunning
+		if(stillRunningACO.containsKey(Double.parseDouble(numbers[0])))
+		{
+			stillRunningACO.put(Double.parseDouble(numbers[0]), stillRunningACO.get(Double.parseDouble(numbers[0]))+Double.parseDouble(numbers[2])); 
+		}
+		else
+		{
+			stillRunningACO.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[2]));
+		}
 	}
 
 }

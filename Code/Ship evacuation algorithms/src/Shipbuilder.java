@@ -6,11 +6,24 @@ import java.util.Map;
 public class Shipbuilder {
 	int nodeID = 0;
 	int edgeID = 0;
-	int roomFlow = 10;
-	int hallwayFlow = 5;
-	int diningFlow = 7;
-	int stairFlow = 7;
-	int doorFlow = 3;
+	int roomFlowAwayFromExit = 5;
+	int hallwayFlowAwayFromExit = 5;
+	int diningFlowAwayFromExit = 5;
+	int stairFlowAwayFromExit = 5;
+	int doorFlowAwayFromExit = 5;
+	
+	int roomFlowNormal = 25;
+	int hallwayFlowNormal = 25;
+	int diningFlowNormal = 25;
+	int stairFlowNormal = 25;
+	int doorFlowNormal = 25;
+	
+	int roomFlowToExit = 100;
+	int hallwayFlowToExit = 100;
+	int diningFlowToExit = 100;
+	int stairFlowToExit = 100;
+	int doorFlowToExit = 100;
+	
 	Ship currentShip = null;
 	
 	public Ship createCelebrityXpedition()
@@ -18,6 +31,8 @@ public class Shipbuilder {
 		Ship celebX = new Ship(4);
 		currentShip = celebX;
 		celebX = createPanormaFlor(celebX);
+		celebX.exits.add(celebX.fifthFlor.get(40));
+		celebX.fifthFlor.get(40).setExit(true);
 		return celebX;
 	}
 	
@@ -44,9 +59,11 @@ public class Shipbuilder {
 		tempList.addAll(tempDININGROOMList);
 		tempList.addAll(tempSTAIRSList);
 		
+		addList(tempList, s.fifthFlor);
+		
 		addFifthFloorEdges(tempList, s);
 		
-		addList(tempList, s.fifthFlor);
+		
 
 		
 		
@@ -89,9 +106,9 @@ public class Shipbuilder {
 		
 	}
 	
-	private Edge createEdge(int flow, int node)
+	private Edge createEdge(int attractiveness, int node)
 	{
-		Edge edge = new Edge(flow, edgeID++, currentShip.fifthFlor.get(node), 1);
+		Edge edge = new Edge(attractiveness, edgeID++, currentShip.fifthFlor.get(node), 1);
 		return edge;
 	}
 	/*
@@ -108,155 +125,154 @@ public class Shipbuilder {
 		{
 			switch (tempList.get(i).getID()) {
 	        case 0: //Guestrooms
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 1)); break; //Room to room
+	        	tempList.get(i).addEdge(createEdge(roomFlowToExit, 1)); break; //Room to room
 	        case 1: 
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 0)); //Room to room
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 18)); break; //Room out to hall
+	        	tempList.get(i).addEdge(createEdge(roomFlowAwayFromExit, 0)); //Room to room
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 18)); break; //Room out to hall
 	        case 2:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 3)); break; //Room to room
+	        	tempList.get(i).addEdge(createEdge(roomFlowToExit, 3)); break; //Room to room
 	        case 3:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 2)); //Room to room
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 19)); break; //Room out to hall
+	        	tempList.get(i).addEdge(createEdge(roomFlowAwayFromExit, 2)); //Room to room
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 19)); break; //Room out to hall
 	        case 4:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 5)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowToExit, 5)); break;
 	        case 5:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 4)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 19)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowAwayFromExit, 4)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 19)); break;
 	        case 6:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 7)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowToExit, 7)); break;
 	        case 7:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 6)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 21)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowAwayFromExit, 6)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 21)); break;
 	        case 8:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 9)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowToExit, 9)); break;
 	        case 9:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 8)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 21)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowAwayFromExit, 8)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 21)); break;
 	        case 10:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 11)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowToExit, 11)); break;
 	        case 11:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 10)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 22)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowAwayFromExit, 10)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 22)); break;
 	        case 12:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 13)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowToExit, 13)); break;
 	        case 13:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 12)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 22)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowAwayFromExit, 12)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 22)); break;
 	        case 14:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 15)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowToExit, 15)); break;
 	        case 15:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 14)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 23)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowAwayFromExit, 14)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 23)); break;
 	        case 16:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 17)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowToExit, 17)); break;
 	        case 17:  
-	        	tempList.get(i).addEdge(createEdge(roomFlow, 16)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 23)); break;
+	        	tempList.get(i).addEdge(createEdge(roomFlowAwayFromExit, 16)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 23)); break;
 	        	
 	        	
 	        	
 	        case 18:  //Hallways
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 1)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 19)); break;
+	        	tempList.get(i).addEdge(createEdge(doorFlowAwayFromExit, 1)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowToExit, 19)); break;
 	        case 19:  
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 18)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 20)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 21)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 5)); break;
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 18)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 20)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowToExit, 21)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowAwayFromExit, 5)); break;
 	        case 20:  
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 19)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 38)); break;
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowToExit, 19)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 38)); break;
 	        case 21:  
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 19)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 7)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 9)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 22)); break;
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 19)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowAwayFromExit, 7)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowAwayFromExit, 9)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowToExit, 22)); break;
 	        case 22:  
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 21)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 23)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 11)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 13)); break;
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 21)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowToExit, 23)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowAwayFromExit, 11)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowAwayFromExit, 13)); break;
 	        case 23:  
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 22)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 24)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 15)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 17)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 24)); 
-	        	tempList.get(i).addEdge(createEdge(doorFlow*2, 30)); break;
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 22)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowAwayFromExit, 15)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowAwayFromExit, 17)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 24)); 
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 30)); break;
 	        case 24:  
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 23)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 39)); break;
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowToExit, 23)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 39)); break;
 	        case 25:  
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 37)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 26)); break;
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 37)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowToExit, 26)); break;
 	        case 26:  
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 25)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 27)); break;
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 25)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowToExit, 27)); break;
 	        case 27:  
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 26)); 
-	        	tempList.get(i).addEdge(createEdge(hallwayFlow, 40)); break;
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowAwayFromExit, 26)); 
+	        	tempList.get(i).addEdge(createEdge(hallwayFlowToExit, 40)); break;
 	        	
 	        	
 	        	
 	        case 28:  //Diningroom/bar/dancefloor
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 29)); break;
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 29)); break;
 	        case 29:  
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 28)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 30)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 34)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 35)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 36)); break;
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 28)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowNormal, 30)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 34)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 35)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 36)); break;
 	        case 30:  
-	        	tempList.get(i).addEdge(createEdge(doorFlow*2, 23)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 29)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 34)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 33)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 31)); break;
+	        	tempList.get(i).addEdge(createEdge(doorFlowAwayFromExit, 23)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowNormal, 29)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 34)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 33)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowNormal, 31)); break;
 	        case 31:  
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 30)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 33)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 32)); break;
+	        	tempList.get(i).addEdge(createEdge(diningFlowNormal, 30)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 33)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 32)); break;
 	        case 32:  
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 31)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 33)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 37)); break;
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 31)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 33)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 37)); break;
 	        case 33:  
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 30)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 31)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 32)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 37)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 34)); break;
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 30)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 31)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 32)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 37)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 34)); break;
 	        case 34:  
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 30)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 33)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 29)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 37)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 35)); break;
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 30)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 33)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 29)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 37)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 35)); break;
 	        case 35:  
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 29)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 36)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 37)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 34)); break;
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 29)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 36)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 37)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 34)); break;
 	        case 36:  
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 29)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 35)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 37)); break;
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 29)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowNormal, 35)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 37)); break;
 	        case 37:  
-	        	tempList.get(i).addEdge(createEdge(doorFlow, 25));
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 32)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 33)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 34)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 35)); 
-	        	tempList.get(i).addEdge(createEdge(diningFlow, 36)); break;
+	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 25));
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 32)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 33)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 34)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 35)); 
+	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 36)); break;
 	        	
 	        	
 	        	
 	        case 38:  //Stairs
-	        	tempList.get(i).addEdge(createEdge(stairFlow, 20)); break;
+	        	tempList.get(i).addEdge(createEdge(stairFlowToExit, 20)); break;
 	        case 39:  
-	        	tempList.get(i).addEdge(createEdge(stairFlow, 24)); break;
+	        	tempList.get(i).addEdge(createEdge(stairFlowToExit, 24)); break;
 	        case 40:  
-	        	tempList.get(i).addEdge(createEdge(stairFlow, 27)); break;
+	        	tempList.get(i).addEdge(createEdge(stairFlowAwayFromExit, 27)); break; //exit
 	        default: break;
 			}
 		}

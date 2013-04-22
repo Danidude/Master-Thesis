@@ -30,25 +30,36 @@ public class AntColonyOptimizationController {
 		for(int i = 0; i<numberOfAnts; i++)
 		{
 			createAnt(currentNode);
+			int counter = 0;
 			while(!ant.isAtExit())
 			{
+				if(counter > 200)
+				{
+					//ant.reset();
+					counter = 0;
+				}
+				
 				ant.chooseNextPath();
+				
+				counter++;
 			}
 			ant.despencePheromones();
-			checkSolutionLethalFirst(ant.getPath());
+			//checkSolutionLethalFirst(ant.getPath());
+			checkSolutionShortestFirst(ant.getPath());
 			
 			if(i%10 == 0)
 			{
 				Evaporate();
 			}
 		}
-		printPath(bestPath);
+		//printPath(bestPath);
 		return bestPath;
 	}
 	
 	private void createAnt(Node startNode)
 	{
 		ant = new Ant(startNode);
+		//System.out.println("New ant");
 	}
 	
 	/*
