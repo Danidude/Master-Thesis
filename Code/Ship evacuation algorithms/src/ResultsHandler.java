@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.TreeSet;
 public class ResultsHandler {
 	List<Human> startHumansDjixstra;
 	List<Human> startHumansACO;
+	Map<Edge, Integer> flowOfEdges;
 
 	List<Node> graph;
 	List<Node> listOfLethalNodes;
@@ -24,10 +26,11 @@ public class ResultsHandler {
 	
 	HumanHandler humanHandler;
 	
-	public ResultsHandler(List<Node> graph, String fileName) throws FileNotFoundException, UnsupportedEncodingException{
+	public ResultsHandler(List<Node> graph, String fileName, int numberOfPassangers) throws FileNotFoundException, UnsupportedEncodingException{
 		
 		this.graph = graph;
 		listOfLethalNodes = new ArrayList<Node>();
+		flowOfEdges = new HashMap<Edge, Integer>();
 						
 		// The probability the humans have family members on board the ship
 		double chanceOfFamily = 1.0;
@@ -35,7 +38,7 @@ public class ResultsHandler {
 		// Get the location of all humans in the graph
 		humanHandler = new HumanHandler();
 
-		List<Human> humans = new ArrayList<Human>(humanHandler.createHumans(6));
+		List<Human> humans = new ArrayList<Human>(humanHandler.createHumans(numberOfPassangers));
 		humanHandler.createFamilyTies(chanceOfFamily, humans);
 		
 		// Bug : this somehow kills a few people in the process
@@ -382,21 +385,47 @@ public class ResultsHandler {
 		}
 		
 		int prevNode = currentHuman.getNode().getID();
-		//flytt currentHuman
-		currentHuman.moveHuman(path.get(1));
+		
+		Edge e = findEdgeToNode(path.get(0), path.get(1));
+		
+		if(!flowOfEdges.containsKey(e))
+		{
+			flowOfEdges.put(e, 0);
+		}
+		
+		flowOfEdges.put(e, flowOfEdges.get(e)+1);
+		
+		//flytt currentHuman kun om det er plass til det
+		if(flowOfEdges.get(e) <= e.getFlow())
+		{
+			currentHuman.moveHuman(path.get(1));
+		}
+		
+		
+		
 		
 		//System.out.println("Human " + currentHuman.getHumanID() + " is trying to escape from node "+prevNode+" to node "+currentHuman.getNode().getID());
 		
 		for(Human h2 : fameleyMembers)
 		{
-			prevNode = h2.getNode().getID();
 			
-			h2.moveHuman(path.get(1));
+			
+			if(prevNode == h2.getNode().getID())
+			{
+				flowOfEdges.put(e, flowOfEdges.get(e)+1);
+				if(flowOfEdges.get(e) <= e.getFlow())
+				h2.moveHuman(path.get(1));
+			}
+				
 			
 			//System.out.println("Human " + h2.getHumanID() + " is trying to escape from node "+prevNode+" to node "+h2.getNode().getID());
 			if(currentHuman.getMovementAllowence() == 0)
 			{
 				h2.setMovementAllowence(0);
+			}
+			else if(h2.getMovementAllowence() == 0)
+			{
+				currentHuman.setMovementAllowence(0);
 			}
 		}
 	
@@ -409,6 +438,8 @@ public class ResultsHandler {
 		{
 			h.setMovementAllowence(humansMovementAllaowence);
 		}
+		
+		flowOfEdges.clear();
 	}
 	
 	private List<Human> cloneList(List<Human> list)
@@ -462,4 +493,18 @@ public class ResultsHandler {
 			e.setPheremones(0);
 		}
 	}
+
+	private Edge findEdgeToNode(Node from, Node to)
+	{
+		for(int i = 0; i<from.getPaths().size(); i++)
+		{
+			if(from.getPaths().get(i).getNode() == to)
+			{
+				return from.getPaths().get(i);
+			}
+		}
+		System.err.println("Error: did not find correct edge from a node. ResultsHandler moveHuman.");
+		return null;
+	}
+
 }

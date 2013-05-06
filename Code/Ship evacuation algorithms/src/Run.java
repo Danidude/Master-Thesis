@@ -36,13 +36,16 @@ public class Run {
 		
 		int acoSurv = 0;
 		
+		int numberOfPassangers = 50;
+		
 		String fileName = "test en.";
+		
 		
 		Random rand = new Random();
 		int leathalStartNode;
 		
 		//Kjører ACO og djixstra simuleringen.
-		ResultsHandler results = new ResultsHandler(graph, fileName);
+		ResultsHandler results = new ResultsHandler(graph, fileName, numberOfPassangers);
 		int maxTurns = 0;
 		for(int i = 0; i<100; i++)
 		{
@@ -122,16 +125,16 @@ public class Run {
 		n4.setExit(true);	
 		//n3.setChanceOfDeath(0.5);
 
-		n1.addEdge(new Edge(1, 1, n2, 1));
-		n1.addEdge(new Edge(1, 1, n5, 1));
-		n2.addEdge(new Edge(1, 1, n1, 1));
-		n2.addEdge(new Edge(1, 1, n3, 1));
-		n3.addEdge(new Edge(1, 1, n2, 1));
-		n3.addEdge(new Edge(1, 1, n4, 1));
-		n4.addEdge(new Edge(1, 1, n3, 1));
-		n4.addEdge(new Edge(1, 1, n5, 1));
-		n5.addEdge(new Edge(1, 1, n1, 1));
-		n5.addEdge(new Edge(1, 1, n4, 1));
+		n1.addEdge(new Edge(1, 1, n2, 1, 10));
+		n1.addEdge(new Edge(1, 1, n5, 1, 10));
+		n2.addEdge(new Edge(1, 1, n1, 1, 10));
+		n2.addEdge(new Edge(1, 1, n3, 1, 10));
+		n3.addEdge(new Edge(1, 1, n2, 1, 10));
+		n3.addEdge(new Edge(1, 1, n4, 1, 10));
+		n4.addEdge(new Edge(1, 1, n3, 1, 10));
+		n4.addEdge(new Edge(1, 1, n5, 1, 10));
+		n5.addEdge(new Edge(1, 1, n1, 1, 10));
+		n5.addEdge(new Edge(1, 1, n4, 1, 10));
 
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(n1);

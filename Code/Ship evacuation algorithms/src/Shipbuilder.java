@@ -108,7 +108,7 @@ public class Shipbuilder {
 	
 	private Edge createEdge(int attractiveness, int node)
 	{
-		Edge edge = new Edge(attractiveness, edgeID++, currentShip.fifthFlor.get(node), 1);
+		Edge edge = new Edge(attractiveness, edgeID++, currentShip.fifthFlor.get(node), 1, 10);
 		return edge;
 	}
 	/*
