@@ -4,15 +4,16 @@
 
 
 \section{Ship Model}
+% Add illustrating images
 The ships are modeled as graphs, nodes represents rooms and lines represents passages between rooms. Small rooms are represented by a single node as the layout of the room is fairly simplistic and the time it takes to move across the room is fairly predictable as long as the room is not crowded. Complex rooms are represented by multiple interconnected nodes where each part of the room can be individually configured to better represent the room. 
 
 % Add comment about IMO estimations
-All rooms have a few characteristics associated with them. First is the room capacitiy, meaning the amount of people that can move across the room before they start to slow eachother down. Second is the chance of death, this number will change over time as the fire spreads throughout the ship. Third is the type of room, for instance stairs, hallway, gift shop etc. Fourt is the time it takes to traverse the room, this is based on the estimations made by IMO. Additionally there are a exit nodes where all passengers gather before lifeboat embarkation.
+All rooms have a few characteristics associated with them. First is the room capacity, meaning the amount of people that can move across the room before they start to slow each other down. Second is the chance of death, this number will change over time as the fire spreads throughout the ship. Third is the type of room, for instance stairs, hallway, gift shop etc. Fourth is the time it takes to traverse the room, this is based on the estimations made by IMO. Additionally there are a exit nodes where all passengers gather before lifeboat embarkation.
 
+% Add reference to database
+The ships are modeled after blueprints from ships currently in operation. The blueprints are retrieved from a cruise ship database.  
 
--The ships are modeled after blueprints from
-
--Fire spreads based on
+% Fire spreads based on
 
 \section{Algorithm implementation}
 
