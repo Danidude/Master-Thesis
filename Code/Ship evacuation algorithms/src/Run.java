@@ -36,7 +36,9 @@ public class Run {
 		
 		int acoSurv = 0;
 		
-		int numberOfPassangers = 50;
+		int numberOfPassangers = 100;
+		
+		int numberOfRepetitions = 200;
 		
 		String fileName = "test en.";
 		
@@ -47,23 +49,26 @@ public class Run {
 		//Kjører ACO og djixstra simuleringen.
 		ResultsHandler results = new ResultsHandler(graph, fileName, numberOfPassangers);
 		int maxTurns = 0;
-		for(int i = 0; i<100; i++)
+		for(int i = 0; i<numberOfRepetitions; i++)
 		{
 			leathalStartNode = rand.nextInt(graph.size()-1);
 			
+			//System.out.println("D Starting");
 			int a = results.runSimulation(exits, fileName, leathalStartNode);
-			//System.out.println("D done");
 			
+			//System.out.println("A Starting");
 			int b = results.runSimulationWithACO(graph, exits, fileName, leathalStartNode);
-			//System.out.println("A done");
+			
 			
 			maxTurns = returnTheBiggest(a, b, maxTurns);
 			
-			results.replaceHumans();
+			results.replaceHumans(s.exits);
 			results.resetPheremones(edges);
 			
-			if(i%10 == 0)
-			System.out.println(i+"% done.");
+			double prosnet = ((double)i*100)/(double)numberOfRepetitions;
+			
+			if(prosnet%5 == 0)
+			System.out.println(prosnet+"% done.");
 			
 			
 		}
@@ -75,7 +80,7 @@ public class Run {
 		System.out.println();
 		System.out.println("Dijistra survivers: "+djixSurv+" ACO survivers: "+acoSurv);*/
 		
-		dataPresenter dp = new dataPresenter(100, fileName, maxTurns);
+		dataPresenter dp = new dataPresenter(numberOfRepetitions, fileName, maxTurns);
 		
 		dp.crateGraph();
 		

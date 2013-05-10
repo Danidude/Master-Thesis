@@ -8,7 +8,7 @@ public class AntColonyOptimizationController {
 	Node currentNode;
 	List<Node> bestPath;
 	Ant ant;
-	double evaporationRate = 0.8;
+	double evaporationRate = 0.5;
 	
 	public AntColonyOptimizationController(int howManyAnts, List<Node> nodes)
 	{
@@ -33,21 +33,26 @@ public class AntColonyOptimizationController {
 			int counter = 0;
 			while(!ant.isAtExit())
 			{
-				if(counter > 200)
+				if(counter > 5000)
 				{
-					//ant.reset();
+					ant.reset();
 					counter = 0;
+				}
+				else if(counter > 100)
+				{
+					System.out.println("Somethings up.");
 				}
 				
 				ant.chooseNextPath();
 				
 				counter++;
 			}
+			counter = 0;
 			ant.despencePheromones();
 			//checkSolutionLethalFirst(ant.getPath());
 			checkSolutionShortestFirst(ant.getPath());
 			
-			if(i%10 == 0)
+			if(i%5 == 0)
 			{
 				Evaporate();
 			}
@@ -185,7 +190,8 @@ public class AntColonyOptimizationController {
 		{
 			for(Edge e : n.getPaths())
 			{
-				e.addPheremones(e.getPheremones()*evaporationRate*e.getNode().getChanceOfDeath());
+				e.addPheremones(-(e.getPheremones()*evaporationRate));
+				e.addPheremones(-e.getPheremones()*n.getChanceOfDeath());
 			}
 		}
 	}

@@ -10,8 +10,11 @@ public class Human implements Cloneable {
 	private Node node;
 	private int humanID;
 	private boolean escaped;
+	public boolean isDead;
 	private int movementAllowence;
 	private boolean finishedMoving;
+	private List<Node> knownExitNode;
+	private int movementInCurrentNode;
 	
 	public Human (List<Integer> familiarTies, boolean panicState, Node node, int humanID, boolean escaped, int movementAllowence){
 		this.familiarTies = familiarTies;
@@ -19,8 +22,11 @@ public class Human implements Cloneable {
 		this.node = node;
 		this.humanID = humanID;
 		this.escaped = escaped;
+		knownExitNode = new ArrayList<Node>();
 		this.movementAllowence = movementAllowence;
+		movementInCurrentNode = 0;
 		finishedMoving = false;
+		isDead = false;
 	}
 	
 	public boolean isEscaped() {
@@ -94,15 +100,77 @@ public class Human implements Cloneable {
 	 */
 	public int moveHuman(Node n)
 	{
-		if (movementAllowence > 0)
+		
+		if (n.movementAllowenceNeeded > movementInCurrentNode)
 		{
-			node = n;
-			movementAllowence -= 1;
+			movementInCurrentNode += movementAllowence;
 			
+			movementAllowence = movementInCurrentNode - n.movementAllowenceNeeded;
+			
+			if (movementAllowence < 0) {
+				movementAllowence = 0;
+			}
+		}
+		
+		if (movementInCurrentNode >= n.movementAllowenceNeeded)
+		{
+			
+			if(n.currentHumansInNode.size()>=n.capacity && !panicState)
+			{
+				return movementAllowence;
+			}
+			
+			while(node.currentHumansInNode.contains(this))
+			{
+				node.currentHumansInNode.remove(this);
+			}
+			node = n;
+			
+			
+			if(!panicState)
+			{
+				knownExitNode.add(n);
+			}
+			else
+			{
+				knownExitNode.remove(0);
+				//n.testOverCapacityInNode();
+			}
+			n.currentHumansInNode.add(this);
+			
+			//movementAllowence -= 1;
+			movementInCurrentNode = 0;
 			return movementAllowence;
 		}
 		else
 			return -1;
 		
 	}
+	
+	public void setKnownPathToExit(List<Node> list)
+	{
+		knownExitNode.addAll(list);
+	}
+	
+	public List<Node> getKnownPathList()
+	{
+		return knownExitNode;
+	}
+	
+	public void removeNodeFromKnownPathToExit(Node n)
+	{
+		knownExitNode.remove(n);
+	}
+	
+	public void removePreviusNodesInList(int i)
+	{
+		
+		for(int k =i; k>0; k--)
+		{
+			knownExitNode.remove(k);
+		}
+		
+	}
+	
+	
 }

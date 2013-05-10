@@ -1,12 +1,15 @@
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Random;
 
 
 public class Node implements Comparable<Node> {
 	public enum NodeType { STAIRS, GUESTROOM, HALLWAY, DININGROOM, GAMEROOM, SHOP }
 	private double chanceOfDeath;
-	private int capacity;
+	public int capacity;
 	private NodeType nodeType;
 	private ArrayList<Edge> listOfPaths;
+	public ArrayList<Human> currentHumansInNode;
 	private int nodeID;	
 	private int florNumber;
 	private boolean isExit;
@@ -14,9 +17,11 @@ public class Node implements Comparable<Node> {
 	public boolean hasWayToExit = false;
 	public double minDistance = Double.POSITIVE_INFINITY;	
 	public Node previous;
+	public int movementAllowenceNeeded;
 	
 	public Node(int NodeID, NodeType nt, int cap, int fNumber)
 	{
+		currentHumansInNode = new ArrayList<Human>();
 		this.nodeType = nt;
 		this.capacity = cap;
 		this.nodeID = NodeID;
@@ -24,6 +29,8 @@ public class Node implements Comparable<Node> {
 		listOfPaths = new ArrayList<Edge>();
 		isExit = false;
 		chanceOfDeath = 0.0;
+		capacity = 10;
+		movementAllowenceNeeded = 10;
 	}
 	
 	public Node(){
@@ -63,5 +70,23 @@ public class Node implements Comparable<Node> {
 
 	public void setChanceOfDeath(double chanceOfDeath) {
 		this.chanceOfDeath = chanceOfDeath;
+	}
+	public void testOverCapacityInNode()
+	{
+		Random deathRandom = new Random();
+		for(Iterator<Human> it = currentHumansInNode.iterator(); it.hasNext();)
+		{
+			Human h = it.next();
+			
+			if(chanceOfDeath+(currentHumansInNode.size()/200) > deathRandom.nextDouble())
+			{
+				h.isDead = true;
+				currentHumansInNode.remove(h);
+				if(currentHumansInNode.size() <= capacity)
+				{
+					return;
+				}
+			}
+		}
 	}
 }

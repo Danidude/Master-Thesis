@@ -1,7 +1,10 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 
 public class HumanHandler {
@@ -22,10 +25,22 @@ public class HumanHandler {
 	}
 	
 	// Positions passengers in random nodes
-	public List<Human> placeHumans(List<Human> humans, List<Node> graph){
+	public List<Human> placeHumans(List<Human> humans, List<Node> graph, List<Node> exits){
 		Random randomPlace = new Random();
 		for(Human h : humans){
 			h.setNode(graph.get(randomPlace.nextInt(graph.size()-1)));
+			
+			h.getNode().currentHumansInNode.add(h);
+			
+			Dijkstra dijkstra = new Dijkstra();
+			dijkstra.findPath(h.getNode());
+			
+			Map<Double, List<Node>> path = dijkstra.getDistancePaths(exits, graph);
+
+			// Sort the paths based on the shortest distance
+			SortedSet<Double> keys = new TreeSet<Double>(path.keySet());
+			h.setKnownPathToExit(path.get(keys.first()));
+			
 		}
 		return humans;
 	}

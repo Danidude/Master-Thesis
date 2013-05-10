@@ -36,12 +36,12 @@ public class Ant {
 			}
 		}
 		
-		listOfPaths.removeAll(tempList);
+		//listOfPaths.removeAll(tempList);
 		
 		if(listOfPaths.isEmpty())
 		{
-			reset();
-			return null;
+		//	reset();
+		//	return null;
 		}
 		
 		double totalPheremonesAndAtracctiveness = 0;
