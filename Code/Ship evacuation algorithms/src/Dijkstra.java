@@ -40,6 +40,35 @@ public class Dijkstra {
 			}
 		}
 	}
+	
+	public void findSafestPath(Node source){
+
+		currentNode = source;
+		source.minDistance = 0.0;
+
+		// Visit each node, starting with the smallest minDistance
+		PriorityQueue<Node> nodeQueue = new PriorityQueue<Node>();
+		nodeQueue.add(source);
+
+		while (!nodeQueue.isEmpty()){
+			Node current = nodeQueue.poll();
+
+			// Visit each edge connected to the current node 
+			for (Edge e : current.getPaths()){
+				Node destination = e.getNode();
+				int weight = e.getWeight();
+
+				// Finds the shortest distance to the destination
+				double distance = current.minDistance + weight;
+				if(distance < destination.minDistance){
+					nodeQueue.remove(destination);
+					destination.minDistance = distance;
+					destination.previous = current;
+					nodeQueue.add(destination);
+				}
+			}
+		}
+	}
 
 	// Finds the shortest path from the source node to the exit node
 	public List<Node> getShortestPath(Node exit){

@@ -27,7 +27,11 @@ private int flow;
 	
 	public int getWeight()
 	{
-		return weight;
+		if(node == null)
+		{
+			System.out.println(edgeID);
+		}
+		return node.movementAllowenceNeeded;
 	}
 	
 	public float getPheremones()
@@ -42,6 +46,17 @@ private int flow;
 	
 	public float getPheremonesAndAttractiveness()
 	{
+		if(node.getChanceOfDeath() > 0)
+		{
+			
+			float f = pheremones + (float)attractiveness; //- (float)(attractiveness*node.getChanceOfDeath());
+			if(f <= 0)
+			{
+				return 1;
+			}
+			return f;
+		}
+		else
 		return pheremones + attractiveness;
 	}
 	

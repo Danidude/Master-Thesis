@@ -40,7 +40,7 @@ public class AntColonyOptimizationController {
 				}
 				else if(counter > 100)
 				{
-					System.out.println("Somethings up.");
+					//System.out.println("Somethings up.");
 				}
 				
 				ant.chooseNextPath();
@@ -49,8 +49,9 @@ public class AntColonyOptimizationController {
 			}
 			counter = 0;
 			ant.despencePheromones();
-			//checkSolutionLethalFirst(ant.getPath());
-			checkSolutionShortestFirst(ant.getPath());
+			checkSolutionLethalFirst(ant.getPath());
+			//checkSolutionShortestFirst(ant.getPath());
+			//shortestFirstFound(ant.getPath());
 			
 			if(i%5 == 0)
 			{
@@ -64,6 +65,7 @@ public class AntColonyOptimizationController {
 	private void createAnt(Node startNode)
 	{
 		ant = new Ant(startNode);
+		
 		//System.out.println("New ant");
 	}
 	
@@ -193,6 +195,19 @@ public class AntColonyOptimizationController {
 				e.addPheremones(-(e.getPheremones()*evaporationRate));
 				e.addPheremones(-e.getPheremones()*n.getChanceOfDeath());
 			}
+		}
+	}
+	
+	private void shortestFirstFound(List<Node> newPath)
+	{
+		if(bestPath == null && newPath.get(newPath.size()-1).isExit())
+		{
+			bestPath = newPath;
+			return;
+		}
+		else if(newPath.size() < bestPath.size())
+		{
+			bestPath = newPath;
 		}
 	}
 	

@@ -129,12 +129,12 @@ public class Human implements Cloneable {
 			
 			if(!panicState)
 			{
-				knownExitNode.add(n);
+				knownExitNode.add(0, n);
 			}
 			else
 			{
 				knownExitNode.remove(0);
-				//n.testOverCapacityInNode();
+				n.testOverCapacityInNode();
 			}
 			n.currentHumansInNode.add(this);
 			
@@ -159,12 +159,13 @@ public class Human implements Cloneable {
 	
 	public void removeNodeFromKnownPathToExit(Node n)
 	{
+		if(knownExitNode.size()>1)
 		knownExitNode.remove(n);
 	}
 	
 	public void removePreviusNodesInList(int i)
 	{
-		
+		if(knownExitNode.size() > 1)
 		for(int k =i; k>0; k--)
 		{
 			knownExitNode.remove(k);
@@ -172,5 +173,11 @@ public class Human implements Cloneable {
 		
 	}
 	
-	
+	public void resetValues()
+	{
+		isDead = false;
+		escaped = false;
+		movementInCurrentNode = 0;
+		panicState = false;
+	}
 }

@@ -44,18 +44,18 @@ public class Ant {
 		//	return null;
 		}
 		
-		double totalPheremonesAndAtracctiveness = 0;
+		float totalPheremonesAndAtracctiveness = 0;
 		for (Edge e : listOfPaths) 
 		{
 			totalPheremonesAndAtracctiveness += e.getPheremonesAndAttractiveness();
 		}
 		
-		double chosenPath;
+		float chosenPath;
 		
 		Random rand = new Random();
 		
-		double randDuouble = 0;
-		randDuouble = rand.nextDouble();
+		float randDuouble = 0;
+		randDuouble = rand.nextFloat();
 		
 		chosenPath = randDuouble * totalPheremonesAndAtracctiveness;
 		
@@ -95,6 +95,10 @@ public class Ant {
 	
 	public void despencePheromones()
 	{
+		if(edgesTaken.size() == 0)
+		{
+			return;
+		}
 		int pher = pheromones/edgesTaken.size();
 		for(Edge e : edgesTaken)
 		{

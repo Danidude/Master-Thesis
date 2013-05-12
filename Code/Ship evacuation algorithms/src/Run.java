@@ -53,12 +53,11 @@ public class Run {
 		{
 			leathalStartNode = rand.nextInt(graph.size()-1);
 			
-			//System.out.println("D Starting");
-			int a = results.runSimulation(exits, fileName, leathalStartNode);
-			
 			//System.out.println("A Starting");
 			int b = results.runSimulationWithACO(graph, exits, fileName, leathalStartNode);
 			
+			//System.out.println("D Starting");
+			int a = results.runSimulation(exits, fileName, leathalStartNode);
 			
 			maxTurns = returnTheBiggest(a, b, maxTurns);
 			

@@ -26,7 +26,7 @@ public class ResultsHandler {
 	int humansMovementAllaowence = 0;
 	int flameSpreadTimer = 5;
 	
-	double initialPanicChance;
+	float initialPanicChance;
 	
 	HumanHandler humanHandler;
 	
@@ -38,13 +38,13 @@ public class ResultsHandler {
 						
 		// The probability the humans have family members on board the ship
 		double chanceOfFamily = 1.0;
-		initialPanicChance = 0.01;
+		initialPanicChance = (float) 0.001;
 		
 		// Get the location of all humans in the graph
 		humanHandler = new HumanHandler();
 
 		List<Human> humans = new ArrayList<Human>(humanHandler.createHumans(numberOfPassangers));
-		humanHandler.createFamilyTies(chanceOfFamily, humans);
+		//humanHandler.createFamilyTies(chanceOfFamily, humans);
 		
 		List<Node> exits = new ArrayList<Node>();
 		for(Iterator<Node> it = graph.iterator(); it.hasNext();)
@@ -84,7 +84,7 @@ public class ResultsHandler {
 		writer.close();
 		
 		for(Human h : humans){
-			System.out.println("Human: " + h.getHumanID() + " is at node: " + h.getNode().getID());
+			System.out.println("Human: " + h.getHumanID() + " is at node: " + h.getNode().getID() + " Known path size: "+h.getKnownPathList().size());
 			
 		}
 		System.out.println("----------------------");
@@ -144,7 +144,7 @@ public class ResultsHandler {
 			
 			// Spreads fire randomly, but should random spread at a fixed speed and between floors
 			// randomSpreadFire(graph, chanceOfSpread, chanceOfDeath);
-			turnCounter ++;
+			turnCounter++;
 			resetNumber++;
 			// Every human does one move
 			
@@ -154,20 +154,23 @@ public class ResultsHandler {
 				
 				//counter++;
 				
-				if(counter > 1000)
+				if(h.isDead)
 				{
-					System.err.println("Kanskje det du ser etter?");
+					it.remove();
+					deadCounter++;
+					continue;
 				}
-				testIfHumanPanics(h, randomGenerator);
+				
+				//testIfHumanPanics(h, randomGenerator);
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped and is removed from the list of humans
 				if(exits.contains(h.getNode())){
-					//System.out.println("Human " + h.getHumanID() + " escaped(Djixsta)");
+					//System.out.println("Human " + h.getHumanID() + " escaped(Djixsta) " +turnCounter);
 					numberOfSurvivers++;
 					h.getNode().currentHumansInNode.remove(h);
 					it.remove();
 				}
-				/*else if(h.isPanicState())
+				else if(h.isPanicState())
 				{
 					movePanicedHuman(h);
 					
@@ -177,7 +180,7 @@ public class ResultsHandler {
 						deadCounter++;
 						it.remove();
 					}
-				}*/
+				}
 				else{
 					dijkstra.findPath(h.getNode());
 
@@ -199,6 +202,14 @@ public class ResultsHandler {
 					//h.setNode(shortestPath.get(1));
 					moveHuman(h, shortestPath, humans);
 					//System.out.println("Human " + h.getHumanID() + " moves to node " + h.getNode().getID());
+					
+					/*String s = "Dijxstra path: ";
+					
+					for(Node n : shortestPath)
+					{
+						s += Integer.toString(n.getID())+"-";
+					}
+					System.out.println(s);*/
 					
 					// Kills humans off, dead humans should add to the room capacity
 					if(h.getNode().getChanceOfDeath() > randomGenerator.nextDouble()){
@@ -243,7 +254,7 @@ public class ResultsHandler {
 	{
 		List<Human> humans = new ArrayList<Human>(startHumansACO);
 		
-		int howManyAnts = 100;
+		int howManyAnts = 50;
 		
 		AntColonyOptimizationController aco = new AntColonyOptimizationController(howManyAnts, graph);
 		int resetNumber = 0;
@@ -253,7 +264,7 @@ public class ResultsHandler {
 		
 		addLethalNodesToList();
 		
-		Random deathByFire = new Random();
+		Random randomGenerator = new Random();
 		
 		double numberOfSurvivers = 0;
 		double deadCounter = 0;
@@ -267,18 +278,39 @@ public class ResultsHandler {
 		// Calculate the path off the ship for each passenger
 		while(!humans.isEmpty())
 		{
-			resetNumber++;
+			
 			turnCounter++;
+			resetNumber++;
 			
 			for(Iterator<Human> it = humans.iterator(); it.hasNext(); ){
 				Human h = it.next();
 				
+				if(h.isDead)
+				{
+					it.remove();
+					deadCounter++;
+					continue;
+				}
+				
+				//testIfHumanPanics(h, randomGenerator);
+				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped
 				if(exits.contains(h.getNode())){
-					//System.out.println("Human " + h.getHumanID() + " escaped");
+					//System.out.println("Human " + h.getHumanID() + " escaped(ACO) "+turnCounter);
 					numberOfSurvivers++;
 					h.getNode().currentHumansInNode.remove(h);
 					it.remove();
+				}
+				else if(h.isPanicState())
+				{
+					movePanicedHuman(h);
+					
+					if(h.getNode().getChanceOfDeath() > randomGenerator.nextDouble()){
+						//System.out.println("Shit son, human: " + h.getHumanID() + " just burned to death");
+						h.getNode().currentHumansInNode.remove(h);
+						deadCounter++;
+						it.remove();
+					}
 				}
 				else
 				{
@@ -291,12 +323,20 @@ public class ResultsHandler {
 					//Do one step
 					//h.setNode(aco.bestPath.get(1));
 					moveHuman(h, aco.bestPath, humans);
+					aco.bestPath = null;
+					/*String s = "ACO path: ";
+					
+					for(Node n : aco.bestPath)
+					{
+						s += Integer.toString(n.getID())+"-";
+					}
+					System.out.println(s);*/
 					
 					//Prints what node the passenger was in and what node it is in now
 					//System.out.println("Human " + h.getHumanID() + " is trying to escape from node "+prevNode+" to node "+h.getNode().getID());
 					
 					// Kills humans off, dead humans should add to the room capacity
-					if(h.getNode().getChanceOfDeath() > deathByFire.nextDouble()){
+					if(h.getNode().getChanceOfDeath() > randomGenerator.nextDouble()){
 						//System.out.println("Shit son, human: " + h.getHumanID() + " just burned to death");
 						h.isDead = true;
 						h.getNode().currentHumansInNode.remove(h);
@@ -521,8 +561,8 @@ public class ResultsHandler {
 		
 		for(int i = 0; i<startHumansACO.size(); i++)
 		{
-			startHumansACO.get(i).setEscaped(false);
-			startHumansDjixstra.get(i).setEscaped(false);
+			startHumansACO.get(i).resetValues();
+			startHumansDjixstra.get(i).resetValues();
 		}
 	}
 	
@@ -580,17 +620,29 @@ public class ResultsHandler {
 			return;
 		}
 		
+		
+		if(h.getKnownPathList() == h.getNode())
 		h.removeNodeFromKnownPathToExit(h.getNode());
+		
+		if(h.getKnownPathList().isEmpty())
+		{
+			System.out.println("Nå skjer det en feil."+h.getHumanID());
+		}
 		
 		if(h.getKnownPathList().contains(h.getNode()))
 		{
 			int a = h.getKnownPathList().indexOf(h.getNode());
 			h.removePreviusNodesInList(a-1);
+			
+			if(h.getKnownPathList().isEmpty())
+			{
+				System.out.println("Nå skjer det en feil."+h.getHumanID());
+			}
+		
 		}
 		
-		h.moveHuman(h.getKnownPathList().get(0));
-		h.decreeseMovementAllowence();
 		
+		h.moveHuman(h.getKnownPathList().get(0));
 	}
 
 	private boolean testIfHumanPanics(Human h, Random randomGenerator)
@@ -598,16 +650,16 @@ public class ResultsHandler {
 		if(!h.isPanicState())
 		{
 			//Test to see if human gains panic
-			double panicChance = initialPanicChance;
+			float panicChance = initialPanicChance;
 			for(Human human : h.getNode().currentHumansInNode)
 			{
 				if(human.isPanicState())
 				{
-					panicChance+=0.1;
+					panicChance+=0.01;
 				}
 				else
 				{
-					panicChance-=0.05;
+					panicChance-=0.005;
 				}
 				
 				if(panicChance < 0)
@@ -616,42 +668,52 @@ public class ResultsHandler {
 				}
 			}
 			
-			if(panicChance > randomGenerator.nextDouble())
+			if(panicChance > randomGenerator.nextFloat())
 			{
 				h.setPanicState(true);
-				//System.out.println("Human panics");
+				//System.out.println("Human panics"+h.getHumanID());
 			}
 			
 		}
 		else
 		{
 			//Test to see if the human loses its panic
-			double panicChance = initialPanicChance+0.3;
+			double panicChance = initialPanicChance+0.1;
 			for(Human human : h.getNode().currentHumansInNode)
 			{
 				if(human.isPanicState())
 				{
-					panicChance+=0.1;
+					panicChance-=0.01;
 				}
 				else
 				{
-					panicChance-=0.05;
+					panicChance+=0.005;
 				}
 				
-				if(panicChance > 1)
+				if(panicChance > 0.2 || panicChance < 0)
 				{
-					panicChance = 0.9;
+					panicChance = 0.2;
 				}
 			}
 			
-			if(panicChance > randomGenerator.nextDouble())
+			if(panicChance > randomGenerator.nextFloat())
 			{
 				h.setPanicState(false);
-				//System.out.println("Human comes out of pannic");
+				//System.out.println("Human comes out of panic"+h.getHumanID());
 			}
 		}
 		
 		return h.isPanicState();
+	}
+	
+	private List<Node> findBestPathDjixstra(Map<Double, List<Node>> listOfLists, boolean seaftyFirst)
+	{
+		if(seaftyFirst)
+		{
+			
+		}
+		
+		return null;
 	}
 
 

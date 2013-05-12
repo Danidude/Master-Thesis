@@ -4,7 +4,7 @@ import java.util.Random;
 
 
 public class Node implements Comparable<Node> {
-	public enum NodeType { STAIRS, GUESTROOM, HALLWAY, DININGROOM, GAMEROOM, SHOP }
+	public enum NodeType { STAIRS, GUESTROOM, HALLWAY, DININGROOM, GAMEROOM, SHOP, EXERCISEROOM, MASSAGEROOM, HOTTUBROOM, GUESTRELATIONS, LIBRARY,  }
 	private double chanceOfDeath;
 	public int capacity;
 	private NodeType nodeType;
@@ -30,7 +30,7 @@ public class Node implements Comparable<Node> {
 		isExit = false;
 		chanceOfDeath = 0.0;
 		capacity = 10;
-		movementAllowenceNeeded = 10;
+		movementAllowenceNeeded = 8;
 	}
 	
 	public Node(){
@@ -73,6 +73,9 @@ public class Node implements Comparable<Node> {
 	}
 	public void testOverCapacityInNode()
 	{
+		if(isExit)
+			return;
+		int numberOfLiving = currentHumansInNode.size();
 		Random deathRandom = new Random();
 		for(Iterator<Human> it = currentHumansInNode.iterator(); it.hasNext();)
 		{
@@ -81,8 +84,9 @@ public class Node implements Comparable<Node> {
 			if(chanceOfDeath+(currentHumansInNode.size()/200) > deathRandom.nextDouble())
 			{
 				h.isDead = true;
-				currentHumansInNode.remove(h);
-				if(currentHumansInNode.size() <= capacity)
+				numberOfLiving--;
+				it.remove();
+				if(numberOfLiving <= capacity)
 				{
 					return;
 				}
