@@ -19,7 +19,7 @@
 \label{fig:simple}
 \end{figure}
 
-The ships are modeled as graphs, nodes represents rooms and lines represents passages between rooms. Small rooms are represented by a single node as the layout of the room is fairly simplistic and the time it takes to move across the room is fairly predictable as long as the room is not crowded. Figure \ref{fig:rooms} shows a section of a ship deck with several rooms leading out into a hallway connected to a set of stairs. Figure \ref{fig:simple} shows a graph representing the same section. It is worth noting that while small rooms can be represented with a single node the hallway is represented by multiple nodes as a passenger exiting room 419 is far away from a passenger exiting room 401.
+The ships are created from blueprints from ships currently in operation. They are modeled as graphs, nodes represents rooms and lines represents passages between rooms. Small rooms are represented by a single node as the layout of the room is fairly simplistic and the time it takes to move across the room is fairly predictable as long as the room is not crowded. Figure \ref{fig:rooms} shows a section of a ship deck with several rooms leading out into a hallway connected to a set of stairs. Figure \ref{fig:simple} shows a graph representing the same section. It is worth noting that while small rooms can be represented with a single node the hallway is represented by multiple nodes as a passenger exiting room 419 is far away from a passenger exiting room 401.
 
 Complex or large rooms are represented by multiple interconnected nodes so each part of the room can be individually configured to better represent the room. Rooms like the dining room in the MS Reflection, as seen in figure \ref{fig:dining}, would need several nodes as the time it takes for the people close to the exit to evacuate are vastly different from the time it takes for the people sitting in the middle of the room to evacuate. Figure \ref{fig:complex} shows a representation of the dining room. 
 
@@ -39,7 +39,7 @@ All rooms have a few characteristics associated with them. First is the room cap
 \label{fig:complex}
 \end{figure}
 
-The ships are modeled after blueprints from ships currently in operation. It became clear to us that using pathfinding algorithms to find the shortest route of small vessels were unnecessary as  there often would be only a single route to take and all passengers would be confined to one or two large areas where personnel easily could guide the passengers to safety. The algorithms are only helpful given multiple routes and rooms. We started off modeling on of the smaller cruise ships, MS Xpedition, and then went on to model larger vessels.
+It became clear to us that using pathfinding algorithms to find the shortest route of small vessels were unnecessary as  there often would be only a single route to take and all passengers would be confined to one or two large areas where personnel easily could guide the passengers to safety. The algorithms are only helpful given multiple routes and rooms. We started off modeling one of the smaller cruise ships, MS Xpedition, and then went on to model larger vessels.
 
 % Fire spreads based on
 
