@@ -30,6 +30,8 @@ public class HumanHandler {
 		for(Human h : humans){
 			h.setNode(graph.get(randomPlace.nextInt(graph.size()-1)));
 			
+			h.setStartMovementInCurrentNode(randomPlace.nextInt(movementAllowenceOnHumans));
+			
 			h.getNode().currentHumansInNode.add(h);
 			
 			Dijkstra dijkstra = new Dijkstra();

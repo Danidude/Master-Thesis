@@ -36,37 +36,49 @@ public class Run {
 		
 		int acoSurv = 0;
 		
-		int numberOfPassangers = 100;
+		int numberOfPassangers = 140;
 		
 		int numberOfRepetitions = 200;
+		
+		int flameSpreadTimer = 1;
+		int howManyAnts = 50;
 		
 		String fileName = "test en.";
 		
 		
 		Random rand = new Random();
-		int leathalStartNode;
+		ArrayList<Integer> leathalStartNodes = new ArrayList<Integer>();
+		int leathalStartNode = 0;
 		
 		//Kjører ACO og djixstra simuleringen.
-		ResultsHandler results = new ResultsHandler(graph, fileName, numberOfPassangers);
+		ResultsHandler results = new ResultsHandler(graph, fileName, numberOfPassangers, flameSpreadTimer, howManyAnts);
 		int maxTurns = 0;
 		for(int i = 0; i<numberOfRepetitions; i++)
 		{
-			leathalStartNode = rand.nextInt(graph.size()-1);
+			int randomLethalNodes = rand.nextInt(2)+1;
+			for(int ij = 0; ij<randomLethalNodes; ij++)
+			{
+				leathalStartNode = rand.nextInt(graph.size()-1);
+				leathalStartNodes.add(leathalStartNode);
+			}
 			
-			//System.out.println("A Starting");
-			int b = results.runSimulationWithACO(graph, exits, fileName, leathalStartNode);
 			
-			//System.out.println("D Starting");
-			int a = results.runSimulation(exits, fileName, leathalStartNode);
+			System.out.println("A Starting");
+			int b = results.runSimulationWithACO(graph, exits, fileName, leathalStartNodes);
+			
+			System.out.println("D Starting");
+			int a = results.runSimulation(exits, fileName, leathalStartNodes);
 			
 			maxTurns = returnTheBiggest(a, b, maxTurns);
 			
 			results.replaceHumans(s.exits);
-			results.resetPheremones(edges);
+			results.resetPheremones(edges, true);
+			
+			leathalStartNodes.clear();
 			
 			double prosnet = ((double)i*100)/(double)numberOfRepetitions;
 			
-			if(prosnet%5 == 0)
+			if(prosnet%2 == 0)
 			System.out.println(prosnet+"% done.");
 			
 			
@@ -79,7 +91,9 @@ public class Run {
 		System.out.println();
 		System.out.println("Dijistra survivers: "+djixSurv+" ACO survivers: "+acoSurv);*/
 		
-		dataPresenter dp = new dataPresenter(numberOfRepetitions, fileName, maxTurns);
+		String imageFileName = "Passangers-"+numberOfPassangers+" Repetitoins-"+numberOfRepetitions+" FireSpreadTime-"+flameSpreadTimer+" HowManyAnts-"+howManyAnts;
+		
+		dataPresenter dp = new dataPresenter(numberOfRepetitions, fileName, maxTurns, imageFileName);
 		
 		dp.crateGraph();
 		

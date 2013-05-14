@@ -9,16 +9,19 @@ public class AntColonyOptimizationController {
 	List<Node> bestPath;
 	Ant ant;
 	double evaporationRate = 0.5;
+	int humanID;
 	
-	public AntColonyOptimizationController(int howManyAnts, List<Node> nodes)
+	public AntColonyOptimizationController(int howManyAnts, List<Node> nodes, List<Edge> edges)
 	{
 		this.nodes = nodes;
 		numberOfAnts = howManyAnts;
+		this.edges = edges;
 	}
 	
-	public void changeCurrentNode(Node newNode)
+	public void changeCurrentNode(Node newNode, int humanID)
 	{
 		currentNode = newNode;
+		this.humanID = humanID;
 		if(currentNode.isExit())
 		{
 			//Tell the system the passanger is safe
@@ -37,10 +40,16 @@ public class AntColonyOptimizationController {
 				{
 					ant.reset();
 					counter = 0;
+					
 				}
-				else if(counter > 100)
+				else if(counter%500 == 0 && counter != 0)
 				{
-					//System.out.println("Somethings up.");
+					for(Edge e: edges)
+					{
+						e.setPheremonesForThatHuman(0, humanID);
+					}
+					ant.reset();
+					System.out.println("Reset pheremoes.");
 				}
 				
 				ant.chooseNextPath();
@@ -48,12 +57,15 @@ public class AntColonyOptimizationController {
 				counter++;
 			}
 			counter = 0;
-			ant.despencePheromones();
+			
+			double deadlyness = getHigestDeadlyness(ant.getPath());
+			
+			ant.despencePheromones(deadlyness);
 			checkSolutionLethalFirst(ant.getPath());
 			//checkSolutionShortestFirst(ant.getPath());
 			//shortestFirstFound(ant.getPath());
 			
-			if(i%5 == 0)
+			if(i%2 == 0)
 			{
 				Evaporate();
 			}
@@ -64,7 +76,7 @@ public class AntColonyOptimizationController {
 	
 	private void createAnt(Node startNode)
 	{
-		ant = new Ant(startNode);
+		ant = new Ant(startNode, humanID);
 		
 		//System.out.println("New ant");
 	}
@@ -192,8 +204,11 @@ public class AntColonyOptimizationController {
 		{
 			for(Edge e : n.getPaths())
 			{
-				e.addPheremones(-(e.getPheremones()*evaporationRate));
-				e.addPheremones(-e.getPheremones()*n.getChanceOfDeath());
+				e.addPheremonesForThatHuman(-(e.getPheremonesForThatHuman(humanID)*evaporationRate), humanID);
+				//e.addPheremones(-e.getPheremones()*evaporationRate);
+				
+				e.addPheremonesForThatHuman(-(e.getPheremonesForThatHuman(humanID)*(e.getNode().getChanceOfDeath())), humanID);
+				//e.addPheremones(-e.getPheremones()*n.getChanceOfDeath());
 			}
 		}
 	}
@@ -209,6 +224,19 @@ public class AntColonyOptimizationController {
 		{
 			bestPath = newPath;
 		}
+	}
+	
+	private double getHigestDeadlyness(List<Node> list)
+	{
+		double d = 0;
+		for(Node n : list)
+		{
+			if(n.getChanceOfDeath() > d)
+			{
+				d = n.getChanceOfDeath();
+			}
+		}
+		return d;
 	}
 	
 }
