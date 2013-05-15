@@ -6,23 +6,23 @@ import java.util.Map;
 public class Shipbuilder {
 	int nodeID = 0;
 	int edgeID = 0;
-	int roomFlowAwayFromExit = 5;
-	int hallwayFlowAwayFromExit = 5;
-	int diningFlowAwayFromExit = 5;
-	int stairFlowAwayFromExit = 5;
-	int doorFlowAwayFromExit = 5;
+	int roomFlowAwayFromExit = 12;
+	int hallwayFlowAwayFromExit = 12;
+	int diningFlowAwayFromExit = 12;
+	int stairFlowAwayFromExit = 12;
+	int doorFlowAwayFromExit = 12;
 	
-	int roomFlowNormal = 10;
-	int hallwayFlowNormal = 10;
-	int diningFlowNormal = 10;
-	int stairFlowNormal = 10;
-	int doorFlowNormal = 10;
+	int roomFlowNormal = 25;
+	int hallwayFlowNormal = 25;
+	int diningFlowNormal = 25;
+	int stairFlowNormal = 25;
+	int doorFlowNormal = 25;
 	
-	int roomFlowToExit = 15;
-	int hallwayFlowToExit = 15;
-	int diningFlowToExit = 15;
-	int stairFlowToExit = 15;
-	int doorFlowToExit = 15;
+	int roomFlowToExit = 50;
+	int hallwayFlowToExit = 50;
+	int diningFlowToExit = 50;
+	int stairFlowToExit = 50;
+	int doorFlowToExit = 50;
 	
 	Ship currentShip = null;
 	

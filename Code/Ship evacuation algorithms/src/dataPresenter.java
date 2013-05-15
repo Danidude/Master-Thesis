@@ -1,7 +1,18 @@
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.zip.DataFormatException;
+
+import javax.imageio.ImageIO;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -24,13 +35,15 @@ public class dataPresenter {
 	int howManyRepetitions;
 	String fileName;
 	int maxTurns;
+	String imageFileName;
 	
 	
-	public dataPresenter(int howManyRepetisions, String fileName, int maxTurns)
+	public dataPresenter(int howManyRepetisions, String fileName, int maxTurns, String imageFileName)
 	{
 		this.howManyRepetitions = howManyRepetisions;
 		this.fileName = fileName;
 		this.maxTurns = maxTurns;
+		this.imageFileName = imageFileName;
 	}
 	
 	public void readACOFile() throws IOException
@@ -133,10 +146,10 @@ public class dataPresenter {
 	
 	public void crateGraph() throws IOException
 	{
-		XYSeries survivedACO = new XYSeries("ACO Survivers");
-		XYSeries survivedDjix = new XYSeries("Djixstra Survivers");
-		XYSeries deadACO = new XYSeries("ACO dead");
-		XYSeries deaddDjix = new XYSeries("Djixstra dead");
+		XYSeries survivedACO = new XYSeries("ACO survivers");
+		XYSeries survivedDjix = new XYSeries("Dijkstra survivers");
+		XYSeries deadACO = new XYSeries("ACO passangers that had died");
+		XYSeries deaddDjix = new XYSeries("Dijkstra passangers that had died");
 		//XYSeries bruteForce = new XYSeries("Brute force");
 		
 		readACOFile();
@@ -164,6 +177,29 @@ public class dataPresenter {
 		frame.pack();
 		frame.setVisible(true);
 		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss");
+		Date date = new Date();
+		
+		String s = dateFormat.format(date);
+		
+		String[] sl = s.split("/");
+		
+		
+		
+		BufferedImage objBufferedImage=chart.createBufferedImage(1000,600);
+		ByteArrayOutputStream bas = new ByteArrayOutputStream();
+		        try {
+		            ImageIO.write(objBufferedImage, "png", bas);
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+
+		byte[] byteArray=bas.toByteArray();
+		
+		InputStream in = new ByteArrayInputStream(byteArray);
+		BufferedImage image = ImageIO.read(in);
+		File outputfile = new File("Data images\\"+imageFileName+" "+sl[0]+"-"+sl[1]+"-"+sl[2]+"-"+sl[3]+"-"+sl[4]+".png");
+		ImageIO.write(image, "png", outputfile);
 		
 	}
 	
@@ -258,5 +294,6 @@ public class dataPresenter {
 			stillRunningACO.put(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[2]));
 		}
 	}
+
 
 }

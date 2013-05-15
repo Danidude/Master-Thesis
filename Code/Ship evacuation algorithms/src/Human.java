@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class Human implements Cloneable {
@@ -23,10 +24,16 @@ public class Human implements Cloneable {
 		this.humanID = humanID;
 		this.escaped = escaped;
 		knownExitNode = new ArrayList<Node>();
+		
 		this.movementAllowence = movementAllowence;
 		movementInCurrentNode = 0;
 		finishedMoving = false;
 		isDead = false;
+	}
+	
+	public void setStartMovementInCurrentNode(int i)
+	{
+		movementInCurrentNode = i;
 	}
 	
 	public boolean isEscaped() {
@@ -124,7 +131,7 @@ public class Human implements Cloneable {
 			{
 				node.currentHumansInNode.remove(this);
 			}
-			node = n;
+			
 			
 			
 			if(!panicState)
@@ -133,11 +140,12 @@ public class Human implements Cloneable {
 			}
 			else
 			{
-				knownExitNode.remove(0);
+				knownExitNode.remove(node);
 				n.testOverCapacityInNode();
 			}
 			n.currentHumansInNode.add(this);
 			
+			node = n;
 			//movementAllowence -= 1;
 			movementInCurrentNode = 0;
 			return movementAllowence;

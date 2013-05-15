@@ -56,7 +56,16 @@ public class Dijkstra {
 			// Visit each edge connected to the current node 
 			for (Edge e : current.getPaths()){
 				Node destination = e.getNode();
-				int weight = e.getWeight();
+				double weight = e.getNode().getChanceOfDeath();
+				
+				if(weight == 0)
+				{
+					weight = 0.00001;
+				}
+				else
+				{
+					weight += 0.00001;
+				}
 
 				// Finds the shortest distance to the destination
 				double distance = current.minDistance + weight;
@@ -107,14 +116,23 @@ public class Dijkstra {
 		Map<Double, List<Node>> map = new HashMap<Double, List<Node>>();
 		for(Node n : exits){
 			List<Node> path = getShortestPath(n);
-			map.put(n.minDistance, path);
-
-			// Clears the nodes from data from the previous iteration
-			for(Node e : graph){
+			
+			
+			if(map.containsKey(n.minDistance) && map.get(n.minDistance).size() < path.size())
+			{
+				
+			}
+			else
+			{
+				map.put(n.minDistance, path);
+			}
+		}
+		// Clears the nodes from data from the previous iteration
+		for(Node e : graph)
+			{
 				e.previous = null;
 				e.minDistance = Double.POSITIVE_INFINITY;
 			}
-		}
 		return map;
 	}
 

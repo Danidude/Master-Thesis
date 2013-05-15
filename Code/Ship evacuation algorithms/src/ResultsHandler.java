@@ -25,16 +25,19 @@ public class ResultsHandler {
 	
 	int humansMovementAllaowence = 0;
 	int flameSpreadTimer = 5;
+	int howManyAnts = 200;
 	
 	float initialPanicChance;
 	
 	HumanHandler humanHandler;
 	
-	public ResultsHandler(List<Node> graph, String fileName, int numberOfPassangers) throws FileNotFoundException, UnsupportedEncodingException{
+	public ResultsHandler(List<Node> graph, String fileName, int numberOfPassangers, int flameSpeedTimer, int howManyAnts) throws FileNotFoundException, UnsupportedEncodingException{
 		
 		this.graph = graph;
 		listOfLethalNodes = new ArrayList<Node>();
 		flowOfEdges = new HashMap<Edge, Integer>();
+		this.flameSpreadTimer = flameSpeedTimer;
+		this.howManyAnts = howManyAnts;
 						
 		// The probability the humans have family members on board the ship
 		double chanceOfFamily = 1.0;
@@ -44,7 +47,7 @@ public class ResultsHandler {
 		humanHandler = new HumanHandler();
 
 		List<Human> humans = new ArrayList<Human>(humanHandler.createHumans(numberOfPassangers));
-		//humanHandler.createFamilyTies(chanceOfFamily, humans);
+		humanHandler.createFamilyTies(chanceOfFamily, humans);
 		
 		List<Node> exits = new ArrayList<Node>();
 		for(Iterator<Node> it = graph.iterator(); it.hasNext();)
@@ -109,12 +112,17 @@ public class ResultsHandler {
 	}
 
 	// The main function which controls the flow of the simulation
-	public int runSimulation(List<Node> exits, String fileName, int lethalStartNode) throws IOException{
+	public int runSimulation(List<Node> exits, String fileName, ArrayList<Integer> lethalStartNode) throws IOException{
 		
 		List<Human> humans = new ArrayList<Human>(startHumansDjixstra);
 		
 		resetLethalNodes();
-		graph.get(lethalStartNode).setChanceOfDeath(0.5);
+		
+		
+		for(Integer it : lethalStartNode)
+		{
+			graph.get(it).setChanceOfDeath(0.5);
+		}
 		
 		addLethalNodesToList();
 		
@@ -146,7 +154,12 @@ public class ResultsHandler {
 			// randomSpreadFire(graph, chanceOfSpread, chanceOfDeath);
 			turnCounter++;
 			resetNumber++;
-			// Every human does one move
+			
+			
+			if(turnCounter > 400)
+			{
+				System.out.println("Stand still?");
+			}
 			
 			
 			for(Iterator<Human> it = humans.iterator(); it.hasNext(); ){
@@ -161,7 +174,7 @@ public class ResultsHandler {
 					continue;
 				}
 				
-				//testIfHumanPanics(h, randomGenerator);
+				testIfHumanPanics(h, randomGenerator);
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped and is removed from the list of humans
 				if(exits.contains(h.getNode())){
@@ -182,13 +195,17 @@ public class ResultsHandler {
 					}
 				}
 				else{
-					dijkstra.findPath(h.getNode());
+					//dijkstra.findPath(h.getNode());
+					dijkstra.findSafestPath(h.getNode());
 
 					// Get the distance and path to all exits
 					Map<Double, List<Node>> path = dijkstra.getDistancePaths(exits, graph);
 
 					// Sort the paths based on the shortest distance
 					SortedSet<Double> keys = new TreeSet<Double>(path.keySet());
+					
+					
+					
 					List<Node> shortestPath = path.get(keys.first());
 					
 					// Prints the path to the exit for testing purposes
@@ -250,17 +267,22 @@ public class ResultsHandler {
 	
 	
 	//Runs the simulation and finding the exits using ACO instead of dijkstra's.
-	public int runSimulationWithACO(List<Node> graph, List<Node> exits, String fileName, int lethalStartNode) throws IOException
+	public int runSimulationWithACO(List<Node> graph, List<Node> exits, String fileName, ArrayList<Integer> lethalStartNode) throws IOException
 	{
 		List<Human> humans = new ArrayList<Human>(startHumansACO);
 		
-		int howManyAnts = 50;
 		
-		AntColonyOptimizationController aco = new AntColonyOptimizationController(howManyAnts, graph);
+		AntColonyOptimizationController aco = new AntColonyOptimizationController(howManyAnts, graph, edges);
 		int resetNumber = 0;
 		
 		resetLethalNodes();
-		graph.get(lethalStartNode).setChanceOfDeath(0.5);
+		
+		for(Integer it : lethalStartNode)
+		{
+			graph.get(it).setChanceOfDeath(0.5);
+		}
+		
+		
 		
 		addLethalNodesToList();
 		
@@ -282,6 +304,11 @@ public class ResultsHandler {
 			turnCounter++;
 			resetNumber++;
 			
+			if(turnCounter > 400)
+			{
+				System.out.println("Stand still?");
+			}
+			
 			for(Iterator<Human> it = humans.iterator(); it.hasNext(); ){
 				Human h = it.next();
 				
@@ -292,7 +319,7 @@ public class ResultsHandler {
 					continue;
 				}
 				
-				//testIfHumanPanics(h, randomGenerator);
+				testIfHumanPanics(h, randomGenerator);
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped
 				if(exits.contains(h.getNode())){
@@ -315,7 +342,7 @@ public class ResultsHandler {
 				else
 				{
 					//finds the way.
-					aco.changeCurrentNode(h.getNode());
+					aco.changeCurrentNode(h.getNode(), h.getHumanID());
 					aco.findWay();
 					
 					int prevNode = h.getNode().getID();
@@ -347,7 +374,7 @@ public class ResultsHandler {
 				}
 				
 			}
-			resetPheremones(edges);
+			resetPheremones(edges, false);
 			/*
 			 * Save the amount of surivers at this point
 			 * The amount that have yet to reach the exit
@@ -397,27 +424,6 @@ public class ResultsHandler {
 	
 	private void lehtalnessSpreading()
 	{
-		for(Node n : listOfLethalNodes)
-		{
-			if(n.getChanceOfDeath() >= 1)
-			{
-				n.setChanceOfDeath(1);
-			}
-			else if(n.getChanceOfDeath() >= 0.6)
-			{
-				n.setChanceOfDeath(n.getChanceOfDeath()+0.20);
-			}
-			else if(n.getChanceOfDeath() >= 0.2)
-			{
-				n.setChanceOfDeath(n.getChanceOfDeath() + 0.10);
-			}
-			else
-			{
-				n.setChanceOfDeath(n.getChanceOfDeath()+0.05);
-			}
-			
-		}
-		
 		List<Node> tempList = new ArrayList<Node>();
 		for(Node n : listOfLethalNodes)
 		{
@@ -427,7 +433,7 @@ public class ResultsHandler {
 				{
 					if(!listOfLethalNodes.contains(e.getNode()))
 					{
-						e.getNode().setChanceOfDeath(e.getNode().getChanceOfDeath()+0.05);
+						e.getNode().setChanceOfDeath(e.getNode().getChanceOfDeath()+0.09);
 						tempList.add(e.getNode());
 					}
 					
@@ -435,6 +441,39 @@ public class ResultsHandler {
 			}
 		}
 		listOfLethalNodes.addAll(tempList);
+		
+		for(Node n : listOfLethalNodes)
+		{
+			if(n.getChanceOfDeath() >= 1)
+			{
+				n.setChanceOfDeath(1);
+				for(Edge e : n.getPaths())
+				{
+					if(!listOfLethalNodes.contains(e.getNode()))
+					{
+						e.getNode().setChanceOfDeath(e.getNode().getChanceOfDeath()+0.2);
+					}
+					
+				}
+			}
+			else if(n.getChanceOfDeath() >= 0.6)
+			{
+				n.setChanceOfDeath(n.getChanceOfDeath()+0.10);
+				for(Edge e : n.getPaths())
+				{
+					if(!listOfLethalNodes.contains(e.getNode()))
+					{
+						e.getNode().setChanceOfDeath(e.getNode().getChanceOfDeath()+0.05);
+					}
+					
+				}
+			}
+			else
+			{
+				n.setChanceOfDeath(n.getChanceOfDeath() + 0.01);
+			}
+			
+		}
 	}
 	
 	/*
@@ -481,6 +520,11 @@ public class ResultsHandler {
 		}
 		
 		int prevNode = currentHuman.getNode().getID();
+		
+		if(path.size() < 2)
+		{
+			System.out.println("Path less then one");
+		}
 		
 		Edge e = findEdgeToNode(path.get(0), path.get(1));
 		
@@ -549,6 +593,7 @@ public class ResultsHandler {
 		for(Human h : list)
 		{
 			Human h2 = new Human(h.getFamiliarTies(), false, h.getNode(), h.getHumanID(), h.isEscaped(), h.getMovementAllowence());
+			h2.setKnownPathToExit(h.getKnownPathList());
 			clone.add(h2);
 		}
 		return clone;
@@ -587,11 +632,13 @@ public class ResultsHandler {
 		}
 	}
 	
-	public void resetPheremones(List<Edge> list)
+	public void resetPheremones(List<Edge> list, boolean forAllHumans)
 	{
 		for(Edge e : list)
 		{
-			e.setPheremones(0);
+			//e.setPheremones(0);
+			if(forAllHumans)
+			e.resetPheremonesForEachHuman();
 		}
 	}
 
@@ -621,7 +668,7 @@ public class ResultsHandler {
 		}
 		
 		
-		if(h.getKnownPathList() == h.getNode())
+		/*if(h.getKnownPathList() == h.getNode())
 		h.removeNodeFromKnownPathToExit(h.getNode());
 		
 		if(h.getKnownPathList().isEmpty())
@@ -639,10 +686,19 @@ public class ResultsHandler {
 				System.out.println("Nå skjer det en feil."+h.getHumanID());
 			}
 		
+		}*/
+		
+		if(h.getNode() == h.getKnownPathList().get(0))
+		{
+			h.moveHuman(h.getKnownPathList().get(1));
+		}
+		else
+		{
+			h.moveHuman(h.getKnownPathList().get(0));
 		}
 		
 		
-		h.moveHuman(h.getKnownPathList().get(0));
+		
 	}
 
 	private boolean testIfHumanPanics(Human h, Random randomGenerator)
