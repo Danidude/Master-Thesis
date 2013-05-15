@@ -1,9 +1,14 @@
 \chapter{Solution}
 \label{ch:solution}
 
+\section{Requirements}
 
+The requirements in this project were to create a dynamic crisis environment and to discover whether ant colony optimization would perform better than Dijsktra's pathfinding algorithm in this environment. 
+% Ship - Fire - Behavior
 
-\section{Ship Model}
+\section{Implementation}
+
+\subsection{Ship Model}
 
 \begin{figure} [h]
 \centering
@@ -41,7 +46,7 @@ All rooms have a few characteristics associated with them. First is the room cap
 
 It became clear to us that using pathfinding algorithms to find the shortest route of small vessels were unnecessary as  there often would be only a single route to take and all passengers would be confined to one or two large areas where personnel easily could guide the passengers to safety. The algorithms are only helpful given multiple routes and rooms. 
 
-\section{Human Behavior}
+\subsection{Human Behavior}
 
 % Varying chance of panic
 
@@ -51,7 +56,7 @@ Passengers with family members onboard the ship can enter a search state where t
 
 Furthermore, family members will stick together and the algorithms will make no attempts to split up a family and send them in multiple directions. Thus whenever a passenger is moved the program checks if a family member is close-by, and if so they are moved in the same direction.
 
-\section{Algorithm implementation}
+\subsection{Algorithms}
 The simulation starts by igniting between one and three fires. There is a time delay between the time the fire starts and the time the passengers begins to move. This delay is ment to account for the time it takes to react to the alarm, retrieve the smart phone and understand the directions given. Fires spreads faster between floors than along them. The speed of the fire depends on the ship materials and access to oxygen, thus we run the simulations with varying speeds to observe how the algorithms perform. The larger the fire is, the faster it spreads to the neighbouring nodes. Additionally deadly smoke will spread further and faster than the fires. 
 
 When the fire starts either the fire system is able to track the position of the fire or the electric system have been compromised and the ship is in a dead ship condition where tracking the progress of the fire is impossible. If there are no information about the location of the fire then the safest possible route is likely the quickest one. Thus we decided upon 5 different possible configurations of the algorithms, to test if different configurations perform better in different scenarios. First they can prioritize distance and selecting the shortest path. Second they can prioritize safety and completely ignore the distance to the exit. Third it can combine the two variables, valuing them equally or differently. 
