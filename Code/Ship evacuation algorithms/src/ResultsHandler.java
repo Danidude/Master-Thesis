@@ -257,7 +257,7 @@ public class ResultsHandler {
 			{
 				
 				resetNumber = 0;
-				lehtalnessSpreading();
+				//lehtalnessSpreading();
 			}
 		}
 		
@@ -390,7 +390,7 @@ public class ResultsHandler {
 			{
 				
 				resetNumber = 0;
-				lehtalnessSpreading();
+				//lehtalnessSpreading();
 			}
 			
 		}
