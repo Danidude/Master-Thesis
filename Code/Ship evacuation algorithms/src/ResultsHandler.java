@@ -195,8 +195,8 @@ public class ResultsHandler {
 					}
 				}
 				else{
-					//dijkstra.findPath(h.getNode());
-					dijkstra.findSafestPath(h.getNode());
+					dijkstra.findPath(h.getNode());
+					//dijkstra.findSafestPath(h.getNode());
 
 					// Get the distance and path to all exits
 					Map<Double, List<Node>> path = dijkstra.getDistancePaths(exits, graph);
@@ -440,13 +440,40 @@ public class ResultsHandler {
 				}
 			}
 		}
-		listOfLethalNodes.addAll(tempList);
 		
 		for(Node n : listOfLethalNodes)
 		{
 			if(n.getChanceOfDeath() >= 1)
 			{
 				n.setChanceOfDeath(1);
+				
+				n.lethalNessTimeCounter++;
+				if(n.lethalNessTimeCounter > 2 && !n.haveSartetFireUpstairs && !n.nodesUpstairs.isEmpty())
+				{
+					for(Node n2 : n.nodesUpstairs)
+					{
+						if(n2.getChanceOfDeath() == 0)
+						{
+							n2.setChanceOfDeath(n2.getChanceOfDeath()+0.3);
+							tempList.add(n2);
+						}
+						
+					}
+					n.haveSartetFireUpstairs = true;
+				}
+				else if(n.haveSartetFireUpstairs)
+				{
+					for(Node n2 : n.nodesUpstairs)
+					{
+						if(n2.getChanceOfDeath() <= 1)
+						n2.setChanceOfDeath(n2.getChanceOfDeath()+0.3);
+					}
+				}
+				
+				
+				
+				
+				
 				for(Edge e : n.getPaths())
 				{
 					if(!listOfLethalNodes.contains(e.getNode()))
@@ -459,6 +486,34 @@ public class ResultsHandler {
 			else if(n.getChanceOfDeath() >= 0.6)
 			{
 				n.setChanceOfDeath(n.getChanceOfDeath()+0.10);
+				n.lethalNessTimeCounter++;
+				if(n.lethalNessTimeCounter > 5 && !n.haveSartetFireUpstairs && !n.nodesUpstairs.isEmpty())
+				{
+					for(Node n2 : n.nodesUpstairs)
+					{
+						if(n2.getChanceOfDeath() == 0)
+						{
+							n2.setChanceOfDeath(n2.getChanceOfDeath()+0.3);
+							tempList.add(n2);
+						}
+					}
+					n.haveSartetFireUpstairs = true;
+				}
+				else if(n.haveSartetFireUpstairs)
+				{
+					
+					for(Node n2 : n.nodesUpstairs)
+					{
+						if(n2.getChanceOfDeath() <= 1)
+						n2.setChanceOfDeath(n2.getChanceOfDeath()+0.3);
+					}
+					
+				}
+				
+				
+				
+				
+				
 				for(Edge e : n.getPaths())
 				{
 					if(!listOfLethalNodes.contains(e.getNode()))
@@ -474,6 +529,8 @@ public class ResultsHandler {
 			}
 			
 		}
+		
+		listOfLethalNodes.addAll(tempList);
 	}
 	
 	/*
@@ -616,6 +673,8 @@ public class ResultsHandler {
 		for(Node n : listOfLethalNodes)
 		{
 			n.setChanceOfDeath(0);
+			n.haveSartetFireUpstairs = false;
+			n.lethalNessTimeCounter = 0;
 		}
 		
 		listOfLethalNodes.removeAll(listOfLethalNodes);
@@ -644,6 +703,8 @@ public class ResultsHandler {
 
 	private Edge findEdgeToNode(Node from, Node to)
 	{
+		
+		
 		for(int i = 0; i<from.getPaths().size(); i++)
 		{
 			if(from.getPaths().get(i).getNode() == to)
@@ -651,7 +712,8 @@ public class ResultsHandler {
 				return from.getPaths().get(i);
 			}
 		}
-		System.err.println("Error: did not find correct edge from a node. ResultsHandler moveHuman.");
+		System.err.println("Error: did not find correct edge from a node. ResultsHandler moveHuman."+from.getID()+"-"+to.getID());
+		//findEdgeToNode(from, to);
 		return null;
 	}
 	

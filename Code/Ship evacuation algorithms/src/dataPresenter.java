@@ -177,16 +177,16 @@ public class dataPresenter {
 		frame.pack();
 		frame.setVisible(true);
 		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss");
+		/*DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss");
 		Date date = new Date();
 		
 		String s = dateFormat.format(date);
 		
-		String[] sl = s.split("/");
+		String[] sl = s.split("/");*/
 		
 		
 		
-		BufferedImage objBufferedImage=chart.createBufferedImage(1000,600);
+		BufferedImage objBufferedImage=chart.createBufferedImage(1920,1080);
 		ByteArrayOutputStream bas = new ByteArrayOutputStream();
 		        try {
 		            ImageIO.write(objBufferedImage, "png", bas);
@@ -198,7 +198,7 @@ public class dataPresenter {
 		
 		InputStream in = new ByteArrayInputStream(byteArray);
 		BufferedImage image = ImageIO.read(in);
-		File outputfile = new File("Data images\\"+imageFileName+" "+sl[0]+"-"+sl[1]+"-"+sl[2]+"-"+sl[3]+"-"+sl[4]+".png");
+		File outputfile = new File("Data images\\"+fileName+".png");
 		ImageIO.write(image, "png", outputfile);
 		
 	}

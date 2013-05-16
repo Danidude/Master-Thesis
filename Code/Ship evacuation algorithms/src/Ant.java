@@ -124,6 +124,25 @@ public class Ant {
 	
 	private void setNewCurrentNode(Node newNode)
 	{
+		/*if(nodePath.contains(newNode))
+		{
+			int a = nodePath.lastIndexOf(newNode);
+			for(int i = a; i<=nodePath.size(); i++)
+			{
+				nodePath.
+			}
+			
+			List<Node> tempList = new ArrayList<Node>();
+			
+			tempList = nodePath.subList(0, a);
+			
+			nodePath = tempList;
+			currentNode = newNode;
+			return;
+			
+		}*/
+		
+		
 		currentNode = newNode;
 		nodePath.add(newNode);
 	}
@@ -134,5 +153,35 @@ public class Ant {
 		nodePath = new ArrayList<Node>();
 		edgesTaken = new ArrayList<Edge>();
 		nodePath.add(currentNode);
+	}
+	
+	public void rebuildPath()
+	{
+		Node prevNode = null;
+		boolean notFirst = true;
+ 		ArrayList<Edge> tempList = new ArrayList<Edge>();
+		for(Node n : nodePath)
+		{
+			 
+			if(notFirst)
+			{
+				prevNode = n;
+				notFirst = false;
+			}
+			else
+			{
+				for(Edge e : prevNode.getPaths())
+				{
+					if(e.getNode() == n)
+					{
+						tempList.add(e);
+					}
+				}
+				
+			}
+			prevNode = n;
+		}
+		
+		edgesTaken = tempList;
 	}
 }

@@ -18,6 +18,9 @@ public class Node implements Comparable<Node> {
 	public double minDistance = Double.POSITIVE_INFINITY;	
 	public Node previous;
 	public int movementAllowenceNeeded;
+	public ArrayList<Node> nodesUpstairs;
+	public int lethalNessTimeCounter;
+	public boolean haveSartetFireUpstairs;
 	
 	public Node(int NodeID, NodeType nt, int cap, int fNumber)
 	{
@@ -31,6 +34,11 @@ public class Node implements Comparable<Node> {
 		chanceOfDeath = 0.0;
 		capacity = 10;
 		movementAllowenceNeeded = 8;
+		nodesUpstairs = new ArrayList<Node>();
+		lethalNessTimeCounter = 0;
+		haveSartetFireUpstairs = false;
+		
+		
 	}
 	
 	public Node(){

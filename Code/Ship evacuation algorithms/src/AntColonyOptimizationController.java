@@ -38,7 +38,7 @@ public class AntColonyOptimizationController {
 			{
 				if(counter > 5000)
 				{
-					ant.reset();
+					//ant.reset();
 					counter = 0;
 					
 				}
@@ -60,9 +60,11 @@ public class AntColonyOptimizationController {
 			
 			double deadlyness = getHigestDeadlyness(ant.getPath());
 			
+			ant.rebuildPath();
+			
 			ant.despencePheromones(deadlyness);
-			checkSolutionLethalFirst(ant.getPath());
-			//checkSolutionShortestFirst(ant.getPath());
+			//checkSolutionLethalFirst(ant.getPath());
+			checkSolutionShortestFirst(ant.getPath());
 			//shortestFirstFound(ant.getPath());
 			
 			if(i%2 == 0)

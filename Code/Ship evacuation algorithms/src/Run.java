@@ -1,5 +1,8 @@
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -36,14 +39,25 @@ public class Run {
 		
 		int acoSurv = 0;
 		
-		int numberOfPassangers = 140;
+		int numberOfPassangers = 120;
 		
 		int numberOfRepetitions = 200;
 		
 		int flameSpreadTimer = 1;
 		int howManyAnts = 50;
 		
-		String fileName = "test en.";
+		String fileName = "Safest";
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss");
+		Date date = new Date();
+		
+		String tempString = dateFormat.format(date);
+		
+		String[] sl = tempString.split("/");
+		
+		String imageFileName = "Passangers-"+numberOfPassangers+" Repetitoins-"+numberOfRepetitions+" FireSpreadTime-"+flameSpreadTimer+" HowManyAnts-"+howManyAnts;
+		
+		fileName += imageFileName+sl[0]+"-"+sl[1]+"-"+sl[2]+"-"+sl[3];
 		
 		
 		Random rand = new Random();
@@ -63,10 +77,10 @@ public class Run {
 			}
 			
 			
-			System.out.println("A Starting");
+			//System.out.println("A Starting");
 			int b = results.runSimulationWithACO(graph, exits, fileName, leathalStartNodes);
 			
-			System.out.println("D Starting");
+			//System.out.println("D Starting");
 			int a = results.runSimulation(exits, fileName, leathalStartNodes);
 			
 			maxTurns = returnTheBiggest(a, b, maxTurns);
@@ -91,7 +105,7 @@ public class Run {
 		System.out.println();
 		System.out.println("Dijistra survivers: "+djixSurv+" ACO survivers: "+acoSurv);*/
 		
-		String imageFileName = "Passangers-"+numberOfPassangers+" Repetitoins-"+numberOfRepetitions+" FireSpreadTime-"+flameSpreadTimer+" HowManyAnts-"+howManyAnts;
+		//String imageFileName = "Passangers-"+numberOfPassangers+" Repetitoins-"+numberOfRepetitions+" FireSpreadTime-"+flameSpreadTimer+" HowManyAnts-"+howManyAnts;
 		
 		dataPresenter dp = new dataPresenter(numberOfRepetitions, fileName, maxTurns, imageFileName);
 		
