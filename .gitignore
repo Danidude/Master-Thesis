@@ -2,6 +2,8 @@
 .project
 .metadata
 bin/**
+ACO/
+Djixstra/
 tmp/**
 tmp/**/*
 *.tmp
