@@ -1,6 +1,0 @@
-ACO data:
-Turn number		Number of passangers in total		Passangers still living		Dead Passangers		Passangers that have survived
-0			6					6				0			0
-1			6					4				2			3
-2			6					4				2			3
-3			6					4				2			4
