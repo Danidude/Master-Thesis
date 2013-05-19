@@ -8,16 +8,18 @@ public class Ant {
 	private List<Node> nodePath;
 	private List<Edge> edgesTaken;
 	private Node currentNode;
-	private int pheromones = 40;
+	private int pheromones = 100;
 	private int humanID;
+	private boolean pheremonsFromEdge;
 	
-	public Ant(Node startNode, int humanID)
+	public Ant(Node startNode, int humanID, boolean pheremonsFromEdge)
 	{
 		currentNode  = startNode;
 		nodePath = new ArrayList<Node>();
 		edgesTaken = new ArrayList<Edge>();
 		nodePath.add(currentNode);
 		this.humanID = humanID;
+		this.pheremonsFromEdge = pheremonsFromEdge;
 	}
 	
 	public void addNodeToList(Node n)
@@ -25,10 +27,20 @@ public class Ant {
 		nodePath.add(n);
 	}
 	
+	public int getHumanID()
+	{
+		return humanID;
+	}
+	
 	public Node chooseNextPath()
 	{
 		List<Edge> tempList = new ArrayList<Edge>();
 		List<Edge> listOfPaths = new ArrayList<Edge>(currentNode.getPaths());
+		
+		if(currentNode.isExit())
+		{
+			return currentNode;
+		}
 		
 		for(Edge e : currentNode.getPaths())
 		{
@@ -49,8 +61,13 @@ public class Ant {
 		float totalPheremonesAndAtracctiveness = 0;
 		for (Edge e : listOfPaths) 
 		{
-			totalPheremonesAndAtracctiveness += e.getPheremonesAndAttractivenessForThatHuman(humanID);
+			totalPheremonesAndAtracctiveness += e.getPheremonesAndAttractivenessForThatHuman(humanID, pheremonsFromEdge);
 			//totalPheremonesAndAtracctiveness += e.getPheremonesAndAttractiveness();
+			
+			if(e.getPheremonesForThatHuman(humanID, pheremonsFromEdge)<0)
+			{
+				System.out.println("Edges get negative pheremones"+e.getPheremonesForThatHuman(humanID, pheremonsFromEdge));
+			}
 		}
 		
 		float chosenPath;
@@ -65,7 +82,7 @@ public class Ant {
 		float sum = 0;
 		for (Edge e : listOfPaths)
 		{
-			sum += e.getPheremonesAndAttractivenessForThatHuman(humanID);
+			sum += e.getPheremonesAndAttractivenessForThatHuman(humanID, pheremonsFromEdge);
 			//sum += e.getPheremonesAndAttractiveness();
 			if(chosenPath <= sum)
 			{
@@ -97,28 +114,38 @@ public class Ant {
 		pheromones = newPhermones;
 	}
 	
-	public void despencePheromones(double deadlyness)
+	public void despencePheromones(double deadlyness, double densety)
 	{
 		if(edgesTaken.size() == 0)
 		{
 			return;
 		}
-		int pher = pheromones/edgesTaken.size();
+		int pher = pheromones/howManyTurnsThePathTakes();
 		
-		pher -= pher*deadlyness;
-		
-		
-		if(pher == 0)
+		if(pher <= 1.0)
 		{
 			pher = 1;
 		}
+		
+		if(deadlyness > 1.0)
+		{
+			deadlyness = 1;
+		}
+		
+		pher -= pher*deadlyness;
+		
+		if(pher < 0.0)
+		{
+			System.out.println();
+		}
+		
 		
 		
 		
 		for(Edge e : edgesTaken)
 		{
 			//e.addPheremones(pher);
-			e.addPheremonesForThatHuman(pher, humanID);
+			e.addPheremonesForThatHuman(pher, humanID, pheremonsFromEdge);
 		}
 	}
 	
@@ -183,5 +210,21 @@ public class Ant {
 		}
 		
 		edgesTaken = tempList;
+	}
+	
+	public List<Edge> getEdgesTaken()
+	{
+		return edgesTaken;
+	}
+	
+	private int howManyTurnsThePathTakes()
+	{
+		int turns = 1;
+		for(Edge e: edgesTaken)
+		{
+			turns += e.getWeight();
+		}
+		
+		return turns;
 	}
 }

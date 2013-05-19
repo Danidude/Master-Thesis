@@ -23,6 +23,8 @@ public class ResultsHandler {
 	List<Node> listOfLethalNodes;
 	List<Edge> edges;
 	
+	boolean pheremonsFromEdge;
+	
 	int humansMovementAllaowence = 0;
 	int flameSpreadTimer = 5;
 	int howManyAnts = 200;
@@ -31,13 +33,14 @@ public class ResultsHandler {
 	
 	HumanHandler humanHandler;
 	
-	public ResultsHandler(List<Node> graph, String fileName, int numberOfPassangers, int flameSpeedTimer, int howManyAnts) throws FileNotFoundException, UnsupportedEncodingException{
+	public ResultsHandler(List<Node> graph, String fileName, int numberOfPassangers, int flameSpeedTimer, int howManyAnts, boolean pheremonsFromEdge) throws FileNotFoundException, UnsupportedEncodingException{
 		
 		this.graph = graph;
 		listOfLethalNodes = new ArrayList<Node>();
 		flowOfEdges = new HashMap<Edge, Integer>();
 		this.flameSpreadTimer = flameSpeedTimer;
 		this.howManyAnts = howManyAnts;
+		this.pheremonsFromEdge = pheremonsFromEdge;
 						
 		// The probability the humans have family members on board the ship
 		double chanceOfFamily = 1.0;
@@ -156,7 +159,7 @@ public class ResultsHandler {
 			resetNumber++;
 			
 			
-			if(turnCounter > 400)
+			if(turnCounter%5000 == 0 && turnCounter != 0)
 			{
 				System.out.println("Stand still?");
 			}
@@ -177,7 +180,7 @@ public class ResultsHandler {
 				testIfHumanPanics(h, randomGenerator);
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped and is removed from the list of humans
-				if(exits.contains(h.getNode())){
+				if(h.isEscaped()){
 					//System.out.println("Human " + h.getHumanID() + " escaped(Djixsta) " +turnCounter);
 					numberOfSurvivers++;
 					h.getNode().currentHumansInNode.remove(h);
@@ -217,7 +220,7 @@ public class ResultsHandler {
 					
 					// Do one step
 					//h.setNode(shortestPath.get(1));
-					moveHuman(h, shortestPath, humans);
+					moveHumans2(h, shortestPath, humans);
 					//System.out.println("Human " + h.getHumanID() + " moves to node " + h.getNode().getID());
 					
 					/*String s = "Dijxstra path: ";
@@ -257,7 +260,7 @@ public class ResultsHandler {
 			{
 				
 				resetNumber = 0;
-				//lehtalnessSpreading();
+				lehtalnessSpreading();
 			}
 		}
 		
@@ -272,7 +275,7 @@ public class ResultsHandler {
 		List<Human> humans = new ArrayList<Human>(startHumansACO);
 		
 		
-		AntColonyOptimizationController aco = new AntColonyOptimizationController(howManyAnts, graph, edges);
+		AntColonyOptimizationController aco = new AntColonyOptimizationController(howManyAnts, graph, edges, pheremonsFromEdge);
 		int resetNumber = 0;
 		
 		resetLethalNodes();
@@ -322,7 +325,7 @@ public class ResultsHandler {
 				testIfHumanPanics(h, randomGenerator);
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped
-				if(exits.contains(h.getNode())){
+				if(h.isEscaped()){
 					//System.out.println("Human " + h.getHumanID() + " escaped(ACO) "+turnCounter);
 					numberOfSurvivers++;
 					h.getNode().currentHumansInNode.remove(h);
@@ -349,7 +352,7 @@ public class ResultsHandler {
 					
 					//Do one step
 					//h.setNode(aco.bestPath.get(1));
-					moveHuman(h, aco.bestPath, humans);
+					moveHumans2(h, aco.bestPath, humans);
 					aco.bestPath = null;
 					/*String s = "ACO path: ";
 					
@@ -390,7 +393,7 @@ public class ResultsHandler {
 			{
 				
 				resetNumber = 0;
-				//lehtalnessSpreading();
+				lehtalnessSpreading();
 			}
 			
 		}
@@ -431,7 +434,7 @@ public class ResultsHandler {
 			{
 				for(Edge e : n.getPaths())
 				{
-					if(!listOfLethalNodes.contains(e.getNode()))
+					if(!listOfLethalNodes.contains(e.getNode()) && !e.getNode().isExit())
 					{
 						e.getNode().setChanceOfDeath(e.getNode().getChanceOfDeath()+0.09);
 						tempList.add(e.getNode());
@@ -452,7 +455,7 @@ public class ResultsHandler {
 				{
 					for(Node n2 : n.nodesUpstairs)
 					{
-						if(n2.getChanceOfDeath() == 0)
+						if(n2.getChanceOfDeath() == 0 && !n2.isExit())
 						{
 							n2.setChanceOfDeath(n2.getChanceOfDeath()+0.3);
 							tempList.add(n2);
@@ -491,9 +494,11 @@ public class ResultsHandler {
 				{
 					for(Node n2 : n.nodesUpstairs)
 					{
-						if(n2.getChanceOfDeath() == 0)
+						if(n2.getChanceOfDeath() == 0 && !n2.isExit())
 						{
 							n2.setChanceOfDeath(n2.getChanceOfDeath()+0.3);
+							
+							if(!listOfLethalNodes.contains(n2))
 							tempList.add(n2);
 						}
 					}
@@ -580,7 +585,17 @@ public class ResultsHandler {
 		
 		if(path.size() < 2)
 		{
-			System.out.println("Path less then one");
+			//System.out.println("Path less then one");
+			
+			if(path.get(0).isExit())
+			{
+				currentHuman.moveHuman(path.get(0));
+				return;
+			}
+		}
+		else
+		{
+			
 		}
 		
 		Edge e = findEdgeToNode(path.get(0), path.get(1));
@@ -634,14 +649,144 @@ public class ResultsHandler {
 		
 	}
 	
+	public void moveHumans2(Human currentHuman, List<Node> path, List<Human> huamns)
+	{
+		//Tests if the human may move
+		if(!testIfHumanMayMove(currentHuman))
+		{
+			return;
+		}
+		//checks the path size, if it is less then 2, then checks if the human is in an exit node
+		if(path.size() < 2)
+		{
+			if(path.get(0).isExit())
+			{
+				currentHuman.moveHuman(path.get(0));
+				return;
+			}
+			else
+			{
+				System.err.println("Error: Move human, path less then 1 and not in exit node");
+			}
+		}
+		
+		
+		ArrayList<Node> neighbourNodes = getNeighbourNodes(currentHuman.getNode());
+		ArrayList<Human> fameleyMembers = getFamelyMembersCloseTpCurrentHuman(currentHuman, huamns, neighbourNodes);
+		Node startNode = currentHuman.getNode();
+		
+		int lowestMovementSpeed = currentHuman.getMovementAllowence();
+		
+		if(fameleyMembers.isEmpty())
+		{
+			currentHuman.moveHuman(path.get(1));
+		}
+		else
+		{
+			for(Human h : fameleyMembers)
+			{
+				if(h.getNode() != startNode)
+				h.moveHuman(startNode);
+				
+				if(h.getMovementAllowence() < lowestMovementSpeed)
+				{
+					lowestMovementSpeed = h.getMovementAllowence();
+				}
+			}
+			
+			if(allFamelyAtSameNode(fameleyMembers, startNode))
+			{
+				currentHuman.setMovementAllowence(lowestMovementSpeed);
+				setMovementSpeedToHumans(fameleyMembers, lowestMovementSpeed);
+				
+				for(Human h: fameleyMembers)
+				{
+					h.moveHuman(path.get(1));
+				}
+				
+				currentHuman.moveHuman(path.get(1));
+			}
+			
+		}
+		
+	}
+	
+	private void setMovementSpeedToHumans(ArrayList<Human> list, int movementSpeed)
+	{
+		for(Human h : list)
+		{
+			h.setMovementAllowence(movementSpeed);
+		}
+	}
+	
+ 	private boolean allFamelyAtSameNode(ArrayList<Human> list, Node n)
+	{
+		for(Human h : list)
+		{
+			if(h.getNode() != n)
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	
+ 	private ArrayList<Human> getFamelyMembersCloseTpCurrentHuman(Human currentHuman, List<Human> huamns, List<Node> nodeList)
+	{
+		ArrayList<Human> tempList = new ArrayList<Human>();
+		ArrayList<Human> tempList2 = new ArrayList<Human>();
+		
+		for(Human h : huamns)
+		{
+			if(currentHuman.getFamiliarTies().contains(h.getHumanID()))
+			{
+				tempList.add(h);
+			}
+		}
+		
+		nodeList.add(currentHuman.getNode());
+		
+		for(Human h : tempList)
+		{
+			if(nodeList.contains(h.getNode()))
+			{
+				tempList2.add(h);
+			}
+		}
+		
+		return tempList2;
+	}
+	
+	private ArrayList<Node> getNeighbourNodes(Node n)
+	{
+		ArrayList<Node> tempList = new ArrayList<Node>();
+		for(Edge e: n.getPaths())
+		{
+			tempList.add(e.getNode());
+		}
+		return tempList;
+	}
+	
+	private boolean testIfHumanMayMove(Human currentHuman)
+	{
+		if(currentHuman.getMovementAllowence() > 0)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public void resetHumanMovementAllowence(List<Human> humans)
 	{
 		for(Human h : humans)
 		{
 			h.setMovementAllowence(humansMovementAllaowence);
 		}
-		
-		flowOfEdges.clear();
+		for(Edge e: edges)
+		{
+			e.resetCurrentFlow();
+		}
 	}
 	
 	private List<Human> cloneList(List<Human> list)
@@ -697,7 +842,7 @@ public class ResultsHandler {
 		{
 			//e.setPheremones(0);
 			if(forAllHumans)
-			e.resetPheremonesForEachHuman();
+			e.resetPheremonesForEachHuman(pheremonsFromEdge);
 		}
 	}
 
@@ -735,7 +880,7 @@ public class ResultsHandler {
 		
 		if(h.getKnownPathList().isEmpty())
 		{
-			System.out.println("Nå skjer det en feil."+h.getHumanID());
+			System.out.println("Nï¿½ skjer det en feil."+h.getHumanID());
 		}
 		
 		if(h.getKnownPathList().contains(h.getNode()))
@@ -745,12 +890,12 @@ public class ResultsHandler {
 			
 			if(h.getKnownPathList().isEmpty())
 			{
-				System.out.println("Nå skjer det en feil."+h.getHumanID());
+				System.out.println("Nï¿½ skjer det en feil."+h.getHumanID());
 			}
 		
 		}*/
 		
-		if(h.getNode() == h.getKnownPathList().get(0))
+		if(h.getNode() == h.getKnownPathList().get(0) && !h.getNode().isExit())
 		{
 			h.moveHuman(h.getKnownPathList().get(1));
 		}

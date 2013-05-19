@@ -27,7 +27,7 @@ public class Dijkstra {
 			// Visit each edge connected to the current node 
 			for (Edge e : current.getPaths()){
 				Node destination = e.getNode();
-				int weight = e.getWeight();
+				double weight = e.getWeight();
 
 				// Finds the shortest distance to the destination
 				double distance = current.minDistance + weight;

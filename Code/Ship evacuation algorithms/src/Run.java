@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 
 public class Run {
@@ -39,12 +40,16 @@ public class Run {
 		
 		int acoSurv = 0;
 		
-		int numberOfPassangers = 120;
+		int numberOfPassangers = 140;
 		
-		int numberOfRepetitions = 200;
+		int numberOfRepetitions = 30;
 		
-		int flameSpreadTimer = 1;
+		int timeForPassangersToExit = 650;
+		
+		int flameSpreadTimer = 2;
 		int howManyAnts = 50;
+		
+		boolean pheremonsFromEdge = false;
 		
 		String fileName = "Safest";
 		
@@ -64,24 +69,24 @@ public class Run {
 		ArrayList<Integer> leathalStartNodes = new ArrayList<Integer>();
 		int leathalStartNode = 0;
 		
-		//Kjører ACO og djixstra simuleringen.
-		ResultsHandler results = new ResultsHandler(graph, fileName, numberOfPassangers, flameSpreadTimer, howManyAnts);
+		setExitTime(exits, timeForPassangersToExit);
+		
+		//Kjï¿½rer ACO og djixstra simuleringen.
+		ResultsHandler results = new ResultsHandler(graph, fileName, numberOfPassangers, flameSpreadTimer, howManyAnts, pheremonsFromEdge);
 		int maxTurns = 0;
 		for(int i = 0; i<numberOfRepetitions; i++)
 		{
-			int randomLethalNodes = rand.nextInt(2)+1;
-			for(int ij = 0; ij<randomLethalNodes; ij++)
-			{
-				leathalStartNode = rand.nextInt(graph.size()-1);
-				leathalStartNodes.add(leathalStartNode);
-			}
 			
+				
+				leathalStartNodes = setStartLethalNodes(graph, exits);
+			
+			//System.out.println("D Starting");
+			int a = results.runSimulation(exits, fileName, leathalStartNodes);
 			
 			//System.out.println("A Starting");
 			int b = results.runSimulationWithACO(graph, exits, fileName, leathalStartNodes);
 			
-			//System.out.println("D Starting");
-			int a = results.runSimulation(exits, fileName, leathalStartNodes);
+			
 			
 			maxTurns = returnTheBiggest(a, b, maxTurns);
 			
@@ -144,6 +149,44 @@ public class Run {
 		else
 		{
 			return c;
+		}
+	}
+	
+	private static ArrayList<Integer> setStartLethalNodes(List<Node> graph, List<Node> exits)
+	{
+		Random rand = new Random();
+		int randomLethalNodes = rand.nextInt(2)+1;
+		ArrayList<Integer> lethalNodes = new ArrayList<Integer>();
+		for(int ij = 0; ij<randomLethalNodes; ij++)
+		{
+			int a = getLethalStartNode(graph, exits);
+			lethalNodes.add(a);
+		}
+			//leathalStartNode = rand.nextInt(graph.size()-1);
+			//leathalStartNodes.add(leathalStartNode);
+		
+		return lethalNodes;
+	}
+	
+	private static int getLethalStartNode(List<Node> graph, List<Node> exits)
+	{
+		Random rand = new Random();
+		int nodeID = rand.nextInt(graph.size()-1);
+		for(Node n:exits)
+		{
+			if(n.getID() == nodeID)
+			{
+				nodeID = getLethalStartNode( graph, exits);
+			}
+		}
+		return nodeID;
+	}
+	
+	private static void setExitTime(List<Node> exits, int time)
+	{
+		for(Node n : exits)
+		{
+			n.movementAllowenceNeeded = time;
 		}
 	}
 	

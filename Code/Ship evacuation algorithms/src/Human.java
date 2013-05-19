@@ -107,20 +107,70 @@ public class Human implements Cloneable {
 	 */
 	public int moveHuman(Node n)
 	{
-		
+		int tempMovementSpeed = movementAllowence;
 		if (n.movementAllowenceNeeded > movementInCurrentNode)
 		{
-			movementInCurrentNode += movementAllowence;
+			if(n.currentHumansInNode.size()/9 >= 3.5)
+			{
+				tempMovementSpeed = movementAllowence/12;
+			}
+			else if(n.currentHumansInNode.size()/9 >= 3.2)
+			{
+				tempMovementSpeed = movementAllowence/6;
+			}
+			else if(n.currentHumansInNode.size()/9 >= 1.9)
+			{
+				double a = (double)movementAllowence/1.8;
+				tempMovementSpeed = (int)a;
+			}
 			
-			movementAllowence = movementInCurrentNode - n.movementAllowenceNeeded;
 			
-			if (movementAllowence < 0) {
-				movementAllowence = 0;
+			movementInCurrentNode += tempMovementSpeed;
+			
+			tempMovementSpeed = movementInCurrentNode - n.movementAllowenceNeeded;
+			
+			if (tempMovementSpeed < 0) {
+				tempMovementSpeed = 0;
+			}
+			
+			if(n.currentHumansInNode.size()/9 >= 3.5)
+			{
+				movementAllowence = tempMovementSpeed*12;
+			}
+			else if(n.currentHumansInNode.size()/9 >= 3.2)
+			{
+				movementAllowence = tempMovementSpeed*6;
+			}
+			else if(n.currentHumansInNode.size()/9 >= 1.9)
+			{
+				double a = (double)tempMovementSpeed*1.8;
+				movementAllowence = (int)a;
+			}
+		}
+		boolean mayMoveToNextNode = false;
+		if(n.isExit() || n == node)
+		{
+			mayMoveToNextNode = true;
+		}
+		else
+		{
+			for(Edge e : node.getPaths())
+			{
+				if(e.getNode() == n)
+				{
+					e.incrementCurrentFlow();
+					mayMoveToNextNode = e.mayMoveToNextNode();
+				}
 			}
 		}
 		
-		if (movementInCurrentNode >= n.movementAllowenceNeeded)
+		if (movementInCurrentNode >= n.movementAllowenceNeeded && mayMoveToNextNode)
 		{
+			if(n.isExit())
+			{
+				escaped = true;
+				return 0;
+			}
 			
 			if(n.currentHumansInNode.size()>=n.capacity && !panicState)
 			{

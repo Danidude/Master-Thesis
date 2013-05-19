@@ -11,7 +11,7 @@ public class HumanHandler {
 
 	// The only family size there can be
 	int familySize = 3;
-	int movementAllowenceOnHumans = 4;
+	int movementAllowenceOnHumans = 120;
 	
 	// Creates a random number of humans with a "default setting" of non-panic, no relatives on board and unknown position on the ship
 	public List<Human> createHumans(int number){

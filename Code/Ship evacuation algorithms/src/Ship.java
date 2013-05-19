@@ -10,6 +10,7 @@ public class Ship {
 	public Map<Integer, Node> sixthFlor;
 	public Map<Integer, Node> forthFlor;
 	public Map<Integer, Node> thirdFloor;
+	public Map<Integer, Node> seventhFloor;
 	
 	public List<Node> exits = new ArrayList<Node>();
 	
@@ -21,6 +22,11 @@ public class Ship {
 			sixthFlor = new HashMap<Integer, Node>();
 			forthFlor = new HashMap<Integer, Node>();
 			thirdFloor = new HashMap<Integer, Node>();
+		}
+		
+		if(numberOfDecks == 5)
+		{
+			seventhFloor = new HashMap<Integer, Node>();
 		}
 	}
 	

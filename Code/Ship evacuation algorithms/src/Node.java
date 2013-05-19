@@ -1,10 +1,12 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 
 public class Node implements Comparable<Node> {
-	public enum NodeType { STAIRS, GUESTROOM, HALLWAY, DININGROOM, GAMEROOM, SHOP, EXERCISEROOM, MASSAGEROOM, HOTTUBROOM, GUESTRELATIONS, LIBRARY,  }
+	public enum NodeType { STAIRS, GUESTROOM, HALLWAY, DININGROOM, GAMEROOM, SHOP, EXERCISEROOM, MASSAGEROOM, HOTTUBROOM, GUESTRELATIONS, LIBRARY, ENTERTAINMENTROOM  }
 	private double chanceOfDeath;
 	public int capacity;
 	private NodeType nodeType;
@@ -19,6 +21,7 @@ public class Node implements Comparable<Node> {
 	public Node previous;
 	public int movementAllowenceNeeded;
 	public ArrayList<Node> nodesUpstairs;
+	private Map<Integer, Double> pheromonesForEachHuman;
 	public int lethalNessTimeCounter;
 	public boolean haveSartetFireUpstairs;
 	
@@ -32,11 +35,12 @@ public class Node implements Comparable<Node> {
 		listOfPaths = new ArrayList<Edge>();
 		isExit = false;
 		chanceOfDeath = 0.0;
-		capacity = 10;
-		movementAllowenceNeeded = 8;
+		capacity = 32;
+		movementAllowenceNeeded = 300;
 		nodesUpstairs = new ArrayList<Node>();
 		lethalNessTimeCounter = 0;
 		haveSartetFireUpstairs = false;
+		pheromonesForEachHuman = new HashMap<Integer, Double>();
 		
 		
 	}
@@ -77,6 +81,11 @@ public class Node implements Comparable<Node> {
 	}
 
 	public void setChanceOfDeath(double chanceOfDeath) {
+		if(chanceOfDeath > 1.0)
+		{
+			this.chanceOfDeath = 1.0;
+			return;
+		}
 		this.chanceOfDeath = chanceOfDeath;
 	}
 	public void testOverCapacityInNode()
@@ -100,5 +109,69 @@ public class Node implements Comparable<Node> {
 				}
 			}
 		}
+	}
+	
+	public double getNodeDensety()
+	{
+		return (double)currentHumansInNode.size()/((double)movementAllowenceNeeded*3.0/100.0);
+	}
+	
+	public double getPheremonesForThatHuman(int humanID)
+	{
+		if(!pheromonesForEachHuman.containsKey(humanID))
+		{
+			pheromonesForEachHuman.put(humanID, 0.0);
+		}
+		return pheromonesForEachHuman.get(humanID);
+	}
+	
+	public void addPheremonesForThatHuman(double d, int humanID)
+	{
+		
+		pheromonesForEachHuman.put(humanID, pheromonesForEachHuman.get(humanID)+d);
+		if(pheromonesForEachHuman.get(humanID) ==  null || pheromonesForEachHuman.get(humanID) < 0.0)
+		{
+			System.out.println("It is done. Check evaporate.");
+		}
+	}
+	
+	public double getPheremonesAndAttractivenessForThatHuman(int humanID)
+	{
+		if(!pheromonesForEachHuman.containsKey(humanID))
+		{
+			pheromonesForEachHuman.put(humanID, 0.0);
+		}
+		
+		if(chanceOfDeath > 0)
+		{
+			
+			double f =  pheromonesForEachHuman.get(humanID); //- (double)((double)attractiveness*node.getChanceOfDeath()));
+			if(f <= 0)
+			{
+				return 0;
+			}
+			return f;
+		}
+		else
+		return  pheromonesForEachHuman.get(humanID);
+	}
+	
+	public void setPheremonesForThatHuman(double pheremones, int humanID)
+	{
+		if(pheremones < 0)
+		{
+			System.out.println("Adding negativ!");
+		}
+		
+		pheromonesForEachHuman.put(humanID, pheremones);
+		if(pheromonesForEachHuman.get(humanID) ==  null)
+		{
+			System.out.println("It is done");
+		}
+	}
+	
+	public void resetPheremonesForEachHuman()
+	{
+		pheromonesForEachHuman.clear();
 	}
 }

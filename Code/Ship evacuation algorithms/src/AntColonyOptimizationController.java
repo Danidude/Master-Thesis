@@ -10,12 +10,14 @@ public class AntColonyOptimizationController {
 	Ant ant;
 	double evaporationRate = 0.5;
 	int humanID;
+	boolean pheremonsFromEdge;
 	
-	public AntColonyOptimizationController(int howManyAnts, List<Node> nodes, List<Edge> edges)
+	public AntColonyOptimizationController(int howManyAnts, List<Node> nodes, List<Edge> edges, boolean pheremonsFromEdge)
 	{
 		this.nodes = nodes;
 		numberOfAnts = howManyAnts;
 		this.edges = edges;
+		this.pheremonsFromEdge = pheremonsFromEdge;
 	}
 	
 	public void changeCurrentNode(Node newNode, int humanID)
@@ -46,10 +48,10 @@ public class AntColonyOptimizationController {
 				{
 					for(Edge e: edges)
 					{
-						e.setPheremonesForThatHuman(0, humanID);
+						e.setPheremonesForThatHuman(0, humanID, pheremonsFromEdge);
 					}
 					ant.reset();
-					System.out.println("Reset pheremoes.");
+					System.out.println("Reset pheremoes."+ant.getHumanID());
 				}
 				
 				ant.chooseNextPath();
@@ -59,13 +61,14 @@ public class AntColonyOptimizationController {
 			counter = 0;
 			
 			double deadlyness = getHigestDeadlyness(ant.getPath());
+			double densety = getHigestDensety(ant.getEdgesTaken());
 			
 			ant.rebuildPath();
 			
-			ant.despencePheromones(deadlyness);
+			ant.despencePheromones(deadlyness, densety);
 			//checkSolutionLethalFirst(ant.getPath());
-			checkSolutionShortestFirst(ant.getPath());
-			//shortestFirstFound(ant.getPath());
+			//checkSolutionShortestFirst(ant.getPath());
+			shortestFirstFound(ant.getPath());
 			
 			if(i%2 == 0)
 			{
@@ -78,7 +81,7 @@ public class AntColonyOptimizationController {
 	
 	private void createAnt(Node startNode)
 	{
-		ant = new Ant(startNode, humanID);
+		ant = new Ant(startNode, humanID, pheremonsFromEdge);
 		
 		//System.out.println("New ant");
 	}
@@ -206,10 +209,11 @@ public class AntColonyOptimizationController {
 		{
 			for(Edge e : n.getPaths())
 			{
-				e.addPheremonesForThatHuman(-(e.getPheremonesForThatHuman(humanID)*evaporationRate), humanID);
+				e.addPheremonesForThatHuman(-(e.getPheremonesForThatHuman(humanID, pheremonsFromEdge)*evaporationRate), humanID, pheremonsFromEdge);
 				//e.addPheremones(-e.getPheremones()*evaporationRate);
 				
-				e.addPheremonesForThatHuman(-(e.getPheremonesForThatHuman(humanID)*(e.getNode().getChanceOfDeath())), humanID);
+				
+				e.addPheremonesForThatHuman(-(e.getPheremonesForThatHuman(humanID, pheremonsFromEdge)*(e.getNode().getChanceOfDeath())), humanID, pheremonsFromEdge);
 				//e.addPheremones(-e.getPheremones()*n.getChanceOfDeath());
 			}
 		}
@@ -236,6 +240,26 @@ public class AntColonyOptimizationController {
 			if(n.getChanceOfDeath() > d)
 			{
 				d = n.getChanceOfDeath();
+				
+				if(d > 1)
+				{
+					System.out.println("ACO higestdeadlyness");
+				}
+			}
+		}
+		
+		
+		return d;
+	}
+	
+	private double getHigestDensety(List<Edge> list)
+	{
+		double d = 1.0;
+		for(Edge e : list)
+		{
+			if(d < e.getWeight())
+			{
+				d = e.getWeight();
 			}
 		}
 		return d;

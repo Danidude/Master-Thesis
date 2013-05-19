@@ -27,6 +27,13 @@ public class Shipbuilder {
 	int doorFlowToExit = 50;
 	
 	Ship currentShip = null;
+	public Ship createShipNr2()
+	{
+		Ship explorer = new Ship(5);
+		ArrayList<Node> seventhFloor = createSeventhFloorExplorer(explorer);
+		return null;
+	}
+	
 	
 	public Ship createCelebrityXpedition()
 	{
@@ -56,6 +63,41 @@ public class Shipbuilder {
 		celebX.forthFlor.get(141).setExit(true);
 		
 		return celebX;
+	}
+	
+	private ArrayList<Node> createSeventhFloorExplorer(Ship s)
+	{
+		/*
+		 * Guestrooms 20
+		 * Hallways 28
+		 * Stairs 2
+		 * 
+		 * total 50
+		 */
+		
+		ArrayList<Node> tempGUESTROOMList = createRoom(Node.NodeType.GUESTROOM, 20, 7);
+		ArrayList<Node> tempHALLWAYList = createRoom(Node.NodeType.HALLWAY, 28, 7);
+		ArrayList<Node> tempSTAIRSList = createRoom(Node.NodeType.STAIRS, 2, 7);
+		
+		ArrayList<Node> tempList = new ArrayList<Node>();
+		
+		tempList.addAll(tempGUESTROOMList);
+		tempList.addAll(tempHALLWAYList);
+		tempList.addAll(tempSTAIRSList);
+		
+		addList(tempList, s.seventhFloor);
+		
+		return tempList;
+	}
+	
+	private ArrayList<Node> createSixthFloorExplorer(Ship s)
+	{
+		/*
+		 * Hallways 50 (Brown outside)
+		 * 
+		 * 
+		 */
+		return null;
 	}
 	
 	private ArrayList<Node> createPanormaFlor(Ship s)
@@ -426,7 +468,7 @@ public class Shipbuilder {
 	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 32)); 
 	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 33));
 	        	tempList.get(i).addEdge(createEdge(diningFlowToExit, 34));
-	        	tempList.get(i).nodesUpstairs.add(s.sixthFlor.get(29));break;
+	        	tempList.get(i).nodesUpstairs.add(s.sixthFlor.get(57));break;
 	        case 30:  
 	        	tempList.get(i).addEdge(createEdge(doorFlowToExit, 23));  //Entrence
 	        	tempList.get(i).addEdge(createEdge(diningFlowAwayFromExit, 29)); 
@@ -1172,4 +1214,21 @@ public class Shipbuilder {
 			}
 		}
 	}
+	
+	private void addSeventhFloorTogheterExplorer(ArrayList<Node> tempList, Ship s)
+	{
+		/*
+		 * From 0 to 49
+		 * 
+		 */
+		for(int i = 0; i<tempList.size(); i++)
+		{
+			switch (tempList.get(i).getID()) 
+			{
+			
+			default: System.out.println("Your missing something."); break;
+			}
+		}
+	}
+
 }
