@@ -8,7 +8,7 @@ public class Ant {
 	private List<Node> nodePath;
 	private List<Edge> edgesTaken;
 	private Node currentNode;
-	private int pheromones = 100;
+	private int pheromones = 200;
 	private int humanID;
 	private boolean pheremonsFromEdge;
 	
@@ -114,33 +114,39 @@ public class Ant {
 		pheromones = newPhermones;
 	}
 	
-	public void despencePheromones(double deadlyness, double densety)
+	public void despencePheromones(double deadlyness, double densety, boolean lookingAtShortest)
 	{
-		if(edgesTaken.size() == 0)
-		{
-			return;
-		}
-		int pher = pheromones/howManyTurnsThePathTakes();
-		
-		if(pher <= 1.0)
-		{
-			pher = 1;
-		}
 		
 		if(deadlyness > 1.0)
 		{
 			deadlyness = 1;
 		}
 		
-		pher -= pher*deadlyness;
-		
-		if(pher < 0.0)
+		int pher = 0;
+		if(lookingAtShortest)
 		{
-			System.out.println();
+			if(edgesTaken.size() == 0)
+			{
+				return;
+			}
+			pher = pheromones/howManyTurnsThePathTakes();
+			
+		}
+		else
+		{
+			if(edgesTaken.size() == 0)
+			{
+				return;
+			}
+			pher = pheromones/howManyTurnsThePathTakes();
+			pher -= pher*deadlyness;
 		}
 		
 		
-		
+		if(pher <= 1.0)
+		{
+			pher = 1;
+		}
 		
 		for(Edge e : edgesTaken)
 		{

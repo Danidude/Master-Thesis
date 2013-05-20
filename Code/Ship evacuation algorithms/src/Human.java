@@ -174,6 +174,7 @@ public class Human implements Cloneable {
 			
 			if(n.currentHumansInNode.size()>=n.capacity && !panicState)
 			{
+				movementAllowence = 0;
 				return movementAllowence;
 			}
 			

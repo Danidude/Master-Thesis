@@ -24,6 +24,8 @@ public class ResultsHandler {
 	List<Edge> edges;
 	
 	boolean pheremonsFromEdge;
+	boolean lookingForShortest;
+	boolean goingForMostSafePath;
 	
 	int humansMovementAllaowence = 0;
 	int flameSpreadTimer = 5;
@@ -33,7 +35,7 @@ public class ResultsHandler {
 	
 	HumanHandler humanHandler;
 	
-	public ResultsHandler(List<Node> graph, String fileName, int numberOfPassangers, int flameSpeedTimer, int howManyAnts, boolean pheremonsFromEdge) throws FileNotFoundException, UnsupportedEncodingException{
+	public ResultsHandler(List<Node> graph, String fileName, int numberOfPassangers, int flameSpeedTimer, int howManyAnts, boolean pheremonsFromEdge, boolean lookingForShortest, boolean goingForMostSafePath) throws FileNotFoundException, UnsupportedEncodingException{
 		
 		this.graph = graph;
 		listOfLethalNodes = new ArrayList<Node>();
@@ -41,6 +43,8 @@ public class ResultsHandler {
 		this.flameSpreadTimer = flameSpeedTimer;
 		this.howManyAnts = howManyAnts;
 		this.pheremonsFromEdge = pheremonsFromEdge;
+		this.lookingForShortest	= lookingForShortest;
+		this.goingForMostSafePath = goingForMostSafePath;
 						
 		// The probability the humans have family members on board the ship
 		double chanceOfFamily = 1.0;
@@ -198,8 +202,16 @@ public class ResultsHandler {
 					}
 				}
 				else{
-					dijkstra.findPath(h.getNode());
-					//dijkstra.findSafestPath(h.getNode());
+					if(goingForMostSafePath)
+					{
+						dijkstra.findSafestPath(h.getNode());
+					}
+					else
+					{
+						dijkstra.findPath(h.getNode());
+					}
+					
+					
 
 					// Get the distance and path to all exits
 					Map<Double, List<Node>> path = dijkstra.getDistancePaths(exits, graph);
@@ -275,7 +287,7 @@ public class ResultsHandler {
 		List<Human> humans = new ArrayList<Human>(startHumansACO);
 		
 		
-		AntColonyOptimizationController aco = new AntColonyOptimizationController(howManyAnts, graph, edges, pheremonsFromEdge);
+		AntColonyOptimizationController aco = new AntColonyOptimizationController(howManyAnts, graph, edges, pheremonsFromEdge, lookingForShortest, goingForMostSafePath);
 		int resetNumber = 0;
 		
 		resetLethalNodes();
@@ -307,7 +319,7 @@ public class ResultsHandler {
 			turnCounter++;
 			resetNumber++;
 			
-			if(turnCounter > 400)
+			if(turnCounter > 800)
 			{
 				System.out.println("Stand still?");
 			}
@@ -705,6 +717,12 @@ public class ResultsHandler {
 				}
 				
 				currentHuman.moveHuman(path.get(1));
+			}
+			
+			if(currentHuman.getMovementAllowence() > 0)
+			{
+				path.remove(0);
+				moveHumans2(currentHuman, path, huamns);
 			}
 			
 		}

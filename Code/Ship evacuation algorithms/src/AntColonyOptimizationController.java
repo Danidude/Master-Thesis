@@ -11,13 +11,17 @@ public class AntColonyOptimizationController {
 	double evaporationRate = 0.5;
 	int humanID;
 	boolean pheremonsFromEdge;
+	boolean lookingForShortest;
+	boolean goingForMostSafePath;
 	
-	public AntColonyOptimizationController(int howManyAnts, List<Node> nodes, List<Edge> edges, boolean pheremonsFromEdge)
+	public AntColonyOptimizationController(int howManyAnts, List<Node> nodes, List<Edge> edges, boolean pheremonsFromEdge, boolean lookingForShortest, boolean goingForMostSafePath)
 	{
 		this.nodes = nodes;
 		numberOfAnts = howManyAnts;
 		this.edges = edges;
 		this.pheremonsFromEdge = pheremonsFromEdge;
+		this.lookingForShortest = lookingForShortest;
+		this.goingForMostSafePath = goingForMostSafePath;
 	}
 	
 	public void changeCurrentNode(Node newNode, int humanID)
@@ -65,10 +69,21 @@ public class AntColonyOptimizationController {
 			
 			ant.rebuildPath();
 			
-			ant.despencePheromones(deadlyness, densety);
-			//checkSolutionLethalFirst(ant.getPath());
-			//checkSolutionShortestFirst(ant.getPath());
-			shortestFirstFound(ant.getPath());
+			ant.despencePheromones(deadlyness, densety, lookingForShortest);
+			
+			
+			if(goingForMostSafePath)
+			{
+				checkSolutionLethalFirst(ant.getPath());
+				//checkSolutionShortestFirst(ant.getPath());
+			}
+			else
+			{
+				//checkSolutionShortestFirst(ant.getPath());
+				shortestFirstFound(ant.getPath());
+			}
+			
+			
 			
 			if(i%2 == 0)
 			{

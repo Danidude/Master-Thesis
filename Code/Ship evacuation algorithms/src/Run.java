@@ -42,14 +42,17 @@ public class Run {
 		
 		int numberOfPassangers = 140;
 		
-		int numberOfRepetitions = 30;
+		int numberOfRepetitions = 200;
 		
-		int timeForPassangersToExit = 650;
+		int timeForPassangersToExit = 8000;
 		
 		int flameSpreadTimer = 2;
-		int howManyAnts = 50;
+		int howManyAnts = 200;
 		
-		boolean pheremonsFromEdge = false;
+		boolean pheremonsFromEdge = false;//Denne forandrer på hvor de lagres
+		boolean lookingForShortestPath = false; //Denne foranderer på hvordan pheremons er
+		
+		boolean goingForMostSafePath = false;
 		
 		String fileName = "Safest";
 		
@@ -72,7 +75,7 @@ public class Run {
 		setExitTime(exits, timeForPassangersToExit);
 		
 		//Kjï¿½rer ACO og djixstra simuleringen.
-		ResultsHandler results = new ResultsHandler(graph, fileName, numberOfPassangers, flameSpreadTimer, howManyAnts, pheremonsFromEdge);
+		ResultsHandler results = new ResultsHandler(graph, fileName, numberOfPassangers, flameSpreadTimer, howManyAnts, pheremonsFromEdge, lookingForShortestPath, goingForMostSafePath);
 		int maxTurns = 0;
 		for(int i = 0; i<numberOfRepetitions; i++)
 		{
