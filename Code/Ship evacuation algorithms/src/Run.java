@@ -42,7 +42,7 @@ public class Run {
 		
 		int numberOfPassangers = 140;
 		
-		int numberOfRepetitions = 200;
+		int numberOfRepetitions = 1000;
 		
 		int timeForPassangersToExit = 8000;
 		
@@ -50,11 +50,11 @@ public class Run {
 		int howManyAnts = 200;
 		
 		boolean pheremonsFromEdge = false;//Denne forandrer på hvor de lagres
-		boolean lookingForShortestPath = false; //Denne foranderer på hvordan pheremons er
+		boolean lookingForShortestPath = true; //Denne foranderer på hvordan pheremons er
 		
 		boolean goingForMostSafePath = false;
 		
-		String fileName = "Safest";
+		String fileName = "Short1000";
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss");
 		Date date = new Date();
