@@ -2,7 +2,6 @@
 .project
 .metadata
 bin/**
-ACO/
 tmp/**
 tmp/**/*
 *.tmp
