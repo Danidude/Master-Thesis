@@ -39,3 +39,42 @@ In \ref{fig:celebSafty}, we are using the same parameters as the first one, only
 However Dijkstra proves yet again to outperform ACO in this instance. After about 30 time steps Dijkstra starts to pull ahead of ACO in number of passengers it have guided to the lifeboats. Even in number of deaths it is shown that Dijkstra is better at avoiding them.
 
 If you look at Dijkstra in both cases, the number of deaths when looking after the safest path is 50\% less when looking for the shortest path.
+
+As mention earlier that the number of rounds above 200 did not matter may be shown in the two graphs below, both of them have the same set of parameters, only to have 1000 iteration instead of 200.
+
+\begin{figure} [h]
+\centering
+\hspace*{-5.5in}
+\includegraphics[scale=0.35]{images/Graph using 1000 rounds 140 passangers-safest path and one fire.png}
+\caption{The graph showing survives and deaths over a time table}
+\label{fig:celebSafty1000round}
+\end{figure}
+
+This graph is 1000 iterations of the simulation when looking for the safest way for each passengers. The next one shows the same thing, only looking for the shortest way to an exit.
+
+\begin{figure} [h]
+\centering
+\hspace*{-5.5in}
+\includegraphics[scale=0.35]{images/Graph using 1000 rounds 140 passangers-shortest path and one fire.png}
+\caption{The graph showing survives and deaths over a time table}
+\label{fig:celebShort1000round}
+\end{figure}
+
+
+In \ref{fig:celebShortPherInEdges} and \ref{fig:celebSafePherInEdges} we tested what would the difference be if we used pheromones in edges rather then in the node themselves, this showed that the ACO preformed better then our other simulations. It was compared to Dijkstra to control that there was not something special happening. The main difference is when looking for the shortest path rather then the safest. When looking for the safest there are only some small difference in both simulations.
+
+\begin{figure} [h]
+\centering
+\hspace*{-5.5in}
+\includegraphics[scale=0.35]{images/Graph using 200 rounds 140 passangers and shortest first one hazzard and ACO having pheremons in edges.png}
+\caption{The graph showing survives and deaths over a time table}
+\label{fig:celebShortPherInEdges}
+\end{figure}
+
+\begin{figure} [h]
+\centering
+\hspace*{-5.5in}
+\includegraphics[scale=0.35]{images/Graph using 200 rounds 140 passangers and safest first one hazzard and ACO having pheremons in edges.png}
+\caption{The graph showing survives and deaths over a time table}
+\label{fig:celebSafePherInEdges}
+\end{figure}
