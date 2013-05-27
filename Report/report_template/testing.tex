@@ -19,7 +19,7 @@ Unless it is something else stated, Dijkstra did run at each time step.
 
 in \ref{fig:celebDF} Dijkstra was only run once at the start of the simulation. This yielded some unexpected results. First of when looking for the safest path when as we expected that ACO would outperform Dijkstra. However when looking for the shortest path, ACO started out good but Dijkstra pulled ahead after about 100 time steps. This may be explained that ACO started taking more risk-full paths to try to keep the passengers not clogging each other up. 
 
-\begin{figure} [h]
+\begin{figure} [float]
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-using-1000-rounds-140-passangers-and-one-fire-dijkstra-one-time.png}
@@ -43,7 +43,7 @@ If we looked at safest paths taken only, then Dijkstra is slightly increasing in
 
 %In \ref{fig:celeb}, we are using the same parameters as the first one, only difference is that we are looking after the safest path rather then the shortest path for the passengers. It is clearly shown that the death toll on the passengers is far lower then the previous one. However Dijkstra proves yet again to outperform ACO in this instance. After about 30 time steps Dijkstra starts to pull ahead of ACO in number of passengers it have guided to the lifeboats. Even in number of deaths it is shown that Dijkstra is better at avoiding them. If you look at Dijkstra in both cases, the number of deaths when looking after the safest path is 50\% less when looking for the shortest path. As mention earlier that the number of rounds above 200 did not matter may be shown in the two graphs below, both of them have the same set of parameters, only to have 1000 iteration instead of 200.
 
-\begin{figure} [h]
+\begin{figure} [float]
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-and-one-fire.png}
@@ -54,7 +54,7 @@ If we looked at safest paths taken only, then Dijkstra is slightly increasing in
 \subsubsection{Running 1000 iterations.}
 \ref{fig:celeb1000} is 1000 iterations of the simulation with same parameters as \ref{fig:celeb}, and is going for the safest route for the passengers. There is no clear difference when using 1000 iterations then 200. However Both Dijkstra and ACO when trying to find the quickest path got slightly worse then in \ref{fig:celeb}.
 
-\begin{figure} [h]
+\begin{figure} [float]
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-using-1000-rounds-140-passangers.png}
@@ -68,7 +68,7 @@ If we looked at safest paths taken only, then Dijkstra is slightly increasing in
 \subsubsection{Pheromones in edges.}
 In \ref{fig:celebPherInEdge} we tested what would the difference be if we used pheromones in edges rather then in the node themselves, this showed that the ACO preformed just as good when going for the safest path, however when ACO was trying to go for the quickest path this had an positive effect on it and preformed better.
 
-\begin{figure} [h]
+\begin{figure} [float]
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-and-one-hazzard-and-ACO-having-pheremons-in-edges.png}
@@ -80,7 +80,7 @@ In \ref{fig:celebPherInEdge} we tested what would the difference be if we used p
 \subsubsection{High panic chance on passengers.}
 When the chance of panic changed to a higher chance both algorithms struggled more to guide the passengers to safety. Dijkstra took the hit hardest as it sometimes it would send it one direction, then panic and go back, therefore taking a long time before that passenger got to safety or died. It is not clearly shown in this graph, however when it simulation was running, it resulted in a data file almost on a size of one 1 GB, where ACO's data file would not pass 60 MB. However it was also Dijkstra that preformed best overall, shown in \ref{fig:celebHPanic}.
 
-\begin{figure} [h]
+\begin{figure} [float]
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-and-one-fire-high-panic.png}
@@ -95,10 +95,22 @@ In \ref{fig:celeb50} all the different algorithms are close together and preform
 
 Again ACO's going for the quickest path is that it is a bit to slow and therefore the hazards have time to spread more out and create more dangerously areas.
 
-\begin{figure} [h]
+\begin{figure} [float]
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-using-200-rounds-50-passangers.png}
 \caption{Taking shortest path with pheromones in edges.}
 \label{fig:celeb50}
+\end{figure}
+
+\subsubsection{Slow hazards}
+
+When comparing \ref{fig:celebSfire} to \ref{fig:celeb}, the algorithms overall did much better then all the other simulations. This was expected as the hazards moved more slowly then in all the other simulations. It is also worh noting that when finding the quickest path ACO had the biggest increase in performance, however it is still the one that is the worst off.
+
+\begin{figure} [float]
+\centering
+\hspace*{-1.0in}
+\includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-slow-fire.png}
+\caption{Taking shortest path with pheromones in edges.}
+\label{fig:celebSfire}
 \end{figure}
