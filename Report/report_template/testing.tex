@@ -23,9 +23,20 @@ In the simulations there are several parameters that can be changed and multiple
 % Crew members not accounted for
 The simulations also ran with a set of standard configurations. When the effects of changing one parameter was tested the remaining ones were kept at a standard level. The number of passengers was set to the ship maximum number of passengers found on Cruisedeckplans LLC website\cite{cruseships}. The fire on board the ship was set to increase in size and intensity at every second time step, one time step being 2 real life seconds. At the start of the simulations between one and three fires were started.
 
-At each time step ACO released 200 ants per passenger. Each ant held 200 pheromones that it used to mark the paths to the exits. The passengers would use these new paths. Similarly Dijkstra's algorithm recalculated a new path for each passenger at each timestep. In some of our simulation a few passenger would not reach the exits within 300 time steps. However we have cut the graph at 300 time steps, as this would show more details in the graph and the average number of survivors past 300 did not change. 
+At each time step ACO released 200 ants per passenger. Each ant held 200 pheromones that it used to mark the paths to the exits. The passengers would use these new paths. Similarly Dijkstra's algorithm recalculated a new path for each passenger at each time step. In some of our simulation a few passenger would not reach the exits within 300 time steps. However we have cut the graph at 300 time steps, as this would show more details in the graph and the average number of survivors past 300 did not change. 
 
 \section{Testing}
+
+\begin{figure} [h]
+\centering
+\hspace*{-1.0in}
+\includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-and-one-hazzard-and-ACO-having-pheremons-in-edges.png}
+\caption{Taking shortest path with pheromones in edges.}
+\label{fig:celebPherInEdge}
+\end{figure}
+\subsection{Pheromones in edges}
+
+At the beginning of the testing phase we tested whether ants depositing pheromones in the edges or in the nodes gave the best results.  As seen in figure \ref{fig:celebPherInEdge} tests showed depositing pheromones in the nodes performed equal to depositing pheromones in the edges when searching for the safest path, however when ACO was trying to search for the quickest path depositing pheromones in the edges provided better results. Thus we decided to keep depositing pheromones this way for all future tests.
 
 \subsection{Dijkstra's algorithm}
 
@@ -54,17 +65,7 @@ What is clear is that selecting the safest path is the best option regardless of
 
 %In \ref{fig:celebShortPherInEdges} and \ref{fig:celebSafePherInEdges} we tested what would the difference be if we used pheromones in edges rather then in the node themselves, this showed that the ACO preformed better then our other simulations. It was compared to Dijkstra to control that there was not something special happening. The main difference is when looking for the shortest path rather then the safest. When looking for the safest there are only some small difference in both simulations.
 
-\begin{figure} [h]
-\centering
-\hspace*{-1.0in}
-\includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-and-one-hazzard-and-ACO-having-pheremons-in-edges.png}
-\caption{Taking shortest path with pheromones in edges.}
-\label{fig:celebPherInEdge}
-\end{figure}
-\subsection{Pheromones in edges}
-% Ok, so do we always use pheromones in edges since it seems to be equal or better in all cases?
 
-In \ref{fig:celebPherInEdge} we tested what would the difference be if we used pheromones in edges rather then in the node themselves, this showed that the ACO preformed just as good when going for the safest path, however when ACO was trying to go for the quickest path this had an positive effect on it and preformed better.
 
 \begin{figure} [h]
 \centering
