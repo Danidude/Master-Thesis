@@ -1,37 +1,49 @@
 \chapter{Results}
 \label{ch:testing}
 
-\section{Simulation data}
-In our testing we ran the simulation from 200 to over 1000 iterations, as there was no significant difference from 200 to 1000 iterations we did most of the simulations to 200 iterations.
 
-The number of passengers was set to the ship maximum number of passengers stated on Cruisedeckplans LLC\cite{cruseships} website.
+\section{Simulation parameters}
 
-The hazards on-board the ship was set to increase at every second time step, both in number of nodes and how deadly it was in a particular node. In ACO, at each time step, the passengers was set to use 200 ants to find their way trough the ship, and each ant holding 200 pheromones to spread around. Also in each of these simulation, one fire was started, however some times it was randomly chosen one to three times.
+In the simulations there are several parameters that can be changed and multiple variables that can have an extreme impact on the simulation. For instance the fires can cover all exits and end up killing most if not all passengers. Thus each simulation runs 200 times and we obtain the average results. We found that there was no significant difference between 200 iterations and 1000 iterations as seen if one compare figure \ref{fig:celeb} with figure \ref{fig:celeb1000}.
 
-In some of our simulation, it happens that a passenger would walk on board the ship for much longer then 300 time steps. However we have cut the graph at 300 time steps, as this would show more details in the graph about the algorithms and the average number of survives past 300 did not change. 
+\begin{figure} [float]
+\centering
+\hspace*{-1.0in}
+\includegraphics[scale=0.35]{images/Graph-using-1000-rounds-140-passangers.png}
+\caption{Same as \ref{fig:celeb}, only using 1000 iterations.}
+\label{fig:celeb1000}
+\end{figure}
 
-Unless it is something else stated, Dijkstra did run at each time step.
+\begin{figure} [float]
+\centering
+\hspace*{-1.0in}
+\includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-and-one-fire.png}
+\caption{Dijkstra and ACO running at each time step.}
+\label{fig:celeb}
+\end{figure}
+% Crew members not accounted for
+The simulations also ran with a set of standard configurations. When the effects of changing one parameter was tested the remaining ones were kept at a standard level. The number of passengers was set to the ship maximum number of passengers found on Cruisedeckplans LLC website\cite{cruseships}. The fire on board the ship was set to increase in size and intensity at every second time step, one time step being 2 real life seconds. At the start of the simulations between one and three fires were started.
 
-
+At each time step ACO released 200 ants per passenger. Each ant held 200 pheromones that it used to mark the paths to the exits. The passengers would use these new paths. Similarly Dijkstra's algorithm recalculated a new path for each passenger at each timestep. In some of our simulation a few passenger would not reach the exits within 300 time steps. However we have cut the graph at 300 time steps, as this would show more details in the graph and the average number of survivors past 300 did not change. 
 
 \subsection{Celebrity Xpedition}
 
-
-in \ref{fig:celebDF} Dijkstra was only run once at the start of the simulation. This yielded some unexpected results. First of when looking for the safest path when as we expected that ACO would outperform Dijkstra. However when looking for the shortest path, ACO started out good but Dijkstra pulled ahead after about 100 time steps. This may be explained that ACO started taking more risk-full paths to try to keep the passengers not clogging each other up. 
+In \ref{fig:celebDF} Dijkstra's algorithm was only ran once per passenger at the start of the simulation. When searching for the safest path we expected that ACO would outperform Dijkstra's algorithm, and it did. When Dijkstra's algorithm could not account for the fire spreading its performance suffered. When looking for the shortest path, ACO started out well but Dijkstra's algorithm pulled ahead after about 100 time steps. When several people occupy the same area their speed is slowed. ACO will attempt to route passengers around these areas and since Dijsktra's algorithm was only ran at the start it made no such attempts. As it turns out routing people around high occupant density areas would in general lead to a slower evacuation as a whole.
 
 \begin{figure} [float]
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-using-1000-rounds-140-passangers-and-one-fire-dijkstra-one-time.png}
-\caption{Running Dijkstra only at start.}
+\caption{Running Dijkstra's algorithm only at start.}
 \label{fig:celebDF}
 \end{figure}
 
 \subsubsection{Djikstra at each time step.}
-In \ref{fig:celeb} it is clearly seen that Dijkstra going for the safest path has the best results overall. ACO going for safest would be the second best algorithm followed by Dijkstra going for quickest. In the end is ACO going for quickest path, as it has problem finding the quickest path and getting the passengers off the ship before the hazards spread out to much and gets to deadly.
-
-If you look at quickest paths only, it is clearly shown that ACO's passengers are dying more rapidly then Dijkstra's passengers. This is a good indication on that both algorithms are choosing different paths. As shortest path is measured in shortest time needed rather then shortest way to exit, it may be that Dijkstra spread the passengers more out then ACO. Also Dijkstra is getting them to an exit faster too.
-
+% Probably...
+In \ref{fig:celeb} it is clearly seen that Dijkstra's algorithm going for the safest path has the best results overall. ACO going for safest would be the second best algorithm followed by Dijkstra's algorithm going for quickest. In the end is ACO going for quickest path, as it has problem finding the quickest path and getting the passengers off the ship before the hazards spread out too much and gets too deadly.
+% May be
+If you look at quickest paths only, it is clearly shown that ACO's passengers are dying more rapidly then Dijkstra's passengers. This is a good indication on that both algorithms are choosing different paths. As the shortest path is measured in shortest time needed rather then shortest way to exit, it may be that Dijkstra spread the passengers more out then ACO. Also Dijkstra is getting them to an exit faster too.
+% Fix this
 If we looked at safest paths taken only, then Dijkstra is slightly increasing in saving more passengers then ACO is, or Dijkstra's passengers are dying not as fast as ACO's passengers in this case. However it is a much smaller difference here then when looking at when taking the quickest paths.
 
 
@@ -43,29 +55,17 @@ If we looked at safest paths taken only, then Dijkstra is slightly increasing in
 
 %In \ref{fig:celeb}, we are using the same parameters as the first one, only difference is that we are looking after the safest path rather then the shortest path for the passengers. It is clearly shown that the death toll on the passengers is far lower then the previous one. However Dijkstra proves yet again to outperform ACO in this instance. After about 30 time steps Dijkstra starts to pull ahead of ACO in number of passengers it have guided to the lifeboats. Even in number of deaths it is shown that Dijkstra is better at avoiding them. If you look at Dijkstra in both cases, the number of deaths when looking after the safest path is 50\% less when looking for the shortest path. As mention earlier that the number of rounds above 200 did not matter may be shown in the two graphs below, both of them have the same set of parameters, only to have 1000 iteration instead of 200.
 
-\begin{figure} [float]
-\centering
-\hspace*{-1.0in}
-\includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-and-one-fire.png}
-\caption{Dijkstra and ACO running at each time step.}
-\label{fig:celeb}
-\end{figure}
 
-\subsubsection{Running 1000 iterations.}
-\ref{fig:celeb1000} is 1000 iterations of the simulation with same parameters as \ref{fig:celeb}, and is going for the safest route for the passengers. There is no clear difference when using 1000 iterations then 200. However Both Dijkstra and ACO when trying to find the quickest path got slightly worse then in \ref{fig:celeb}.
 
-\begin{figure} [float]
-\centering
-\hspace*{-1.0in}
-\includegraphics[scale=0.35]{images/Graph-using-1000-rounds-140-passangers.png}
-\caption{Same as \ref{fig:celeb}, only using 1000 iterations.}
-\label{fig:celeb1000}
-\end{figure}
+
 
 
 
 %In \ref{fig:celebShortPherInEdges} and \ref{fig:celebSafePherInEdges} we tested what would the difference be if we used pheromones in edges rather then in the node themselves, this showed that the ACO preformed better then our other simulations. It was compared to Dijkstra to control that there was not something special happening. The main difference is when looking for the shortest path rather then the safest. When looking for the safest there are only some small difference in both simulations.
+
 \subsubsection{Pheromones in edges.}
+% Ok, so do we always use pheromones in edges since it seems to be equal or better in all cases?
+
 In \ref{fig:celebPherInEdge} we tested what would the difference be if we used pheromones in edges rather then in the node themselves, this showed that the ACO preformed just as good when going for the safest path, however when ACO was trying to go for the quickest path this had an positive effect on it and preformed better.
 
 \begin{figure} [float]
@@ -78,6 +78,8 @@ In \ref{fig:celebPherInEdge} we tested what would the difference be if we used p
 
 
 \subsubsection{High panic chance on passengers.}
+% Very interesting, get this in the conclusion
+
 When the chance of panic changed to a higher chance both algorithms struggled more to guide the passengers to safety. Dijkstra took the hit hardest as it sometimes it would send it one direction, then panic and go back, therefore taking a long time before that passenger got to safety or died. It is not clearly shown in this graph, however when it simulation was running, it resulted in a data file almost on a size of one 1 GB, where ACO's data file would not pass 60 MB. However it was also Dijkstra that preformed best overall, shown in \ref{fig:celebHPanic}.
 
 \begin{figure} [float]
@@ -90,6 +92,7 @@ When the chance of panic changed to a higher chance both algorithms struggled mo
 
 
 \subsubsection{50 passengers only}
+% Do we have a section on too many passengers that we can compare to?
 
 In \ref{fig:celeb50} all the different algorithms are close together and preform well when there are less passengers on board the ship. The order of witch algorithm that is best still remains the same, however Dijkstra going for quickest paths is just as good as ACO going for safest for a while, before ACO goes past it. When looking at the deaths of the passengers ACO going for safest is always much better then Dijkstra going for Quickest.
 
@@ -104,6 +107,7 @@ Again ACO's going for the quickest path is that it is a bit to slow and therefor
 \end{figure}
 
 \subsubsection{Slow hazards}
+% Write how much slower. Reasonable that quickest path is better when there is less fire to accidentaly run into
 
 When comparing \ref{fig:celebSfire} to \ref{fig:celeb}, the algorithms overall did much better then all the other simulations. This was expected as the hazards moved more slowly then in all the other simulations. It is also worh noting that when finding the quickest path ACO had the biggest increase in performance, however it is still the one that is the worst off.
 
