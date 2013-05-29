@@ -12,7 +12,8 @@ public class Run {
 	public static void main(String [ ] args) throws IOException
 	{
 		Shipbuilder sb = new Shipbuilder();		
-		Ship s = sb.createCelebrityXpedition();
+		//Ship s = sb.createCelebrityXpedition();
+		Ship s = sb.createShipExplorer();
 		//System.out.println(s.fifthFlor.size());
 
 		// The entire graph
@@ -40,21 +41,21 @@ public class Run {
 		
 		int acoSurv = 0;
 		
-		int numberOfPassangers = 140;
+		int numberOfPassangers = 60;
 		
-		int numberOfRepetitions = 1000;
+		int numberOfRepetitions = 500;
 		
 		int timeForPassangersToExit = 8000;
 		
 		int flameSpreadTimer = 2;
 		int howManyAnts = 200;
 		
-		boolean pheremonsFromEdge = false;//Denne forandrer på hvor de lagres
+		boolean pheremonsFromEdge = true;//Denne forandrer på hvor de lagres
 		boolean lookingForShortestPath = true; //Denne foranderer på hvordan pheremons er
 		
 		boolean goingForMostSafePath = false;
 		
-		String fileName = "Short1000";
+		String fileName = "Shortest ship explorer ";
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss");
 		Date date = new Date();

@@ -1,2 +1,0 @@
-Djixstra data:
-Turn number		Number of passangers in total		Passangers still living		Dead Passangers		Passangers that have survived

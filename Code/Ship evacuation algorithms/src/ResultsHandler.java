@@ -201,47 +201,45 @@ public class ResultsHandler {
 						it.remove();
 					}
 				}
-				else{
+				else
+				{
 					if(goingForMostSafePath)
+					//if(goingForMostSafePath && turnCounter <= 1)
 					{
 						dijkstra.findSafestPath(h.getNode());
 					}
-					else
+					else //if(turnCounter <= 1)
 					{
 						dijkstra.findPath(h.getNode());
 					}
 					
+					//if(turnCounter<=1)
+					//{
+						// Get the distance and path to all exits
+						Map<Double, List<Node>> path = dijkstra.getDistancePaths(exits, graph);
+	
+						// Sort the paths based on the shortest distance
+						SortedSet<Double> keys = new TreeSet<Double>(path.keySet());
+						
+						
+						
+						List<Node> shortestPath = path.get(keys.first());
+						
+						
+						//h.dijkstraNodePath = shortestPath;
+					//}
+						
+						
 					
-
-					// Get the distance and path to all exits
-					Map<Double, List<Node>> path = dijkstra.getDistancePaths(exits, graph);
-
-					// Sort the paths based on the shortest distance
-					SortedSet<Double> keys = new TreeSet<Double>(path.keySet());
 					
-					
-					
-					List<Node> shortestPath = path.get(keys.first());
-					
-					// Prints the path to the exit for testing purposes
-					/*System.out.print("The shortest path for human " + h.getHumanID() + " off the ship is via path: ");
-					for(Node n : shortestPath){
-						System.out.print(n.getID() + " ");						
-					}
-					System.out.println();*/
 					
 					// Do one step
 					//h.setNode(shortestPath.get(1));
 					moveHumans2(h, shortestPath, humans);
+					//moveHumans2(h, h.dijkstraNodePath, humans);
 					//System.out.println("Human " + h.getHumanID() + " moves to node " + h.getNode().getID());
 					
-					/*String s = "Dijxstra path: ";
 					
-					for(Node n : shortestPath)
-					{
-						s += Integer.toString(n.getID())+"-";
-					}
-					System.out.println(s);*/
 					
 					// Kills humans off, dead humans should add to the room capacity
 					if(h.getNode().getChanceOfDeath() > randomGenerator.nextDouble()){
@@ -319,7 +317,7 @@ public class ResultsHandler {
 			turnCounter++;
 			resetNumber++;
 			
-			if(turnCounter > 800)
+			if(turnCounter%5000 == 0 && turnCounter != 0)
 			{
 				System.out.println("Stand still?");
 			}
@@ -936,7 +934,7 @@ public class ResultsHandler {
 			{
 				if(human.isPanicState())
 				{
-					panicChance+=0.01;
+					panicChance+=0.001;
 				}
 				else
 				{
@@ -964,7 +962,7 @@ public class ResultsHandler {
 			{
 				if(human.isPanicState())
 				{
-					panicChance-=0.01;
+					panicChance-=0.001;
 				}
 				else
 				{

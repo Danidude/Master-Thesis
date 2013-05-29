@@ -4,6 +4,7 @@
 bin/**
 tmp/**
 Datahandler/
+Code/
 tmp/**/*
 *.tmp
 *.bak

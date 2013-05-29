@@ -16,6 +16,7 @@ public class Human implements Cloneable {
 	private boolean finishedMoving;
 	private List<Node> knownExitNode;
 	private int movementInCurrentNode;
+	public List<Node> dijkstraNodePath;
 	
 	public Human (List<Integer> familiarTies, boolean panicState, Node node, int humanID, boolean escaped, int movementAllowence){
 		this.familiarTies = familiarTies;
@@ -24,6 +25,7 @@ public class Human implements Cloneable {
 		this.humanID = humanID;
 		this.escaped = escaped;
 		knownExitNode = new ArrayList<Node>();
+		dijkstraNodePath =new ArrayList<Node>();
 		
 		this.movementAllowence = movementAllowence;
 		movementInCurrentNode = 0;

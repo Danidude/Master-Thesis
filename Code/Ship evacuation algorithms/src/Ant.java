@@ -8,7 +8,7 @@ public class Ant {
 	private List<Node> nodePath;
 	private List<Edge> edgesTaken;
 	private Node currentNode;
-	private int pheromones = 200;
+	private int pheromones = 100;
 	private int humanID;
 	private boolean pheremonsFromEdge;
 	
