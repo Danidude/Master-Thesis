@@ -23,7 +23,7 @@ In the simulations there are several parameters that can be changed and multiple
 % Crew members not accounted for
 The simulations also ran with a set of standard configurations. When the effects of changing one parameter was tested the remaining ones were kept at a standard level. The number of passengers was set to the ship maximum number of passengers found on Cruisedeckplans LLC website\cite{cruseships}. The fire on board the ship was set to increase in size and intensity at every second time step, one time step being 2 real life seconds. At the start of the simulations between one and three fires were started.
 
-At each time step ACO released 200 ants per passenger. Each ant held 200 pheromones that it used to mark the paths to the exits. The passengers would use these new paths. Similarly Dijkstra's algorithm recalculated a new path for each passenger at each time step. In some of our simulation a few passenger would not reach the exits within 300 time steps. However we have cut the graph at 300 time steps, as this would show more details in the graph and the average number of survivors past 300 did not change. 
+At each time step ACO released 200 ants per passenger. Each ant held 100 pheromones that it used to mark the paths to the exits. The passengers would use these new paths. Similarly Dijkstra's algorithm recalculated a new path for each passenger at each time step. In some of our simulation a few passenger would not reach the exits within 300 time steps. However we have cut the graph at 300 time steps, as this would show more details in the graph and the average number of survivors past 300 did not change. 
 
 \section{Testing}
 
@@ -71,7 +71,7 @@ What is clear is that selecting the safest path is the best option regardless of
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-and-one-fire-high-panic.png}
-\caption{Taking shortest path with pheromones in edges.}
+\caption{Simulation with a high panic chance.}
 \label{fig:celebHPanic}
 \end{figure}
 
@@ -85,7 +85,7 @@ When the chance of panic changed to a higher chance both algorithms struggled mo
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-using-200-rounds-50-passangers.png}
-\caption{Taking shortest path with pheromones in edges.}
+\caption{Only 50 passengers on board the ship.}
 \label{fig:celeb50}
 \end{figure}
 
@@ -100,12 +100,12 @@ Again ACO's going for the quickest path is that it is a bit to slow and therefor
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-slow-fire.png}
-\caption{Taking shortest path with pheromones in edges.}
+\caption{Slow moving fire in the simulation.}
 \label{fig:celebSfire}
 \end{figure}
 
 \subsection{Fire spread}
 % Write how much slower. Reasonable that quickest path is better when there is less fire to accidentaly run into
 
-When comparing \ref{fig:celebSfire} to \ref{fig:celeb}, the algorithms overall did much better then all the other simulations. This was expected as the hazards moved more slowly then in all the other simulations. It is also worh noting that when finding the quickest path ACO had the biggest increase in performance, however it is still the one that is the worst off.
+When comparing \ref{fig:celebSfire} to \ref{fig:celeb}, the algorithms overall did much better then all the other simulations. This was expected as the hazards moved more slowly then in all the other simulations. It is also worth noting that when finding the quickest path ACO had the biggest increase in performance, however it is still the one that is the worst off.
 
