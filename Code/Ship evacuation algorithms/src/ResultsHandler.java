@@ -18,6 +18,8 @@ public class ResultsHandler {
 	List<Human> startHumansDjixstra;
 	List<Human> startHumansACO;
 	Map<Edge, Integer> flowOfEdges;
+	double DijkstraTime;
+	double ACOTime;
 
 	List<Node> graph;
 	List<Node> listOfLethalNodes;
@@ -45,6 +47,9 @@ public class ResultsHandler {
 		this.pheremonsFromEdge = pheremonsFromEdge;
 		this.lookingForShortest	= lookingForShortest;
 		this.goingForMostSafePath = goingForMostSafePath;
+		
+		DijkstraTime = 0;
+		ACOTime = 0;
 						
 		// The probability the humans have family members on board the ship
 		double chanceOfFamily = 1.0;
@@ -165,7 +170,7 @@ public class ResultsHandler {
 			
 			if(turnCounter%5000 == 0 && turnCounter != 0)
 			{
-				System.out.println("Stand still?");
+				System.out.println("Stand still? Dijkstra");
 			}
 			
 			
@@ -181,7 +186,7 @@ public class ResultsHandler {
 					continue;
 				}
 				
-				testIfHumanPanics(h, randomGenerator);
+				//testIfHumanPanics(h, randomGenerator);
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped and is removed from the list of humans
 				if(h.isEscaped()){
@@ -203,6 +208,10 @@ public class ResultsHandler {
 				}
 				else
 				{
+					double startTime = System.nanoTime();
+					double endTime = 0;
+					
+					
 					if(goingForMostSafePath)
 					//if(goingForMostSafePath && turnCounter <= 1)
 					{
@@ -212,6 +221,12 @@ public class ResultsHandler {
 					{
 						dijkstra.findPath(h.getNode());
 					}
+					
+					endTime = System.nanoTime();
+					
+					DijkstraTime += endTime - startTime;
+					
+
 					
 					//if(turnCounter<=1)
 					//{
@@ -274,6 +289,8 @@ public class ResultsHandler {
 			}
 		}
 		
+		DijkstraTime = DijkstraTime/(long)(turnCounter*totalPassanger);
+		
 		writer.close();
 		return (int)turnCounter;
 	}
@@ -332,7 +349,7 @@ public class ResultsHandler {
 					continue;
 				}
 				
-				testIfHumanPanics(h, randomGenerator);
+				//testIfHumanPanics(h, randomGenerator);
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped
 				if(h.isEscaped()){
@@ -354,9 +371,16 @@ public class ResultsHandler {
 				}
 				else
 				{
+					double startTime = System.nanoTime();
+					double endTime = 0;
 					//finds the way.
 					aco.changeCurrentNode(h.getNode(), h.getHumanID());
 					aco.findWay();
+					
+					endTime = System.nanoTime();
+					
+					
+					ACOTime += endTime - startTime;
 					
 					int prevNode = h.getNode().getID();
 					
@@ -407,6 +431,8 @@ public class ResultsHandler {
 			}
 			
 		}
+		ACOTime = ACOTime/(long)(turnCounter*totalPassanger);
+		
 		writer.close();
 		return (int)turnCounter;
 	}

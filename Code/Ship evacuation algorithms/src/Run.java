@@ -12,8 +12,8 @@ public class Run {
 	public static void main(String [ ] args) throws IOException
 	{
 		Shipbuilder sb = new Shipbuilder();		
-		//Ship s = sb.createCelebrityXpedition();
-		Ship s = sb.createShipExplorer();
+		Ship s = sb.createCelebrityXpedition();
+		//Ship s = sb.createShipExplorer();
 		//System.out.println(s.fifthFlor.size());
 
 		// The entire graph
@@ -41,11 +41,11 @@ public class Run {
 		
 		int acoSurv = 0;
 		
-		int numberOfPassangers = 60;
+		int numberOfPassangers = 140;
 		
-		int numberOfRepetitions = 500;
+		int numberOfRepetitions = 200;
 		
-		int timeForPassangersToExit = 8000;
+		int timeForPassangersToExit = 4000;
 		
 		int flameSpreadTimer = 2;
 		int howManyAnts = 200;
@@ -55,7 +55,7 @@ public class Run {
 		
 		boolean goingForMostSafePath = false;
 		
-		String fileName = "Shortest ship explorer ";
+		String fileName = "Safest ship xeleb real ";
 		
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH/mm/ss");
 		Date date = new Date();
@@ -109,6 +109,10 @@ public class Run {
 		
 		System.out.println(maxTurns);
 		
+		results.DijkstraTime = results.DijkstraTime/1000000000.0;
+		results.ACOTime = results.ACOTime/1000000000.0;
+		
+		System.out.print("Dijkstra: "+results.DijkstraTime+" ACO: "+results.ACOTime);
 		
 		/*
 		System.out.println();
