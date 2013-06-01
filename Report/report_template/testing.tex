@@ -89,12 +89,22 @@ When the chance of panic changed to a higher chance both algorithms struggled mo
 \label{fig:celeb50}
 \end{figure}
 
+\begin{figure} [h]
+\centering
+\hspace*{-1.0in}
+\includegraphics[scale=0.35]{images/Graph-using-200-rounds-200-passangerss.png}
+\caption{Simulation run with over maximum capacity of passengers.}
+\label{fig:celeb200}
+\end{figure}
+
 \subsection{Amount of passengers}
 % Do we have a section on too many passengers that we can compare to?
 
 In \ref{fig:celeb50} all the different algorithms are close together and preform well when there are less passengers on board the ship. The order of witch algorithm that is best still remains the same, however Dijkstra going for quickest paths is just as good as ACO going for safest for a while, before ACO goes past it. When looking at the deaths of the passengers ACO going for safest is always much better then Dijkstra going for Quickest.
 
 Again ACO's going for the quickest path is that it is a bit to slow and therefore the hazards have time to spread more out and create more dangerously areas.
+
+Now in \ref{fig:celeb200} the difference is performance in the different algorithms grows more apart from each other then in \ref{fig:celeb50}. This shows that the more passengers the ships have, the more difference in the different algorithms are to be expected.
 
 \begin{figure} [h]
 \centering
@@ -104,8 +114,74 @@ Again ACO's going for the quickest path is that it is a bit to slow and therefor
 \label{fig:celebSfire}
 \end{figure}
 
+\begin{figure} [h]
+\centering
+\hspace*{-1.0in}
+\includegraphics[scale=0.35]{images/Graph-using-200-rounds-140-passangers-and-fast-fire.png}
+\caption{The effect of fast moving fire.}
+\label{fig:celebFfire}
+\end{figure}
+
 \subsection{Fire spread}
 % Write how much slower. Reasonable that quickest path is better when there is less fire to accidentaly run into
 
 When comparing \ref{fig:celebSfire} to \ref{fig:celeb}, the algorithms overall did much better then all the other simulations. This was expected as the hazards moved more slowly then in all the other simulations. It is also worth noting that when finding the quickest path ACO had the biggest increase in performance, however it is still the one that is the worst off.
 
+However, when comparing them to \ref{fig:celebFfire}, all the algorithms was worse of. An interesting thing to be noticed in the graph is that Dijkstra going for the shortest path is just as good as ACO going for the safest. This shows that when the fire is spreading fast on board the ship, it is not a bad idea to guide the passengers as fast as possible to an exit, so most of the escape routes are still viable. ACO going for the shortest path tok the greatest hit and plumes down in effectiveness, almost half of the passengers died using this algorithm to guide them.
+
+
+
+\subsection{Summary of results}
+
+\ref{table:tableSafest} and \ref{table:tableShortest} show how well the algorithms did under the different simulations. 
+
+\begin{table}[ht]
+\caption{Survivors of safest path} 				% title of Table
+\centering										% used for centering table
+\begin{tabular}{c c c c}						% centered columns (4 columns)
+\hline
+\hline 											%inserts double horizontal lines
+Case & ACO & Dijkstra \\[0.5ex]% inserts table
+												%heading
+\hline											% inserts single horizontal line
+Normal & 116,03 & 121,915 \\							% inserting body of the table
+One fire & 122,195 & 126,535 \\
+Slow fire & 129,635 & 132,37 \\
+Fast fire & 98,855 & 106,125 \\
+High panic & 57,345 & 65,88 \\
+Dijkstra only at start & 120,42 & 116,44 \\
+Pheromones stored in edges & 122,315 & 125,255 \\
+1000 iterations & 122,761 & 126,861 \\
+50 Passengers & 42,47 & 43,0 \\
+200 Passengers & 166,68 & 173,305 \\ [1ex]						% [1ex] adds vertical space
+\hline														%inserts single line
+
+\end{tabular}
+\label{table:tableSafest}								
+\end{table}
+
+
+\begin{table}[ht]
+\caption{Survivors of shortest path} 				% title of Table
+\centering										% used for centering table
+\begin{tabular}{c c c c}						% centered columns (4 columns)
+\hline
+\hline 											%inserts double horizontal lines
+Case & ACO & Dijkstra \\[0.5ex]% inserts table
+												%heading
+\hline											% inserts single horizontal line
+Normal & 101,18 & 114,23 \\							% inserting body of the table
+One fire & 103,546 & 117,14 \\
+Slow fire & 119,305 & 124,31 \\
+Fast fire & 74,195 & 99,39 \\
+High panic & 70,585 & 90,24 \\
+Dijkstra only at start & 109,525 & 110,845 \\
+Pheromones stored in edges & 106,58 & 117,805 \\
+1000 iterations & 102,2191 & 114,704 \\
+50 Passengers & 39,575 & 41,915 \\ 
+200 Passengers & 143,19 & 152,455 \\ [1ex]						% [1ex] adds vertical space
+\hline														%inserts single line
+
+\end{tabular}
+\label{table:tableShortest}								
+\end{table}
