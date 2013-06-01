@@ -148,6 +148,10 @@ public class Human implements Cloneable {
 				double a = (double)tempMovementSpeed*1.8;
 				movementAllowence = (int)a;
 			}
+			else if(tempMovementSpeed <= 0)
+			{
+				movementAllowence = tempMovementSpeed;
+			}
 		}
 		boolean mayMoveToNextNode = false;
 		if(n.isExit() || n == node)

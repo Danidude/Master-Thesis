@@ -87,7 +87,7 @@ public class AntColonyOptimizationController {
 			
 			if(i%2 == 0)
 			{
-				Evaporate();
+				Evaporate(goingForMostSafePath);
 			}
 		}
 		//printPath(bestPath);
@@ -218,7 +218,7 @@ public class AntColonyOptimizationController {
 		System.out.println("with chances of survival: "+pathSurv);
 	}
 	
-	public void Evaporate()
+	public void Evaporate(boolean goingForMostSafePath)
 	{
 		for(Node n : nodes)
 		{
@@ -227,7 +227,7 @@ public class AntColonyOptimizationController {
 				e.addPheremonesForThatHuman(-(e.getPheremonesForThatHuman(humanID, pheremonsFromEdge)*evaporationRate), humanID, pheremonsFromEdge);
 				//e.addPheremones(-e.getPheremones()*evaporationRate);
 				
-				
+				if(!goingForMostSafePath)
 				e.addPheremonesForThatHuman(-(e.getPheremonesForThatHuman(humanID, pheremonsFromEdge)*(e.getNode().getChanceOfDeath())), humanID, pheremonsFromEdge);
 				//e.addPheremones(-e.getPheremones()*n.getChanceOfDeath());
 			}
