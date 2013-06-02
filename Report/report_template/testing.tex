@@ -148,6 +148,7 @@ The results of this simulation was somewhat the same as the previous simulations
 
 Table \ref{table:tableSafest} and table \ref{table:tableShortest} show how well the algorithms did under the different simulations. All the algorithms did best in the slow fire simulation, and did the worst in high panic simulation. Out of the simulation on Celebrity Xpedition and Silver Explorer, the Silver Explorer did the best, however the Silver Explorer was not modelled fully out as Celebrity Xpedition.
 
+
 \begin{table}[ht]
 \caption{Survivors of safest path} 				% title of Table
 \centering										% used for centering table
@@ -157,17 +158,17 @@ Table \ref{table:tableSafest} and table \ref{table:tableShortest} show how well 
 Case & ACO & Dijkstra \\[0.5ex]% inserts table
 												%heading
 \hline											% inserts single horizontal line
-Normal & 116,03 & 121,915 \\							% inserting body of the table
-One fire & 122,195 & 126,535 \\
-Slow fire & 129,635 & 132,37 \\
-Fast fire & 98,855 & 106,125 \\
-High panic & 57,345 & 65,88 \\
-Dijkstra only at start & 120,42 & 116,44 \\
-Pheromones stored in edges & 122,315 & 125,255 \\
-1000 iterations & 122,761 & 126,861 \\
-50 Passengers & 42,47 & 43,0 \\
-200 Passengers & 166,68 & 173,305 \\ 
-Silver Explorer & 52,96 & 56,705 \\ [1ex]						% [1ex] adds vertical space
+Normal & 116,03(82,87\%) & 121,915(86,86\%) \\							% inserting body of the table
+One fire & 122,195(87,28) & 126,535(90,38\%) \\
+Slow fire & 129,635(92,59\%) & 132,37(94,55\%) \\
+Fast fire & 98,855(70,61\%) & 106,125(75,80\%) \\
+High panic & 57,345(40,96\%) & 65,88(47,05\%) \\
+Dijkstra only at start & 120,42(86.01\%) & 116,44(83,17\%) \\
+Pheromones stored in edges & 122,315(87,36\%) & 125,255(89.46\%) \\
+1000 iterations & 122,761(87,64\%) & 126,861(90.61\%) \\
+50 Passengers & 42,47(84,94\%) & 43,0(86\%) \\
+200 Passengers & 166,68(83,34\%) & 173,305(86,65\%) \\ 
+Silver Explorer & 52,96(88.26\%) & 56,705(94.50\%) \\ [1ex]						% [1ex] adds vertical space
 \hline														%inserts single line
 
 \end{tabular}
@@ -184,17 +185,17 @@ Silver Explorer & 52,96 & 56,705 \\ [1ex]						% [1ex] adds vertical space
 Case & ACO & Dijkstra \\[0.5ex]% inserts table
 												%heading
 \hline											% inserts single horizontal line
-Normal & 101,18 & 114,23 \\							% inserting body of the table
-One fire & 103,546 & 117,14 \\
-Slow fire & 119,305 & 124,31 \\
-Fast fire & 74,195 & 99,39 \\
-High panic & 70,585 & 90,24 \\
-Dijkstra only at start & 109,525 & 110,845 \\
-Pheromones stored in edges & 106,58 & 117,805 \\
-1000 iterations & 102,2191 & 114,704 \\
-50 Passengers & 39,575 & 41,915 \\ 
-200 Passengers & 143,19 & 152,455 \\
-Silver Explorer & 45,26 & 47,875 \\ [1ex]						% [1ex] adds vertical space
+Normal & 101,18(72,27\%) & 114,23(81,59\%) \\							% inserting body of the table
+One fire & 103,546(73,96\%) & 117,14 (83,67\%)\\
+Slow fire & 119,305(85,22\%) & 124,31(88,79\%) \\
+Fast fire & 74,195(52,99\%) & 99,39(70,99\%) \\
+High panic & 70,585(50,41\%) & 90,24(64,45\%) \\
+Dijkstra only at start & 109,525(78,23\%) & 110,845(79,19\%) \\
+Pheromones stored in edges & 106,58(76,12\%) & 117,805(84,14\%) \\
+1000 iterations & 102,219(73.01\%) & 114,704(81,93\%) \\
+50 Passengers & 39,575(79,15\%) & 41,915(83.83\%) \\ 
+200 Passengers & 143,19(71,59\%) & 152,455(76,22\%) \\
+Silver Explorer & 45,26(75,43\%) & 47,875(79,79\%) \\ [1ex]						% [1ex] adds vertical space
 \hline														%inserts single line
 
 \end{tabular}
