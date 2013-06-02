@@ -7,7 +7,7 @@ graph search problems, and as such is a suitable algorithm to compare to the Ant
 Human behavior in a crisis is hard to predict because of the complex nature of humans and the lack of data from 
 crisis situations. Nevertheless, given a large amount of people, some statistical behavior can be assumed.
 
-\section{Human Behavor Models}
+\section{Human Behavior Models}
 There exists several behavioral models that predict movement. However the most successfully ones predict 
 animal movement as animals are rather simple compared to humans. The environment for animals tends to 
 be simpler, for instance ocean compared to urban, and animals are simpler creatures and will always rely only 
@@ -60,9 +60,9 @@ to safety, they were merely left to their own devices. We will create a model wh
 safest path to the exit. We aim to have the people act as realistic as possible and be placed in a dynamic 
 and complex environment.
 
-In Ocean Engineering volume 53, there is an article named "Cell-based evacuation simulation considering human behaviour in a passenger ship"\cite{celleva}. 
-The ship was modelled by placing cells representing one space enough to fill one passenger, so each room consists of several cells. 
-Each cell had 3 different states it could be in: Occupied, Empty or Object. When considering human behaviour, the humans needed some set of rules, so 3 rules was created: separation, cohesion, and alignment. 
+In Ocean Engineering volume 53, there is an article named "Cell-based evacuation simulation considering human behavior in a passenger ship"\cite{celleva}. 
+The ship was modeled by placing cells representing one space enough to fill one passenger, so each room consists of several cells. 
+Each cell had 3 different states it could be in: Occupied, Empty or Object. When considering human behavior, the humans needed some set of rules, so 3 rules was created: separation, cohesion, and alignment. 
 Separation or collision avoidance is that passengers tend to avoid to clash into each other. Cohesion is that the passengers wants to be as close to the center of a group of passengers, as this is more comforting. The last rule, alignment is that the passengers tend to head in the same direction and speed as the other passengers when evacuating.
  
  
@@ -106,7 +106,7 @@ For the algorithm itself there are two parts, edge selection, as seen in figure 
 Edge selection, simply stated, is the process of choosing which way to go. Every ant $s$ has a probability $P^s_{ab}$ of moving from location $a$ to location $b$. The probability
 is calculated based on the attractiveness $\Lambda_{ab}$  of moving from $a$ to $b$ and the pheromone trail level $T_{ab}$. The trail level,
 as discussed above, signifies how rewarding that path has been in the past. The attractiveness of a move indicates the cost of the move and 
-will in the beginning of the simmulation have a large impact on the choices made by the ants. However over time the pheromone trail level will take over as the
+will in the beginning of the simulation have a large impact on the choices made by the ants. However over time the pheromone trail level will take over as the
 dominating factor.
 
 \begin{figure}[h]
@@ -169,7 +169,7 @@ current node.
 \begin{math}
 d(u) = d(v) + d(v,u)
 \end{math}
-\caption{The shortest distance to the unvisted node from the source node via the visited node}
+\caption{The shortest distance to the unvisited node from the source node via the visited node}
 \label{fig:relax}
 \end{figure}
 
@@ -177,7 +177,7 @@ From the current node, follow the edges leading out of the node and calculate th
 
 The process is complete when the goal node(s) is marked as visited. It is worth considering that Dijkstra's algorithm does not attempt to find the goal node, it simply attempts to find the best next step and simply stops when it reaches its goal. The most basic implementation of Dijkstra's algorithm runs at $O(|N|^2)$ where $N$ is the amount of nodes in the graph. In these basic implementations the nodes are stored in an array or linked list. In 1984 Michael Lawrence Fredman and Robert E. Tarjan published the paper Fibonacci Heaps And Their Uses In Improved Network Optimization Algorithms \cite{715934}, in which it was proven that the Dikjstra's algorithm running time could be reduced to $O(|E| + |N|log|N|)$ where $E$ is the number of edges in the graph. The Fibonacci Heap is used as a priority queue, meaning a stack data structure where the elements with the highest priority are retrieved first. However this is only an improvement over the basic implementation if the amount of edges out of each node is significantly lower than the amount of nodes in total.
 
-In the research paper The Application of Dijkstra's Algorithm in the Intelligent Fire Evacuation System \cite{6305611} writen by X. Yuanzhe et al. Dijkstra's algorithm is used in an evacuation system. In the paper they write "A* algorithm aims to solving the shortest distance between one point to another. Dijkstra's algorithm aims to solving the shortest distance between one point to the remaining points. While Floyd's algorithm aims to solving the shortest distance between two of all points in the network. Thus Dijkstra's algorithm is one of the best methods for solving the evacuation safely". Thus, according to the writers, Dijkstra's algorithm is the best suited classic shortest path algorithm and should serve as an appropriate comparison to ACO.
+In the research paper The Application of Dijkstra's Algorithm in the Intelligent Fire Evacuation System \cite{6305611} written by X. Yuanzhe et al. Dijkstra's algorithm is used in an evacuation system. In the paper they write "A* algorithm aims to solving the shortest distance between one point to another. Dijkstra's algorithm aims to solving the shortest distance between one point to the remaining points. While Floyd's algorithm aims to solving the shortest distance between two of all points in the network. Thus Dijkstra's algorithm is one of the best methods for solving the evacuation safely". Thus, according to the writers, Dijkstra's algorithm is the best suited classic shortest path algorithm and should serve as an appropriate comparison to ACO.
 
 
 
