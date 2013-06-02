@@ -15,11 +15,11 @@ on instinct, whether in an emergency or not. There are several different computa
 human movement during emergencies, for instance fluid and particle systems, matrix-based systems and  
 emergent systems. Nevertheless they all either have limitations or they are somewhat inaccurate \cite{Pan:2007} \cite{6062828}. 
  
-It has been found that fluid and particle systems do not adequately describe human movement as humans  
+It has been found that fluid systems and cellular automata do not adequately describe human movement \cite{Pelechano2008377} as humans  
 panic and make choices, both good and bad, and they all have individual quirks. For instance, in a room with  
 multiple exits a crowd tend to form a herd mentality and the majority will gather around a single exit, which  
-will slow down their speed, and other exits will see little use. However had this been simulated with a fluid  
-and particle system it would likely predict that all exits would be used equally for maximum effect. 
+will slow down their speed, and other exits will see little use. However had this been simulated with a fluid system 
+and cellular automata it would likely predict that all exits would be used equally for maximum effect. 
  
 In a matrix-based system the room(s) are divided into cells. The cells can represent a table, it can be full of  
 people or it can be empty. People can move from cell to cell at a rate described in the model and by the  
@@ -98,7 +98,7 @@ and start exploring new ones.
 \begin{math}
 P^s_{ab} = {(T^\alpha_{ab})(\Lambda^\beta_{ab}) \over \sum (T^\alpha_{ab})(\Lambda^\beta_{ab})}
 \end{math}
-\caption{\textit{The mathematical formula for edge selection}}
+\caption{The mathematical formula for edge selection}
 \label{fig:edge}
 \end{figure}
 
@@ -114,7 +114,7 @@ dominating factor.
 \begin{math}
 T_{ab} \leftarrow (1 - \rho)T_{ab} + \sum \limits_{s} \Delta T^s_{ab}
 \end{math}
-\caption{\textit{The mathematical formula for pheromone update}}
+\caption{The mathematical formula for pheromone update}
 \label{fig:update}
 \end{figure}
 
@@ -133,7 +133,7 @@ I/J_s & \mbox{if ant }s\mbox{ uses edge }ab\mbox{ in its path} \\
 0 & \mbox{otherwise}
 \end{cases}
 \end{math}
-\caption{\textit{The mathematical formula used to calculate the amount of pheromones that should be deposited}}
+\caption{The mathematical formula used to calculate the amount of pheromones that should be deposited}
 \label{fig:update}
 \end{figure}
 
@@ -169,7 +169,7 @@ current node.
 \begin{math}
 d(u) = d(v) + d(v,u)
 \end{math}
-\caption{\textit{The shortest distance to the unvisted node from the source node via the visited node}}
+\caption{The shortest distance to the unvisted node from the source node via the visited node}
 \label{fig:relax}
 \end{figure}
 
