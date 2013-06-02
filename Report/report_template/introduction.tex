@@ -16,7 +16,7 @@ These paths are marked with pheromones and any consecutive ants are more likely 
 In this thesis we will compare Dijkstra's pathfinding algorithm to ACO, as Dijkstra's is one of the most commonly
  used pathfinding algorithms today. We will model the ship as a dynamic graph with nodes and edges where
  the nodes can be rooms, hallways or other sections of the ships and the edges indicate that it is possible to
- transition from one node to another. 
+ transition from one node to another. The simulated passengers will receive directions on their smart phones.
 
 Additionally, we will simulate human behavior during a crisis and observe
  how this affects the algorithms. Finally we will look into how high occupant density around exits slow down the 
@@ -70,13 +70,17 @@ and thus it becomes important to account for individuals that may not follow the
 
 \section{Limitations and key assumptions}
 
-To properly define the scope of our master thesis we have outlined                                                                               %Rewrite this section
+To properly define the scope of our master thesis we have outlined                                                                              
 some limitations and assumptions. We will limit ourselves to testing and modifying algorithms;                                  
 we will base ourselves on well known algorithms, not create a fully fleshed out system that would distribute the 
-safest paths to the passenger nor create the application that will run on the passenger's smartphones.
+safest paths to the passenger nor create the application that would run on the passenger's smart phones, guiding them to the exits.
 The focus in our master thesis will be on the algorithms themselves and not the final system as that have a large set
 of challenges itself. For instance the complete system would need to find ways to distribute directions to each phone,
 discover which phones are within the crisis area, receive information about the location of the fire onboard the ship etc.
+
+We will assume that the ship crews are trained in evacuation procedures and can find their own way to the embarkation area without guidance.
+We will not assume that the crew will guide the passengers and as such the simulated passengers will have to rely on the directions on 
+their smart phone to guide them. 
 
 We will apply current knowledge of human behavior during crisis. The field of human behavior during a crisis is large
 and expanding it would be outside of our field of expertise. And as such we will use existing models and knowledge
@@ -92,7 +96,7 @@ We assume a ship with hazards can be sufficiently modeled as a graph with nodes 
 environment it is possible that by reducing a complex structure into a simpler model some details would be lost in the
 translation. For instance a table could be knocked over or a spill could cause someone to slip. However, as there are a large number of 
 passengers on large ships we expect that by simply adding some regulatory factors to each area in the ship and running
-several iterations the results will be fairly realistic.                                                           %In line with existing ship standards and regulations                                                                    %Is this a good place to mention our nodes inside nodes plan? -> yes it is
+several iterations the results will be fairly realistic.
 
 \section{Contributions}
 
