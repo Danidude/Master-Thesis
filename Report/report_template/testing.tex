@@ -82,7 +82,7 @@ What is clear is that selecting the safest path is the best option regardless of
 % Very interesting, get this in the conclusion
 % Why would ACO not cause the same level of panic?
 
-When the chance of panic changed to a higher chance both algorithms struggled more to guide the passengers to safety. Dijkstra had the largest drop in performance as it sometimes it would send passengers in one direction, then panic and go back, therefore taking a long time before that passenger got to safety or died. It is not clearly shown in this graph, however when it simulation was running, it resulted in a data file almost on a size of one 1 GB, where ACO's data file would not pass 60 MB. However it was also Dijkstra that preformed best overall, shown in figure \ref{fig:celebHPanic}.
+When the chance of panic changed to a higher chance both algorithms struggled more to guide the passengers to safety. Dijkstra had the largest drop in performance as it sometimes it would send passengers in one direction, then panic and go back, therefore taking a long time before that passenger got to safety or died. It is not clearly shown in this graph, as ACO going for the shortest path was at its worst on 2404 turns, while Dijkstra vent over 600 000 turns. However it was also Dijkstra that preformed best overall, shown in figure \ref{fig:celebHPanic}.
 
 \begin{figure} [h]
 \centering
@@ -153,6 +153,7 @@ Table \ref{table:tableSafest} and table \ref{table:tableShortest} show how well 
 
 Running 200 iterations seems to be sufficient in our simulation shown by the first graph. How fast a fire was moving on board the ship had a big impact on how well the algorithms preformed for the better or worse. Having less or more passengers did not seem to affect the different algorithms to a big degree. Now having stored the pheromones in the edges of the nodes seems to be the better option then having it stored in the nodes themselves.
 
+ACO seems to be almost just as good as Dijkstra in most cases, however when more dynamic elements are introduced into the fold ACO is much faster then Dijkstra in guiding the passengers, when looking at the high panic simulation.
 
 
 \begin{table}[ht]
