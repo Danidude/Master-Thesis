@@ -20,10 +20,13 @@ In the simulations there are several parameters that can be changed and multiple
 \caption{Dijkstra and ACO running at each time step.}
 \label{fig:celeb}
 \end{figure}
+
+
 % Crew members not accounted for
 The simulations also ran with a set of standard configurations. When the effects of changing one parameter was tested the remaining ones were kept at a standard level. The number of passengers was set to the ship maximum number of passengers used on the ship Celebrity Xpedition was found on Cruisedeckplans LLC website\cite{cruseships}. The fire on board the ship was set to increase in size and intensity at every second time step, one time step being 2 real life seconds. At the start of the simulations between one and three fires were started.
 
 At each time step ACO released 200 ants per passenger. Each ant held 100 pheromones that it used to mark the paths to the exits. The passengers would use these new paths. Similarly Dijkstra's algorithm recalculated a new path for each passenger at each time step. In some of our simulation a few passenger would not reach the exits within 300 time steps. However we have cut the graph at 300 time steps, as this would show more details in the graph and the average number of survivors past 300 did not change. 
+
 
 \section{Testing}
 
@@ -135,7 +138,7 @@ However, when comparing them to figure \ref{fig:celebFfire}, all the algorithms 
 \centering
 \hspace*{-1.0in}
 \includegraphics[scale=0.35]{images/Graph-ship-two-60-passangers-200-rounds.png}
-\caption{The effect of fast moving fire.}
+\caption{ACO and Dijkstra's performance on Silver Explorer.}
 \label{fig:silverExplor}
 \end{figure}
 
@@ -148,6 +151,9 @@ The results of this simulation was somewhat the same as the previous simulations
 
 Table \ref{table:tableSafest} and table \ref{table:tableShortest} show how well the algorithms did under the different simulations. All the algorithms did best in the slow fire simulation, and did the worst in high panic simulation. Out of the simulation on Celebrity Xpedition and Silver Explorer, the Silver Explorer did the best, however the Silver Explorer was not modelled fully out as Celebrity Xpedition.
 
+Running 200 iterations seems to be sufficient in our simulation shown by the first graph. How fast a fire was moving on board the ship had a big impact on how well the algorithms preformed for the better or worse. Having less or more passengers did not seem to affect the different algorithms to a big degree. Now having stored the pheromones in the edges of the nodes seems to be the better option then having it stored in the nodes themselves.
+
+
 
 \begin{table}[ht]
 \caption{Survivors of safest path} 				% title of Table
@@ -158,17 +164,16 @@ Table \ref{table:tableSafest} and table \ref{table:tableShortest} show how well 
 Case & ACO & Dijkstra \\[0.5ex]% inserts table
 												%heading
 \hline											% inserts single horizontal line
-Normal & 116,03 - (83\%) & 121,915 - (87\%) \\							
-One fire & 122,195 - (87) & 126,535 - (90\%) \\
-Slow fire & 129,635 - (92\%) & 132,37 - (94\%) \\
-Fast fire & 98,855 - (71\%) & 106,125 - (76\%) \\
-High panic & 57,345 - (41\%) & 65,88 - (47\%) \\
+Standard configuration & 122,19 - (87\%) & 126,53 - (90\%) \\
+Slow fire & 129,63 - (92\%) & 132,37 - (94\%) \\
+Fast fire & 98,85 - (71\%) & 106,12 - (76\%) \\
+High panic & 57,34 - (41\%) & 65,88 - (47\%) \\
 Dijkstra only at start & 120,42 - (86\%) & 116,44 - (83\%) \\
-Pheromones stored in edges & 122,315 - (87\%) & 125,255 - (89\%) \\
-1000 iterations & 122,761 - (88\%) & 126,861 - (91\%) \\
-50 Passengers & 42,47 - (85\%) & 43,0 - (86\%) \\
-200 Passengers & 166,68 - (83\%) & 173,305 - (87\%) \\ 
-Silver Explorer & 52,96 - (88\%) & 56,705 - (94\%) \\ [1ex]						% [1ex] adds vertical space
+Pheromones stored in edges & 122,31 - (87\%) & 125,25 - (89\%) \\
+1000 iterations & 122,76 - (88\%) & 126,86 - (91\%) \\
+50 Passengers & 42,47 - (85\%) & 43,00 - (86\%) \\
+200 Passengers & 166,68 - (83\%) & 173,30 - (87\%) \\ 
+Silver Explorer & 52,96 - (88\%) & 56,70 - (94\%) \\ [1ex]						% [1ex] adds vertical space
 \hline														%inserts single line
 
 \end{tabular}
@@ -185,17 +190,16 @@ Silver Explorer & 52,96 - (88\%) & 56,705 - (94\%) \\ [1ex]						% [1ex] adds ve
 Case & ACO & Dijkstra \\[0.5ex]% inserts table
 												%heading
 \hline											% inserts single horizontal line
-Normal & 101,18 - (72\%) & 114,23 - (81\%) \\							% inserting body of the table
-One fire & 103,546 - (74\%) & 117,14 - (84\%)\\
-Slow fire & 119,305 - (85\%) & 124,31 - (89\%) \\
-Fast fire & 74,195 - (53\%) & 99,39 - (71\%) \\
-High panic & 70,585 - (50\%) & 90,24 - (64\%) \\
-Dijkstra only at start & 109,525 - (78\%) & 110,845 - (79\%) \\
-Pheromones stored in edges & 106,58 - (76\%) & 117,805 - (84\%) \\
-1000 iterations & 102,219 - (73\%) & 114,704 - (81\%) \\
-50 Passengers & 39,575 - (79\%) & 41,915 - (83\%) \\ 
-200 Passengers & 143,19 - (71\%) & 152,455 - (76\%) \\
-Silver Explorer & 45,26 - (75\%) & 47,875 - (80\%) \\ [1ex]						% [1ex] adds vertical space
+Standard configuration & 103,54 - (74\%) & 117,14 - (84\%)\\
+Slow fire & 119,30 - (85\%) & 124,31 - (89\%) \\
+Fast fire & 74,19 - (53\%) & 99,39 - (71\%) \\
+High panic & 70,58 - (50\%) & 90,24 - (64\%) \\
+Dijkstra only at start & 109,52 - (78\%) & 110,84 - (79\%) \\
+Pheromones stored in edges & 106,58 - (76\%) & 117,80 - (84\%) \\
+1000 iterations & 102,21 - (73\%) & 114,70 - (81\%) \\
+50 Passengers & 39,57 - (79\%) & 41,91 - (83\%) \\ 
+200 Passengers & 143,19 - (71\%) & 152,45 - (76\%) \\
+Silver Explorer & 45,26 - (75\%) & 47,87 - (80\%) \\ [1ex]						% [1ex] adds vertical space
 \hline														%inserts single line
 
 \end{tabular}
