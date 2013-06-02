@@ -17,6 +17,7 @@ public class Human implements Cloneable {
 	private List<Node> knownExitNode;
 	private int movementInCurrentNode;
 	public List<Node> dijkstraNodePath;
+	public boolean searchForFamaly;
 	
 	public Human (List<Integer> familiarTies, boolean panicState, Node node, int humanID, boolean escaped, int movementAllowence){
 		this.familiarTies = familiarTies;
@@ -26,6 +27,7 @@ public class Human implements Cloneable {
 		this.escaped = escaped;
 		knownExitNode = new ArrayList<Node>();
 		dijkstraNodePath =new ArrayList<Node>();
+		searchForFamaly = false;
 		
 		this.movementAllowence = movementAllowence;
 		movementInCurrentNode = 0;
@@ -55,6 +57,18 @@ public class Human implements Cloneable {
 	}
 	
 	public void setPanicState(boolean panicState) {
+		
+		Random rand = new Random();
+		
+		if(panicState && familiarTies.size() > 0 && rand.nextInt(1) > 0)
+		{
+			searchForFamaly = true;
+		}
+		else
+		{
+			searchForFamaly = false;
+		}
+		
 		this.panicState = panicState;
 	}
 	
@@ -197,8 +211,18 @@ public class Human implements Cloneable {
 			}
 			else
 			{
-				knownExitNode.remove(node);
-				n.testOverCapacityInNode();
+				if(!searchForFamaly)
+				{
+					knownExitNode.remove(node);
+					node = knownExitNode.get(0);
+					node.testOverCapacityInNode();
+				}
+				else
+				{
+					knownExitNode.add(0, n);
+					node = chooseRandomPath();
+				}
+				
 			}
 			n.currentHumansInNode.add(this);
 			
@@ -210,6 +234,15 @@ public class Human implements Cloneable {
 		else
 			return -1;
 		
+	}
+	
+	private Node chooseRandomPath()
+	{
+		Random rand = new Random();
+		int a = rand.nextInt(node.getPaths().size()-1);
+		
+		
+		return node.getPaths().get(a).getNode();
 	}
 	
 	public void setKnownPathToExit(List<Node> list)

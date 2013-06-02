@@ -186,7 +186,7 @@ public class ResultsHandler {
 					continue;
 				}
 				
-				//testIfHumanPanics(h, randomGenerator);
+				testIfHumanPanics(h, randomGenerator);
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped and is removed from the list of humans
 				if(h.isEscaped()){
@@ -349,7 +349,7 @@ public class ResultsHandler {
 					continue;
 				}
 				
-				//testIfHumanPanics(h, randomGenerator);
+				testIfHumanPanics(h, randomGenerator);
 				
 				// If the passenger is currently in a node that counts as an exit the passenger has escaped
 				if(h.isEscaped()){
@@ -960,7 +960,7 @@ public class ResultsHandler {
 			{
 				if(human.isPanicState())
 				{
-					panicChance+=0.001;
+					panicChance+=0.05;
 				}
 				else
 				{
@@ -988,7 +988,7 @@ public class ResultsHandler {
 			{
 				if(human.isPanicState())
 				{
-					panicChance-=0.001;
+					panicChance-=0.05;
 				}
 				else
 				{
@@ -1005,6 +1005,28 @@ public class ResultsHandler {
 			{
 				h.setPanicState(false);
 				//System.out.println("Human comes out of panic"+h.getHumanID());
+			}
+			
+			for(int famley: h.getFamiliarTies())
+			{
+				for(Human hum : h.getNode().currentHumansInNode)
+				{
+					if(hum.getHumanID() == famley)
+					{
+						h.setPanicState(false);
+					}
+				}
+				
+				for(Edge e : h.getNode().getPaths())
+				{
+					for(Human hum : e.getNode().currentHumansInNode)
+					{
+						if(hum.getHumanID() == famley)
+						{
+							h.setPanicState(false);
+						}
+					}
+				}
 			}
 		}
 		
