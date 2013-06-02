@@ -6,7 +6,7 @@
 \begin{figure} [h]
 \centering
 \hspace*{-1.0in}
-\includegraphics[scale=0.35]{images/Graph-using-200-rounds-and 1000-rounds.png}
+\includegraphics[scale=0.35]{images/Graph-using-200-rounds-and-1000-rounds.png}
 \caption{Comparing 200 iterations to 1000 iterations.}
 \label{fig:celeb1000}
 \end{figure}
@@ -97,12 +97,12 @@ When the chance of panic changed to a higher chance both algorithms struggled mo
 \label{fig:celeb200}
 \end{figure}
 
-\subsection{Amount of passengers}
+\subsection{Varying amount of passengers}
 % Do we have a section on too many passengers that we can compare to?
 
-In figure \ref{fig:celeb50} all the different algorithms are close together and preform well when there are less passengers on board the ship. The order of witch algorithm that is best still remains the same, however Dijkstra going for quickest paths is just as good as ACO going for safest for a while, before ACO goes past it. When looking at the deaths of the passengers ACO going for safest is always much better then Dijkstra going for Quickest.
+In figure \ref{fig:celeb50} all the different algorithms are close together and preform well when there are less passengers on board the ship. The order of witch algorithm that is best still remains the same, however Dijkstra searching for quickest paths is just as good as ACO searching for safest for a while, before ACO goes past it. When looking at the deaths of the passengers ACO searching for safest is always much better then Dijkstra searching for quickest.
 
-Again ACO's going for the quickest path is that it is a bit to slow and therefore the hazards have time to spread more out and create more dangerously areas.
+Again ACO's searching for the quickest path is that it is a bit to slow and therefore the hazards have time to spread more out and create more dangerously areas.
 
 Now in figure \ref{fig:celeb200} the difference is performance in the different algorithms grows more apart from each other then in figure \ref{fig:celeb50}. This shows that the more passengers the ships have, the more difference in the different algorithms are to be expected.
 
@@ -127,7 +127,7 @@ Now in figure \ref{fig:celeb200} the difference is performance in the different 
 
 When comparing figure \ref{fig:celebSfire} to figure \ref{fig:celeb}, the algorithms overall did much better then all the other simulations. This was expected as the hazards moved more slowly then in all the other simulations. It is also worth noting that when finding the quickest path ACO had the biggest increase in performance, however it is still the one that is the worst off.
 
-However, when comparing them to figure \ref{fig:celebFfire}, all the algorithms was worse of. An interesting thing to be noticed in the graph is that Dijkstra going for the shortest path is just as good as ACO going for the safest. This shows that when the fire is spreading fast on board the ship, it is not a bad idea to guide the passengers as fast as possible to an exit, so most of the escape routes are still viable. ACO going for the shortest path took the greatest hit and plumes down in effectiveness, almost half of the passengers died using this algorithm to guide them.
+However, when comparing them to figure \ref{fig:celebFfire}, all the algorithms was worse of. An interesting thing to be noticed in the graph is that Dijkstra searching for the shortest path is just as good as ACO searching for the safest. This shows that when the fire is spreading fast on board the ship, it is not a bad idea to guide the passengers as fast as possible to an exit, so most of the escape routes are still viable. ACO searching for the shortest path took the greatest hit and plumes down in effectiveness, almost half of the passengers died using this algorithm to guide them.
 
 
 
@@ -142,9 +142,9 @@ However, when comparing them to figure \ref{fig:celebFfire}, all the algorithms 
 \subsection{Second ship: Silver Explorer}
 The second ship we did simulations on was the Silver Explorer, since not all the floors was created for this ship, the maximum number of passengers was not used. We used 60 passengers in this simulation, witch was right below half of the maximum number shown on Cruisedeckplans LLC website\cite{cruseships}.
 
-The results of this simulation was somewhat the same as the previous simulations, with Dijkstra outperforming on both situations, finding safest and shortest path. One difference in ACO is that the passengers saved is not as linear as the previous simulations. It seams to slow down at time step 50, and rapidly increases at time step 70 again. The reason for this is most likely the case of a new ship and different layout of the ship.
+The results of this simulation was somewhat the same as the previous simulations, with Dijkstra outperforming on both situations, finding safest and shortest path. One difference in ACO is that the passengers saved is not as linear as the previous simulations. It seems to slow down at time step 50, and rapidly increases at time step 70 again. The reason for this is most likely the case of a new ship and different layout of the ship.
 
-\subsection{Summary of results}
+\section{Summary of results}
 
 Table \ref{table:tableSafest} and table \ref{table:tableShortest} show how well the algorithms did under the different simulations. All the algorithms did best in the slow fire simulation, and did the worst in high panic simulation. Out of the simulation on Celebrity Xpedition and Silver Explorer, the Silver Explorer did the best, however the Silver Explorer was not modelled fully out as Celebrity Xpedition.
 
