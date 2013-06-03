@@ -132,8 +132,6 @@ When comparing figure \ref{fig:celebSfire} to figure \ref{fig:celeb}, the algori
 
 However, when comparing them to figure \ref{fig:celebFfire}, all the algorithms was worse of. An interesting thing to be noticed in the graph is that Dijkstra searching for the shortest path is just as good as ACO searching for the safest. This shows that when the fire is spreading fast on board the ship, it is not a bad idea to guide the passengers as fast as possible to an exit, so most of the escape routes are still viable. ACO searching for the shortest path took the greatest hit and plumes down in effectiveness, almost half of the passengers died using this algorithm to guide them.
 
-
-
 \begin{figure} [h]
 \centering
 \hspace*{-1.0in}
@@ -149,7 +147,9 @@ The results of this simulation was somewhat the same as the previous simulations
 
 \section{Summary of results}
 
-Table \ref{table:tableSafest} and table \ref{table:tableShortest} show how well the algorithms did under the different simulations. All the algorithms did best in the slow fire simulation, and did the worst in high panic simulation. Out of the simulation on Celebrity Xpedition and Silver Explorer, the Silver Explorer did the best, however the Silver Explorer was not modelled fully out as Celebrity Xpedition.
+Table \ref{table:tableSafest} and table \ref{table:tableShortest} shows a summary of the algorithms performance using different configurations. All the algorithms performed best in the slow moving fire simulation and they performed the worst in high panic simulation.
+
+ Out of the simulation on Celebrity Xpedition and Silver Explorer, the Silver Explorer did the best, however the Silver Explorer was not modelled fully out as Celebrity Xpedition.
 
 Running 200 iterations seems to be sufficient in our simulation shown by the first graph. How fast a fire was moving on board the ship had a big impact on how well the algorithms preformed for the better or worse. Having less or more passengers did not seem to affect the different algorithms to a big degree. Now having stored the pheromones in the edges of the nodes seems to be the better option then having it stored in the nodes themselves.
 
