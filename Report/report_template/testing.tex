@@ -43,7 +43,7 @@ At the beginning of the testing phase we tested whether ants depositing pheromon
 
 \subsection{Dijkstra's algorithm}
 
-In figure \ref{fig:celebDF} we see the results of running Dijkstra's algorithm once per passenger at the start of the simulation and no more as the simulation progressed. When searching for the safest path we expected that ACO would outperform Dijkstra's algorithm, and it did. When Dijkstra's algorithm could not account for the fire spreading its performance suffered. When looking for the shortest path, ACO started out well but Dijkstra's algorithm caught up after about 100 time steps. This shows that people are exiting the dangerous area faster with ACO but the two algorithms performance regarding survivors is almost identical.
+In figure \ref{fig:celebDF} we see the results of running Dijkstra's algorithm once per passenger at the start of the simulation and no more as the simulation progressed. When searching for the safest path we expected that ACO would outperform Dijkstra's algorithm, and it did. When Dijkstra's algorithm could not account for the fire spreading its performance suffered. When looking for the shortest path, ACO started out well but Dijkstra's algorithm caught up after about 110 time steps. This shows that people are exiting the dangerous area faster with ACO but the two algorithms performance regarding survivors is almost identical.
 
 \begin{figure} [h]
 \centering
@@ -138,13 +138,9 @@ The results of this simulation can be seen in figure \ref{fig:silverExplor} and 
 
 \section{Summary of results}
 
-Table \ref{table:tableSafest} and table \ref{table:tableShortest} shows a summary of the algorithms performance using different configurations. All the algorithms performed best in the slow moving fire simulation and they performed the worst in high panic simulation.
+Table \ref{table:tableSafest} and table \ref{table:tableShortest} shows a summary of the algorithms performance using different configurations. All the algorithms performed best in the slow moving fire simulation and they performed the worst in high panic simulation. Selecting the shortest path resulted in poor performance in almost all situations. This is natural as several passengers would be lead through dangerous areas regardless of there being a safer albeit longer path. In situations where the fire, and even more importantly, the smoke is spreading even faster than in our simulation a case can be made for selecting the quickest path through a dangerous area that is not necessarily 100 percent lethal. If the passengers would have to walk large distances to reach an alternate route fire and smoke could have completely covered part of the alternate route before the passengers were able to escape.
 
- Out of the simulation on Celebrity Xpedition and Silver Explorer, the Silver Explorer did the best, however the Silver Explorer was not modelled fully out as Celebrity Xpedition.
-
-Running 200 iterations seems to be sufficient in our simulation shown by the first graph. How fast a fire was moving on board the ship had a big impact on how well the algorithms preformed for the better or worse. Having less or more passengers did not seem to affect the different algorithms to a big degree. Now having stored the pheromones in the edges of the nodes seems to be the better option then having it stored in the nodes themselves.
-
-ACO seems to be almost just as good as Dijkstra in most cases, however when more dynamic elements are introduced into the fold ACO is much faster then Dijkstra in guiding the passengers, when looking at the high panic simulation.
+ACO always performed well but Dijkstra's algorithm saved more simulated passengers in general. This is somewhat expected. Considering performance as a combination of computational time and results there is a case to be made for ACO as a superior algorithm in this case. While we have only looked at the survivors in our simulations it is well known that ACO, correctly configured regarding amount of ants, is the faster algorithm. And there is no denying that getting the directions to the passengers quickly is of the utmost importance in an evacuation. 
 
 
 \begin{table}[ht]
@@ -162,7 +158,6 @@ Fast fire & 98,85 - (71\%) & 106,12 - (76\%) \\
 High panic & 57,34 - (41\%) & 65,88 - (47\%) \\
 Dijkstra only at start & 120,42 - (86\%) & 116,44 - (83\%) \\
 Pheromones stored in edges & 122,31 - (87\%) & 125,25 - (89\%) \\
-1000 iterations & 122,76 - (88\%) & 126,86 - (91\%) \\
 50 Passengers & 42,47 - (85\%) & 43,00 - (86\%) \\
 200 Passengers & 166,68 - (83\%) & 173,30 - (87\%) \\ 
 Silver Explorer & 52,96 - (88\%) & 56,70 - (94\%) \\ [1ex]						% [1ex] adds vertical space
@@ -188,7 +183,6 @@ Fast fire & 74,19 - (53\%) & 99,39 - (71\%) \\
 High panic & 70,58 - (50\%) & 90,24 - (64\%) \\
 Dijkstra only at start & 109,52 - (78\%) & 110,84 - (79\%) \\
 Pheromones stored in edges & 106,58 - (76\%) & 117,80 - (84\%) \\
-1000 iterations & 102,21 - (73\%) & 114,70 - (81\%) \\
 50 Passengers & 39,57 - (79\%) & 41,91 - (83\%) \\ 
 200 Passengers & 143,19 - (71\%) & 152,45 - (76\%) \\
 Silver Explorer & 45,26 - (75\%) & 47,87 - (80\%) \\ [1ex]						% [1ex] adds vertical space
